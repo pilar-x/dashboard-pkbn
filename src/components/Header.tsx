@@ -28,10 +28,11 @@ export const Header: React.FC<HeaderProps> = ({
   const [roleDropdownOpen, setRoleDropdownOpen] = React.useState(false);
 
   const roles = [
-    "Admin Pusat (Kemenhan)",
-    "Admin Provinsi (Kesbangpol)",
-    "Instruktur Utama PKBN",
-    "Operator Instansi / Kampus",
+    "PABAN IV/PKBN",
+    "PABANDYA",
+    "PABANDA",
+    "BAUR",
+    "ADMIN",
   ];
 
   return (
@@ -49,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
                   DASHBOARD PKBN
                 </span>
                 <span className="bg-red-950/80 text-red-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-red-800/60 uppercase tracking-wider">
-                  RI - KEMENHAN
+                  SPABAN IV/PKBN STERAD
                 </span>
               </div>
               <p className="text-xs text-slate-400 hidden sm:block">

@@ -22,7 +22,7 @@ import { AiAssistantModal } from "./components/views/AiAssistantModal";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("beranda");
-  const [activeRole, setActiveRole] = useState<string>("Admin Pusat (Kemenhan)");
+  const [activeRole, setActiveRole] = useState<string>("PABAN IV/PKBN");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(null);
   const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
