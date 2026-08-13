@@ -6,8 +6,9 @@ import {
   Sparkles,
   UserCheck,
   ChevronDown,
-  Building2,
-  Calendar,
+  Sun,
+  Moon,
+  Upload,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -16,6 +17,10 @@ interface HeaderProps {
   onOpenAiAssistant: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  theme: "dark" | "light";
+  setTheme: (theme: "dark" | "light") => void;
+  onOpenNotifications: () => void;
+  onOpenUpload: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -24,6 +29,10 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAiAssistant,
   searchQuery,
   setSearchQuery,
+  theme,
+  setTheme,
+  onOpenNotifications,
+  onOpenUpload,
 }) => {
   const [roleDropdownOpen, setRoleDropdownOpen] = React.useState(false);
 
@@ -36,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
-    <header className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-30 shadow-md">
+    <header className={`${theme === "dark" ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800"} border-b sticky top-0 z-30 shadow-md transition-colors`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo & Brand Title */}
@@ -46,14 +55,14 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg tracking-tight text-white font-serif">
+                <span className={`font-bold text-lg tracking-tight font-serif ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
                   DASHBOARD PKBN
                 </span>
                 <span className="bg-red-950/80 text-red-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-red-800/60 uppercase tracking-wider">
                   SPABAN IV/PKBN STERAD
                 </span>
               </div>
-              <p className="text-xs text-slate-400 hidden sm:block">
+              <p className={`text-xs ${theme === "dark" ? "text-slate-400" : "text-slate-500"} hidden sm:block`}>
                 Pembinaan Kesadaran Bela Negara Republik Indonesia
               </p>
             </div>
@@ -62,19 +71,50 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Quick Search */}
           <div className="flex-1 max-w-md mx-4 hidden md:block">
             <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Search className={`w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 ${theme === "dark" ? "text-slate-400" : "text-slate-500"}`} />
               <input
                 type="text"
                 placeholder="Cari program, sekolah, instansi, ormas, atau wilayah..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-800/90 text-slate-200 text-sm pl-9 pr-4 py-2 rounded-lg border border-slate-700/80 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 placeholder-slate-500 transition-all"
+                className={`w-full text-xs pl-9 pr-4 py-2 rounded-xl border focus:outline-none focus:border-red-500 transition-all ${
+                  theme === "dark"
+                    ? "bg-slate-800/90 text-slate-200 border-slate-700/80 placeholder-slate-500"
+                    : "bg-slate-100 text-slate-800 border-slate-300 placeholder-slate-400"
+                }`}
               />
             </div>
           </div>
 
           {/* Right Action Bar */}
           <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Upload Button */}
+            <button
+              onClick={onOpenUpload}
+              className={`p-2 rounded-lg border transition-colors hidden sm:flex items-center space-x-1 text-xs font-semibold ${
+                theme === "dark"
+                  ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300"
+              }`}
+              title="Unggah Foto atau Dokumen PKBN"
+            >
+              <Upload className="w-4 h-4 text-red-500" />
+              <span className="hidden md:inline">Unggah</span>
+            </button>
+
+            {/* Theme Toggle (Sun / Moon) */}
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className={`p-2 rounded-lg border transition-colors ${
+                theme === "dark"
+                  ? "bg-slate-800 hover:bg-slate-700 text-yellow-400 border-slate-700"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300"
+              }`}
+              title={theme === "dark" ? "Ganti ke Light Mode" : "Ganti ke Dark Command Center Mode"}
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-indigo-600" />}
+            </button>
+
             {/* AI Assistant Button */}
             <button
               onClick={onOpenAiAssistant}
@@ -82,11 +122,19 @@ export const Header: React.FC<HeaderProps> = ({
               title="Tanya Asisten AI PKBN / Kurikulum / SWOT"
             >
               <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-              <span className="hidden sm:inline">Asisten AI PKBN</span>
+              <span className="hidden sm:inline">Asisten AI</span>
             </button>
 
             {/* Notification Bell */}
-            <button className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors relative">
+            <button
+              onClick={onOpenNotifications}
+              className={`p-2 rounded-lg border transition-colors relative ${
+                theme === "dark"
+                  ? "text-slate-400 hover:text-white hover:bg-slate-800 border-slate-800"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-slate-200"
+              }`}
+              title="Notifikasi System Realtime"
+            >
               <Bell className="w-5 h-5" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-slate-900"></span>
             </button>
@@ -95,9 +143,13 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="relative">
               <button
                 onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-                className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700/80 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-medium transition-colors"
+                className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
+                  theme === "dark"
+                    ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700"
+                    : "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300"
+                }`}
               >
-                <UserCheck className="w-4 h-4 text-emerald-400" />
+                <UserCheck className="w-4 h-4 text-emerald-500" />
                 <span className="hidden lg:inline max-w-[130px] truncate">
                   {activeRole}
                 </span>
@@ -105,8 +157,12 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
 
               {roleDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-slate-800 rounded-xl shadow-xl border border-slate-700 py-1.5 z-50 text-xs">
-                  <div className="px-3 py-1.5 border-b border-slate-700 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                <div className={`absolute right-0 mt-2 w-56 rounded-xl shadow-xl border py-1.5 z-50 text-xs ${
+                  theme === "dark" ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
+                }`}>
+                  <div className={`px-3 py-1.5 border-b text-[11px] font-semibold uppercase tracking-wider ${
+                    theme === "dark" ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-500"
+                  }`}>
                     Pilih Hak Akses Simulasi
                   </div>
                   {roles.map((r) => (
@@ -116,10 +172,14 @@ export const Header: React.FC<HeaderProps> = ({
                         setActiveRole(r);
                         setRoleDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 hover:bg-slate-700/80 transition-colors flex items-center justify-between ${
+                      className={`w-full text-left px-3 py-2 transition-colors flex items-center justify-between ${
+                        theme === "dark"
+                          ? "hover:bg-slate-700/80 text-slate-300"
+                          : "hover:bg-slate-100 text-slate-700"
+                      } ${
                         activeRole === r
-                          ? "text-red-400 font-semibold bg-slate-700/40"
-                          : "text-slate-300"
+                          ? theme === "dark" ? "text-red-400 font-semibold bg-slate-700/40" : "text-red-700 font-semibold bg-red-50"
+                          : ""
                       }`}
                     >
                       <span>{r}</span>

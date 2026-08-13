@@ -10,7 +10,6 @@ import {
   FileSpreadsheet,
   Database,
   Sparkles,
-  Award,
   ChevronRight,
 } from "lucide-react";
 
@@ -18,12 +17,14 @@ interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
   onOpenAiAssistant: () => void;
+  theme?: "dark" | "light";
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   setActiveTab,
   onOpenAiAssistant,
+  theme = "dark",
 }) => {
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; desc: string }[] = [
     {
@@ -76,11 +77,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
   ];
 
+  const isDark = theme === "dark";
+
   return (
-    <aside className="w-full md:w-64 bg-slate-900 border-r border-slate-800 shrink-0 flex flex-col justify-between py-4 text-slate-300">
+    <aside className={`w-full md:w-64 border-r shrink-0 flex flex-col justify-between py-4 transition-colors ${
+      isDark ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-slate-50 border-slate-200 text-slate-700"
+    }`}>
       <div className="px-3 space-y-1">
-        <div className="px-3 py-2 text-[11px] font-bold tracking-wider uppercase text-slate-400 font-mono">
-          KONSEP MODUL DASHBOARD
+        <div className={`px-3 py-2 text-[11px] font-bold tracking-wider uppercase font-mono ${
+          isDark ? "text-slate-400" : "text-slate-500"
+        }`}>
+          MODUL DASHBOARD PKBN
         </div>
 
         {navItems.map((item) => {
@@ -91,14 +98,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all group ${
                 isActive
-                  ? "bg-red-900/60 text-white font-semibold border border-red-700/60 shadow-lg shadow-red-950/40"
-                  : "hover:bg-slate-800/80 hover:text-slate-100 text-slate-400"
+                  ? isDark
+                    ? "bg-red-900/60 text-white font-semibold border border-red-700/60 shadow-lg shadow-red-950/40"
+                    : "bg-red-700 text-white font-semibold border border-red-800 shadow-md"
+                  : isDark
+                  ? "hover:bg-slate-800/80 hover:text-slate-100 text-slate-400"
+                  : "hover:bg-slate-200/70 hover:text-slate-900 text-slate-600"
               }`}
             >
               <div className="flex items-center space-x-3 truncate">
                 <span
                   className={`${
-                    isActive ? "text-yellow-400" : "text-slate-400 group-hover:text-slate-200"
+                    isActive
+                      ? isDark ? "text-yellow-400" : "text-yellow-300"
+                      : isDark ? "text-slate-400 group-hover:text-slate-200" : "text-slate-500 group-hover:text-slate-800"
                   } transition-colors`}
                 >
                   {item.icon}
@@ -109,7 +122,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                   <div
                     className={`text-[10px] truncate ${
-                      isActive ? "text-red-200" : "text-slate-500"
+                      isActive
+                        ? isDark ? "text-red-200" : "text-red-100"
+                        : isDark ? "text-slate-500" : "text-slate-400"
                     }`}
                   >
                     {item.desc}
@@ -118,7 +133,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <ChevronRight
                 className={`w-4 h-4 shrink-0 transition-transform ${
-                  isActive ? "text-yellow-400 translate-x-0.5" : "text-slate-600 opacity-0 group-hover:opacity-100"
+                  isActive
+                    ? "text-yellow-400 translate-x-0.5"
+                    : isDark ? "text-slate-600 opacity-0 group-hover:opacity-100" : "text-slate-400 opacity-0 group-hover:opacity-100"
                 }`}
               />
             </button>
@@ -127,12 +144,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* AI Assistant Banner at bottom of sidebar */}
-      <div className="p-3 mx-3 mt-4 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 shadow-md">
-        <div className="flex items-center space-x-2 text-yellow-400 mb-1.5">
-          <Sparkles className="w-4 h-4 animate-spin-slow" />
-          <span className="text-xs font-bold tracking-wide">Konsultan AI PKBN</span>
+      <div className={`p-3 mx-3 mt-4 rounded-xl border shadow-md ${
+        isDark
+          ? "bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700/80"
+          : "bg-gradient-to-br from-white to-slate-100 border-slate-200"
+      }`}>
+        <div className="flex items-center space-x-2 text-yellow-500 mb-1.5">
+          <Sparkles className="w-4 h-4 animate-spin-slow text-amber-500" />
+          <span className="text-xs font-bold tracking-wide text-amber-600 dark:text-yellow-400">Konsultan AI PKBN</span>
         </div>
-        <p className="text-[11px] text-slate-400 leading-relaxed mb-3">
+        <p className={`text-[11px] leading-relaxed mb-3 ${isDark ? "text-slate-400" : "text-slate-600"}`}>
           Tanyakan regulasi UU No. 23/2019, penyusunan modul, atau analisis SWOT instansi Anda.
         </p>
         <button

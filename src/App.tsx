@@ -19,13 +19,24 @@ import { AnalisisView } from "./components/views/AnalisisView";
 import { PelaporanView } from "./components/views/PelaporanView";
 import { DataMasterView } from "./components/views/DataMasterView";
 import { AiAssistantModal } from "./components/views/AiAssistantModal";
+import { UploadModal } from "./components/modals/UploadModal";
+import { NotificationDrawer } from "./components/modals/NotificationDrawer";
+import { ProvinceDetailModal } from "./components/modals/ProvinceDetailModal";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("beranda");
   const [activeRole, setActiveRole] = useState<string>("PABAN IV/PKBN");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(null);
+  
+  // Theme state (dark command center vs light government mode)
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  // Modals state
   const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
+  const [provinceModalData, setProvinceModalData] = useState<ProvinceData | null>(null);
 
   // State data
   const [nationalKpi] = useState(initialNationalKPI);
@@ -43,8 +54,17 @@ export default function App() {
       p.organizer.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleSelectProvince = (prov: ProvinceData | null) => {
+    setSelectedProvince(prov);
+    if (prov) {
+      setProvinceModalData(prov);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col antialiased">
+    <div className={`min-h-screen font-sans flex flex-col antialiased transition-colors duration-300 ${
+      theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-100 text-slate-900"
+    }`}>
       {/* Top Navigation Bar */}
       <Header
         activeRole={activeRole}
@@ -52,6 +72,10 @@ export default function App() {
         onOpenAiAssistant={() => setIsAiModalOpen(true)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        theme={theme}
+        setTheme={setTheme}
+        onOpenNotifications={() => setIsNotificationOpen(true)}
+        onOpenUpload={() => setIsUploadModalOpen(true)}
       />
 
       {/* Main Body Layout */}
@@ -61,6 +85,7 @@ export default function App() {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onOpenAiAssistant={() => setIsAiModalOpen(true)}
+          theme={theme}
         />
 
         {/* View Content Area */}
@@ -72,7 +97,7 @@ export default function App() {
               programs={filteredPrograms}
               events={calendarEvents}
               selectedProvince={selectedProvince}
-              onSelectProvince={setSelectedProvince}
+              onSelectProvince={handleSelectProvince}
               onNavigate={setActiveTab}
               onOpenAiAssistant={() => setIsAiModalOpen(true)}
             />
@@ -100,7 +125,7 @@ export default function App() {
               programs={filteredPrograms}
               provinces={provinces}
               selectedProvince={selectedProvince}
-              onSelectProvince={setSelectedProvince}
+              onSelectProvince={handleSelectProvince}
             />
           )}
 
@@ -120,6 +145,28 @@ export default function App() {
       <AiAssistantModal
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
+      />
+
+      {/* Upload Modal */}
+      <UploadModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+      />
+
+      {/* Realtime Notification Drawer */}
+      <NotificationDrawer
+        isOpen={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+      />
+
+      {/* Province Map Click Detail Modal */}
+      <ProvinceDetailModal
+        province={provinceModalData}
+        onClose={() => setProvinceModalData(null)}
+        onOpenUpload={() => {
+          setProvinceModalData(null);
+          setIsUploadModalOpen(true);
+        }}
       />
     </div>
   );

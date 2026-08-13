@@ -10,8 +10,9 @@ import {
   AlertTriangle,
   Lightbulb,
   ShieldCheck,
-  RefreshCw,
   Award,
+  Users,
+  PieChart,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -24,6 +25,13 @@ import {
   BarChart,
   Bar,
   Legend,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Pie,
+  Cell,
 } from "recharts";
 
 interface AnalisisViewProps {
@@ -53,6 +61,39 @@ export const AnalisisView: React.FC<AnalisisViewProps> = ({ provinces }) => {
     { region: "Kalimantan", indeks: 84.7 },
     { region: "Bali & Nusa", indeks: 82.3 },
     { region: "Maluku & Papua", indeks: 79.8 },
+  ];
+
+  // Radar Data for PKBN Dimensions
+  const radarDimensions = [
+    { dimension: "Cinta Tanah Air", score: 92 },
+    { dimension: "Sadar Berbangsa", score: 88 },
+    { dimension: "Setia Pancasila", score: 95 },
+    { dimension: "Rela Berkorban", score: 84 },
+    { dimension: "Kemampuan Awal", score: 86 },
+  ];
+
+  // Demographics: Gender
+  const genderData = [
+    { name: "Pria", value: 58, color: "#3b82f6" },
+    { name: "Wanita", value: 42, color: "#ec4899" },
+  ];
+
+  // Demographics: Usia
+  const ageData = [
+    { range: "< 18 Thn (Pelajar)", total: 320 },
+    { range: "18-25 Thn (Mahasiswa)", total: 450 },
+    { range: "26-40 Thn (Pekerja)", total: 380 },
+    { range: "41-55 Thn (ASN/TNI)", total: 210 },
+    { range: "> 55 Thn (Tokoh)", total: 90 },
+  ];
+
+  // Demographics: Profesi
+  const professionData = [
+    { profesi: "Pelajar & Mahasiswa", total: 770 },
+    { profesi: "ASN & Pegawai BUMN", total: 410 },
+    { profesi: "Karyawan Swasta", total: 320 },
+    { profesi: "Anggota Ormas & Relawan", total: 290 },
+    { profesi: "Masyarakat Umum", total: 180 },
   ];
 
   // AI Generate SWOT Function
@@ -99,10 +140,10 @@ export const AnalisisView: React.FC<AnalisisViewProps> = ({ provinces }) => {
               Analisis Intelijen & Strategi PKBN
             </span>
             <h2 className="text-xl font-bold text-white font-serif tracking-tight mt-1">
-              Grafik Tren, Indeks Partisipasi & Analisis SWOT
+              Grafik Tren, Radar Indeks, Demografi & Analisis SWOT
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Evaluasi komparatif perkembangan kesadaran Bela Negara antarwilayah dan antarbidang.
+              Evaluasi komparatif perkembangan kesadaran Bela Negara antarwilayah, demografi, dan dimensi karakter.
             </p>
           </div>
         </div>
@@ -115,7 +156,7 @@ export const AnalisisView: React.FC<AnalisisViewProps> = ({ provinces }) => {
         </div>
       </div>
 
-      {/* Trend & Comparison Charts Grid */}
+      {/* Main Charts Row 1: Trend Area & Radar Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chart 1: Monthly Trend per Sector */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
@@ -151,22 +192,23 @@ export const AnalisisView: React.FC<AnalisisViewProps> = ({ provinces }) => {
           </div>
         </div>
 
-        {/* Chart 2: Participation Index by Region */}
+        {/* Chart 2: Radar Chart for 5 Nilai Dasar PKBN */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
           <div className="flex items-center justify-between border-b border-slate-800 pb-2">
             <div>
-              <h3 className="text-base font-bold text-white font-serif">Indeks Partisipasi Bela Negara per Wilayah</h3>
-              <p className="text-xs text-slate-400">Skor Komposit Partisipasi & Kesadaran (Skala 0 - 100)</p>
+              <h3 className="text-base font-bold text-white font-serif">Radar 5 Nilai Dasar Bela Negara</h3>
+              <p className="text-xs text-slate-400">Skor kuesioner tingkat pemahaman nilai dasar</p>
             </div>
             <Award className="w-5 h-5 text-purple-400" />
           </div>
 
-          <div className="h-64 w-full">
+          <div className="h-64 w-full flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={indexByRegion} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
-                <XAxis type="number" domain={[0, 100]} stroke="#94a3b8" fontSize={11} />
-                <YAxis dataKey="region" type="category" stroke="#94a3b8" fontSize={11} width={80} />
+              <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarDimensions}>
+                <PolarGrid stroke="#334155" />
+                <PolarAngleAxis dataKey="dimension" stroke="#cbd5e1" fontSize={11} />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#64748b" fontSize={10} />
+                <Radar name="Skor Nilai" dataKey="score" stroke="#a855f7" fill="#a855f7" fillOpacity={0.5} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#0f172a",
@@ -176,7 +218,71 @@ export const AnalisisView: React.FC<AnalisisViewProps> = ({ provinces }) => {
                     fontSize: "12px",
                   }}
                 />
-                <Bar dataKey="indeks" fill="#8b5cf6" radius={[0, 6, 6, 0]} name="Indeks Partisipasi" />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Demographics Row (Gender, Usia, Profesi) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Gender Pie Chart */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+          <div className="flex items-center space-x-2 border-b border-slate-800 pb-2">
+            <Users className="w-4 h-4 text-pink-400" />
+            <h3 className="text-sm font-bold text-white font-serif">Demografi: Gender</h3>
+          </div>
+          <div className="h-48 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={genderData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} paddingAngle={5} dataKey="value">
+                  {genderData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", color: "#fff", fontSize: "12px" }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex justify-center space-x-4 text-xs font-semibold">
+            <span className="text-blue-400">Pria: 58%</span>
+            <span className="text-pink-400">Wanita: 42%</span>
+          </div>
+        </div>
+
+        {/* Age Group Bar Chart */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+          <div className="flex items-center space-x-2 border-b border-slate-800 pb-2">
+            <Users className="w-4 h-4 text-yellow-400" />
+            <h3 className="text-sm font-bold text-white font-serif">Demografi: Kelompok Usia</h3>
+          </div>
+          <div className="h-48 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={ageData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis dataKey="range" stroke="#94a3b8" fontSize={9} />
+                <YAxis stroke="#94a3b8" fontSize={10} />
+                <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", color: "#fff", fontSize: "12px" }} />
+                <Bar dataKey="total" fill="#eab308" radius={[4, 4, 0, 0]} name="Peserta (Ribu)" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Profession Bar Chart */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+          <div className="flex items-center space-x-2 border-b border-slate-800 pb-2">
+            <Users className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-sm font-bold text-white font-serif">Demografi: Latar Belakang Profesi</h3>
+          </div>
+          <div className="h-48 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={professionData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
+                <XAxis type="number" stroke="#94a3b8" fontSize={10} />
+                <YAxis dataKey="profesi" type="category" stroke="#94a3b8" fontSize={9} width={100} />
+                <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155", color: "#fff", fontSize: "12px" }} />
+                <Bar dataKey="total" fill="#10b981" radius={[0, 4, 4, 0]} name="Peserta (Ribu)" />
               </BarChart>
             </ResponsiveContainer>
           </div>
