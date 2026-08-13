@@ -24,8 +24,10 @@ import { UploadModal } from "./components/modals/UploadModal";
 import { NotificationDrawer } from "./components/modals/NotificationDrawer";
 import { ProvinceDetailModal } from "./components/modals/ProvinceDetailModal";
 import { LoginModal } from "./components/modals/LoginModal";
+import { LoginPage } from "./components/auth/LoginPage";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>("beranda");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(null);
@@ -33,7 +35,7 @@ export default function App() {
   // Theme state (dark command center vs light government mode)
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
-  // User session state (default as Pusat, can switch to Kodam)
+  // User session state
   const [userSession, setUserSession] = useState<UserSession>({
     role: "pusat",
     userName: "PABAN IV/PKBN STERAD",
@@ -48,6 +50,8 @@ export default function App() {
 
   const handleLogin = (session: UserSession) => {
     setUserSession(session);
+    setIsLoggedIn(true);
+    setIsLoginModalOpen(false);
     if (session.role === "kodam") {
       setActiveTab("input_kodam");
     } else {
@@ -56,7 +60,7 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    setIsLoginModalOpen(true);
+    setIsLoggedIn(false);
   };
 
   // State data
@@ -95,6 +99,10 @@ export default function App() {
       setProvinceModalData(prov);
     }
   };
+
+  if (!isLoggedIn) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
 
   return (
     <div className={`min-h-screen font-sans flex flex-col antialiased transition-colors duration-300 ${
