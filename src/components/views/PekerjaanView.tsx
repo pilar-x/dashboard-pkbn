@@ -91,7 +91,7 @@ export const PekerjaanView: React.FC<PekerjaanViewProps> = ({
         </div>
 
         {/* Sub-navigation Tabs */}
-        <div className={`flex items-center space-x-2 border-t pt-4 mt-5 text-xs font-medium ${
+        <div className={`flex items-center space-x-2 border-t pt-4 mt-5 text-xs font-medium overflow-x-auto scrollbar-none no-scrollbar ${
           isDark ? "border-slate-800 text-slate-400" : "border-slate-200 text-slate-600"
         }`}>
           {[

@@ -551,7 +551,7 @@ export const GoogleIndonesiaMap: React.FC<GoogleIndonesiaMapProps> = ({
       {/* Map Sub-controls Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-xs">
         {/* Fill Color Mode Switcher */}
-        <div className="flex items-center space-x-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+        <div className="flex items-center space-x-2 overflow-x-auto scrollbar-none no-scrollbar w-full sm:w-auto pb-1 sm:pb-0">
           <span className="text-slate-400 font-semibold text-[11px] shrink-0">
             Warna Batas Wilayah:
           </span>

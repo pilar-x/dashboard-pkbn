@@ -421,7 +421,7 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
         </div>
 
         {/* View Mode Switcher Pills */}
-        <div className="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-950 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs overflow-x-auto scrollbar-none">
+        <div className="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-950 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs overflow-x-auto scrollbar-none no-scrollbar">
           <button
             onClick={() => setMapMode("titik")}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center space-x-1.5 ${

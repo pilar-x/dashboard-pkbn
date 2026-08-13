@@ -124,7 +124,7 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
         </div>
 
         {/* Sub-navigation Tabs matching prompt concepts */}
-        <div className={`flex items-center space-x-1 border-t pt-4 mt-5 overflow-x-auto text-xs font-medium ${
+        <div className={`flex items-center space-x-1 border-t pt-4 mt-5 overflow-x-auto scrollbar-none no-scrollbar text-xs font-medium ${
           isDark ? "border-slate-800 text-slate-400" : "border-slate-200 text-slate-600"
         }`}>
           {[
