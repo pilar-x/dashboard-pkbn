@@ -21,7 +21,7 @@ interface LoginPageProps {
 export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [selectedRole, setSelectedRole] = useState<"pusat" | "kodam">("kodam");
   const [selectedKodamId, setSelectedKodamId] = useState<string>("kodam-3");
-  const [userName, setUserName] = useState<string>("Operator Sterdam");
+  const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("••••••••");
 
   const selectedKodam = listKodam.find((k) => k.id === selectedKodamId) || listKodam[0];
@@ -130,7 +130,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       </div>
                       <div>
                         <div className="font-bold text-xs text-white">
-                          PUSAT / STERAD
+                          PUSAT/STERAD (Spaban IV/PKBN)
                         </div>
                         <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
                           Komando Nasional SPABAN IV/PKBN (Super Admin)
@@ -155,7 +155,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       </div>
                       <div>
                         <div className="font-bold text-xs text-white">
-                          OPERATOR KODAM
+                          OPERATOR KODAM (Sterdam)
                         </div>
                         <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
                           Akses Khusus Input & Kelola Data Wilayah Kodam
@@ -207,7 +207,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                         type="text"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
-                        placeholder="Nama/Pangkat Operator"
+                        placeholder="Masukkan nama pengguna / petugas"
                         className="w-full bg-slate-800/90 text-white text-xs pl-9 pr-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-emerald-500 font-mono"
                         required
                       />

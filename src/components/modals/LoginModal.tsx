@@ -38,7 +38,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
   const [selectedRole, setSelectedRole] = useState<"pusat" | "kodam">("kodam");
   const [selectedKodamId, setSelectedKodamId] = useState<string>("kodam-3");
-  const [userName, setUserName] = useState<string>("Operator Sterdam");
+  const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("••••••••");
 
   const selectedKodam = listKodam.find((k) => k.id === selectedKodamId) || listKodam[0];
@@ -133,7 +133,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   <div className={`font-bold text-xs flex items-center space-x-1 ${
                     selectedRole === "pusat" ? (isDark ? "text-white" : "text-emerald-900") : (isDark ? "text-slate-200" : "text-slate-800")
                   }`}>
-                    <span>PUSAT / STERAD</span>
+                    <span>PUSAT/STERAD (Spaban IV/PKBN)</span>
                   </div>
                   <p className={`text-[11px] mt-0.5 leading-snug ${
                     isDark ? "text-slate-400" : "text-slate-600"
@@ -168,7 +168,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   <div className={`font-bold text-xs flex items-center space-x-1 ${
                     selectedRole === "kodam" ? (isDark ? "text-white" : "text-amber-900") : (isDark ? "text-slate-200" : "text-slate-800")
                   }`}>
-                    <span>OPERATOR KODAM</span>
+                    <span>OPERATOR KODAM (Sterdam)</span>
                   </div>
                   <p className={`text-[11px] mt-0.5 leading-snug ${
                     isDark ? "text-slate-400" : "text-slate-600"
@@ -238,7 +238,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   type="text"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Misal: Sertu Budi / Mayor Heru"
+                  placeholder="Masukkan nama pengguna / petugas"
                   className={`w-full text-xs pl-9 pr-3 py-2.5 rounded-xl border focus:outline-none font-mono ${
                     isDark
                       ? "bg-slate-800/90 text-white border-slate-700 focus:border-emerald-500"
