@@ -41,12 +41,13 @@ export default function App() {
     userName: "PABAN IV/PKBN STERAD",
   });
 
-  // Modals state
+  // Modals & Navigation state
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
   const [provinceModalData, setProvinceModalData] = useState<ProvinceData | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const handleLogin = (session: UserSession) => {
     setUserSession(session);
@@ -194,7 +195,7 @@ export default function App() {
   }
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col antialiased transition-colors duration-300 ${
+    <div className={`min-h-screen font-sans flex flex-col antialiased transition-colors duration-300 overflow-x-hidden w-full max-w-full ${
       theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-100 text-slate-900"
     }`}>
       {/* Top Navigation Bar */}
@@ -210,10 +211,12 @@ export default function App() {
         onOpenNotifications={() => setIsNotificationOpen(true)}
         onOpenUpload={() => setIsUploadModalOpen(true)}
         unreadNotifCount={notifications.filter((n) => n.unread).length}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
 
       {/* Main Body Layout */}
-      <div className="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto">
+      <div className="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto overflow-x-hidden">
         {/* Left Concept Sidebar */}
         <Sidebar
           activeTab={activeTab}
@@ -221,10 +224,12 @@ export default function App() {
           onOpenAiAssistant={() => setIsAiModalOpen(true)}
           onLogout={handleLogout}
           theme={theme}
+          isMobileOpen={isMobileMenuOpen}
+          onCloseMobile={() => setIsMobileMenuOpen(false)}
         />
 
         {/* View Content Area */}
-        <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
+        <main className="flex-1 p-3 sm:p-6 overflow-y-auto w-full max-w-full min-w-0">
           {searchQuery && (
             <div className={`mb-4 p-3 rounded-xl border flex items-center justify-between text-xs animate-fadeIn ${
               theme === "dark"

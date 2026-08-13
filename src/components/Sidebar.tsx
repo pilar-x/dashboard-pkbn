@@ -12,8 +12,8 @@ import {
   Sparkles,
   ChevronRight,
   FileEdit,
-  ShieldAlert,
   LogOut,
+  X,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -22,6 +22,8 @@ interface SidebarProps {
   onOpenAiAssistant: () => void;
   onLogout?: () => void;
   theme?: "dark" | "light";
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -30,6 +32,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenAiAssistant,
   onLogout,
   theme = "dark",
+  isMobileOpen = false,
+  onCloseMobile,
 }) => {
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; desc: string; isHighlight?: boolean }[] = [
     {
@@ -91,15 +95,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const isDark = theme === "dark";
 
-  return (
-    <aside className={`w-full md:w-64 border-r shrink-0 flex flex-col justify-between py-4 transition-colors ${
-      isDark ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-slate-50 border-slate-200 text-slate-700"
-    }`}>
+  const handleNavClick = (tab: ActiveTab) => {
+    setActiveTab(tab);
+    if (onCloseMobile) onCloseMobile();
+  };
+
+  const renderContent = () => (
+    <div className="flex flex-col justify-between h-full py-4 overflow-y-auto">
       <div className="px-3 space-y-1">
-        <div className={`px-3 py-2 text-[11px] font-bold tracking-wider uppercase font-mono ${
-          isDark ? "text-slate-400" : "text-slate-600 font-extrabold"
-        }`}>
-          MODUL DASHBOARD PKBN
+        <div className="flex items-center justify-between px-3 py-1">
+          <span className={`text-[11px] font-bold tracking-wider uppercase font-mono ${
+            isDark ? "text-slate-400" : "text-slate-600 font-extrabold"
+          }`}>
+            MODUL DASHBOARD PKBN
+          </span>
+          {onCloseMobile && (
+            <button
+              onClick={onCloseMobile}
+              className="md:hidden p-1 rounded-lg text-slate-400 hover:text-white"
+              title="Tutup Menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {navItems.map((item) => {
@@ -107,7 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => handleNavClick(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all group ${
                 isActive
                   ? isDark
@@ -167,14 +185,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
           : "bg-slate-100 border-slate-300 text-slate-800"
       }`}>
         <div className="flex items-center space-x-2 text-yellow-500 mb-1.5">
-          <Sparkles className="w-4 h-4 animate-spin-slow text-amber-600 dark:text-amber-500" />
+          <Sparkles className="w-4 h-4 text-amber-500" />
           <span className="text-xs font-bold tracking-wide text-amber-800 dark:text-yellow-400">Konsultan AI PKBN</span>
         </div>
         <p className={`text-[11px] leading-relaxed mb-3 ${isDark ? "text-slate-400" : "text-slate-700 font-medium"}`}>
-          Tanyakan regulasi UU No. 23/2019, penyusunan modul, atau analisis SWOT instansi Anda.
+          Tanyakan regulasi UU No. 23/2019, penyusunan modul, atau analisis SWOT.
         </p>
         <button
-          onClick={onOpenAiAssistant}
+          onClick={() => {
+            onOpenAiAssistant();
+            if (onCloseMobile) onCloseMobile();
+          }}
           className="w-full bg-gradient-to-r from-emerald-700 to-green-800 hover:from-emerald-600 hover:to-green-700 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center space-x-1.5 transition-all shadow-md active:scale-95"
         >
           <span>Mulai Konsultasi AI</span>
@@ -185,7 +206,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {onLogout && (
         <div className="px-3 mt-3">
           <button
-            onClick={onLogout}
+            onClick={() => {
+              onLogout();
+              if (onCloseMobile) onCloseMobile();
+            }}
             className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-sm active:scale-95 group ${
               isDark
                 ? "border-emerald-600/50 bg-emerald-950/40 hover:bg-emerald-900/80 text-emerald-300 hover:text-white"
@@ -197,6 +221,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
       )}
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (visible md+) */}
+      <aside className={`hidden md:flex md:w-64 border-r shrink-0 flex-col justify-between transition-colors ${
+        isDark ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-slate-50 border-slate-200 text-slate-700"
+      }`}>
+        {renderContent()}
+      </aside>
+
+      {/* Mobile Drawer Slide-Over (< md) */}
+      {isMobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          <div
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+            onClick={onCloseMobile}
+          />
+          <div className={`relative w-4/5 max-w-xs h-full border-r shadow-2xl z-10 ${
+            isDark ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-white border-slate-200 text-slate-700"
+          }`}>
+            {renderContent()}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
