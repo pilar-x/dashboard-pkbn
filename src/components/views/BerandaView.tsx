@@ -202,6 +202,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({
         provinces={provinces}
         selectedProvince={selectedProvince}
         onSelectProvince={onSelectProvince}
+        theme={theme}
       />
 
       {/* Charts & Analytics Row */}
