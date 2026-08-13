@@ -414,12 +414,6 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
             <Radio className="w-5 h-5 animate-pulse text-red-400" />
           </div>
           <div>
-            <div className="flex items-center space-x-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800">
-                OPERATIONAL AWARENESS MAP
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline">| Dashboard Pimpinan</span>
-            </div>
             <h3 className={`text-lg font-bold font-serif ${isDark ? "text-white" : "text-slate-900"}`}>
               Peta Pemantauan Operasional & Keterjangkauan PKBN
             </h3>

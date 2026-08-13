@@ -89,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: "master",
       label: "9. Data Master",
       icon: <Database className="w-5 h-5" />,
-      desc: "Wilayah, Instansi & User",
+      desc: "Wilayah & Instansi",
     },
   ];
 

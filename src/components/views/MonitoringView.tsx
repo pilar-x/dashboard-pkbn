@@ -1,18 +1,7 @@
 import React, { useState } from "react";
 import { ProgramItem, ProvinceData } from "../../types";
-import { IndonesiaMap } from "../IndonesiaMap";
-import { GoogleIndonesiaMap } from "../GoogleIndonesiaMap";
 import { MapDashboardWrapper } from "../MapDashboardWrapper";
-import {
-  Activity,
-  Radio,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  PlayCircle,
-  Filter,
-  RefreshCw,
-} from "lucide-react";
+import { Activity } from "lucide-react";
 
 interface MonitoringViewProps {
   programs: ProgramItem[];
@@ -32,7 +21,6 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
   searchQuery = "",
 }) => {
   const isDark = theme === "dark";
-  const [statusFilter, setStatusFilter] = useState<string>("Semua");
 
   const liveFeeds = [
     {
@@ -59,59 +47,15 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
 
   const filteredPrograms = programs.filter(
     (p) =>
-      (statusFilter === "Semua" || p.status === statusFilter) &&
-      (!q ||
-        p.title.toLowerCase().includes(q) ||
-        p.province.toLowerCase().includes(q) ||
-        p.organizer.toLowerCase().includes(q) ||
-        p.code.toLowerCase().includes(q))
+      !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.province.toLowerCase().includes(q) ||
+      p.organizer.toLowerCase().includes(q) ||
+      p.code.toLowerCase().includes(q)
   );
 
   return (
     <div className="space-y-6">
-      {/* Monitoring Real-Time Banner */}
-      <div className={`rounded-2xl p-5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
-        isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
-      }`}>
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-red-950 text-red-500 border border-red-800 flex items-center justify-center shrink-0">
-            <Radio className="w-5 h-5 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center space-x-2">
-              <h2 className={`text-lg font-bold font-serif ${isDark ? "text-white" : "text-slate-900"}`}>
-                Monitoring Real-Time Pelaksanaan PKBN
-              </h2>
-              <span className="bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase flex items-center space-x-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
-                <span>LIVE FEED</span>
-              </span>
-            </div>
-            <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>
-              Pemantauan status pelaksanaan kegiatan, distribusi peserta, dan indikator kinerja secara langsung.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 text-xs">
-          {["Semua", "Berlangsung", "Rencana", "Selesai"].map((st) => (
-            <button
-              key={st}
-              onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 rounded-lg border font-bold transition-all ${
-                statusFilter === st
-                  ? "bg-red-600 text-white border-red-500 shadow"
-                  : isDark
-                  ? "bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200"
-                  : "bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200"
-              }`}
-            >
-              {st}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Map Sebaran */}
       <MapDashboardWrapper
         provinces={provinces}

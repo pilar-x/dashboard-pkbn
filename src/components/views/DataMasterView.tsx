@@ -1,18 +1,12 @@
 import React, { useState } from "react";
-import { ProvinceData, InstitutionItem, MasterUser, MasterAccessRole } from "../../types";
-import { masterUsers, masterAccessRoles } from "../../data/mockData";
+import { ProvinceData, InstitutionItem } from "../../types";
 import {
   Database,
   MapPin,
   Building2,
   GraduationCap,
   Users,
-  Shield,
-  KeyRound,
   Plus,
-  Search,
-  CheckCircle2,
-  Lock,
 } from "lucide-react";
 
 interface DataMasterViewProps {
@@ -28,11 +22,8 @@ export const DataMasterView: React.FC<DataMasterViewProps> = ({
 }) => {
   const isDark = theme === "dark";
   const [activeMasterTab, setActiveMasterTab] = useState<
-    "wilayah" | "instansi" | "pendidikan" | "ormas" | "pengguna" | "akses"
+    "wilayah" | "instansi" | "pendidikan" | "ormas"
   >("wilayah");
-
-  const [users, setUsers] = useState<MasterUser[]>(masterUsers);
-  const [roles] = useState<MasterAccessRole[]>(masterAccessRoles);
 
   return (
     <div className="space-y-6">
@@ -54,10 +45,10 @@ export const DataMasterView: React.FC<DataMasterViewProps> = ({
                 Pengelolaan Sistem
               </span>
               <h2 className={`text-xl font-bold font-serif tracking-tight mt-1 ${isDark ? "text-white" : "text-slate-900"}`}>
-                Data Master & Hak Akses Pengguna
+                Data Master Referensi
               </h2>
               <p className={`text-xs mt-0.5 ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>
-                Pengaturan wilayah, referensi instansi, registrasi satuan pendidikan, pengguna, dan hak akses.
+                Pengaturan wilayah, referensi instansi, registrasi satuan pendidikan, dan organisasi masyarakat.
               </p>
             </div>
           </div>
@@ -77,8 +68,6 @@ export const DataMasterView: React.FC<DataMasterViewProps> = ({
             { id: "instansi", label: "Instansi & BUMN", icon: <Building2 className="w-4 h-4" /> },
             { id: "pendidikan", label: "Satuan Pendidikan", icon: <GraduationCap className="w-4 h-4" /> },
             { id: "ormas", label: "Organisasi Masyarakat", icon: <Users className="w-4 h-4" /> },
-            { id: "pengguna", label: "Pengguna Sistem", icon: <Shield className="w-4 h-4" /> },
-            { id: "akses", label: "Hak Akses & Role", icon: <KeyRound className="w-4 h-4" /> },
           ].map((t) => (
             <button
               key={t.id}
@@ -294,85 +283,6 @@ export const DataMasterView: React.FC<DataMasterViewProps> = ({
               </tbody>
             </table>
           </div>
-        </div>
-      )}
-
-      {/* Content 5: Pengguna */}
-      {activeMasterTab === "pengguna" && (
-        <div className={`rounded-2xl p-5 shadow-xl space-y-4 border ${
-          isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
-        }`}>
-          <h3 className={`text-base font-bold font-serif ${isDark ? "text-white" : "text-slate-900"}`}>Daftar Pengguna Operator & Administrator</h3>
-          <div className="overflow-x-auto">
-            <table className={`w-full text-left text-xs ${isDark ? "text-slate-300" : "text-slate-700"}`}>
-              <thead className={`uppercase font-mono text-[10px] ${
-                isDark ? "bg-slate-800/90 text-slate-400" : "bg-slate-100 text-slate-700 font-bold"
-              }`}>
-                <tr>
-                  <th className="p-3">Nama Pengguna</th>
-                  <th className="p-3">Email</th>
-                  <th className="p-3">Role Akses</th>
-                  <th className="p-3">Wilayah Tugas</th>
-                  <th className="p-3 text-right">Status</th>
-                </tr>
-              </thead>
-              <tbody className={`divide-y ${isDark ? "divide-slate-800" : "divide-slate-200"}`}>
-                {users.map((u) => (
-                  <tr key={u.id} className={isDark ? "hover:bg-slate-800/50 transition-colors" : "hover:bg-slate-50 transition-colors"}>
-                    <td className={`p-3 font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>{u.name}</td>
-                    <td className={`p-3 font-mono ${isDark ? "text-slate-400" : "text-slate-600"}`}>{u.email}</td>
-                    <td className="p-3">
-                      <span className={`text-[10px] px-2.5 py-0.5 rounded font-bold border ${
-                        isDark ? "bg-red-950 text-red-300 border-red-800" : "bg-red-100 text-red-800 border-red-300"
-                      }`}>
-                        {u.role}
-                      </span>
-                    </td>
-                    <td className="p-3">{u.province}</td>
-                    <td className="p-3 text-right">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                        isDark ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40" : "bg-emerald-100 text-emerald-800 border-emerald-300"
-                      }`}>
-                        {u.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* Content 6: Hak Akses */}
-      {activeMasterTab === "akses" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {roles.map((r) => (
-            <div key={r.roleName} className={`rounded-2xl p-5 shadow-lg space-y-3 border ${
-              isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
-            }`}>
-              <div className="flex items-center justify-between">
-                <h4 className={`font-bold text-sm font-serif ${isDark ? "text-white" : "text-slate-900"}`}>{r.roleName}</h4>
-                <Lock className="w-4 h-4 text-red-500" />
-              </div>
-              <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>{r.description}</p>
-
-              <div className={`space-y-1.5 pt-2 border-t text-xs ${isDark ? "border-slate-800" : "border-slate-200"}`}>
-                {Object.entries(r.permissions).map(([permKey, isAllowed]) => (
-                  <div key={permKey} className={`flex items-center justify-between ${isDark ? "text-slate-300" : "text-slate-700 font-medium"}`}>
-                    <span className="capitalize">{permKey.replace(/([A-Z])/g, " $1")}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                      isAllowed
-                        ? isDark ? "bg-emerald-500/20 text-emerald-400" : "bg-emerald-100 text-emerald-800"
-                        : isDark ? "bg-slate-800 text-slate-500" : "bg-slate-100 text-slate-400"
-                    }`}>
-                      {isAllowed ? "Diizinkan" : "Dibatasi"}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
         </div>
       )}
     </div>
