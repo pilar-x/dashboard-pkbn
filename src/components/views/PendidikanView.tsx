@@ -1,0 +1,371 @@
+import React, { useState } from "react";
+import {
+  ProgramItem,
+  InstitutionItem,
+  InstructorItem,
+  CalendarEvent,
+  CertificateTemplate,
+} from "../../types";
+import {
+  GraduationCap,
+  School,
+  Users,
+  Award,
+  Calendar,
+  Image as ImageIcon,
+  CheckCircle2,
+  FileCheck2,
+  Printer,
+  Search,
+  Plus,
+  Star,
+  BookOpen,
+} from "lucide-react";
+
+interface PendidikanViewProps {
+  programs: ProgramItem[];
+  institutions: InstitutionItem[];
+  instructors: InstructorItem[];
+  events: CalendarEvent[];
+}
+
+export const PendidikanView: React.FC<PendidikanViewProps> = ({
+  programs,
+  institutions,
+  instructors,
+  events,
+}) => {
+  const [activeSubTab, setActiveSubTab] = useState<
+    "sekolah" | "program" | "peserta" | "instruktur" | "kalender" | "dokumentasi" | "evaluasi" | "sertifikat"
+  >("program");
+
+  const [selectedCert, setSelectedCert] = useState<CertificateTemplate | null>({
+    id: "CERT-2026-8801",
+    recipientName: "Andi Pratama, S.T.",
+    programTitle: "Diklat Kader Bela Negara Mahasiswa Baru (PKKMB + PKBN 2026)",
+    sector: "Pendidikan",
+    certificateNo: "094/PKBN-EDU/KEMHAN/VIII/2026",
+    issueDate: "21 Agustus 2026",
+    durationHours: 36,
+    grade: "Sangat Baik",
+  });
+
+  const [certRecipientInput, setCertRecipientInput] = useState("Ahmad Fauzan Hidayat");
+  const [certGrade, setCertGrade] = useState<"Sangat Baik" | "Baik" | "Cukup">("Sangat Baik");
+
+  // Filter education institutions
+  const eduInstitutions = institutions.filter(
+    (i) => i.category === "Sekolah" || i.category === "Perguruan Tinggi"
+  );
+
+  // Filter education programs
+  const eduPrograms = programs.filter((p) => p.sector === "Pendidikan");
+
+  return (
+    <div className="space-y-6">
+      {/* Sector Header Banner */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 rounded-xl bg-blue-950/80 border border-blue-700/60 text-blue-400 flex items-center justify-center shrink-0 shadow-lg">
+              <GraduationCap className="w-7 h-7" />
+            </div>
+            <div>
+              <span className="text-[10px] font-bold tracking-wider text-blue-400 uppercase bg-blue-950/60 px-2.5 py-0.5 rounded border border-blue-800/60">
+                Bidang Lingkup 1
+              </span>
+              <h2 className="text-xl font-bold text-white font-serif tracking-tight mt-1">
+                Pembinaan Kesadaran Bela Negara di Lingkungan Pendidikan
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Mengelola pembinaan di Sekolah Dasar, Menengah, Kejuruan, serta Perguruan Tinggi Negeri & Swasta.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3 text-xs">
+            <div className="bg-slate-800/90 border border-slate-700/80 px-3 py-2 rounded-xl text-center">
+              <div className="text-slate-400 text-[10px]">Total Satuan Pendidikan</div>
+              <div className="font-bold text-blue-400 text-base">4,120 Kampus/Sekolah</div>
+            </div>
+            <div className="bg-slate-800/90 border border-slate-700/80 px-3 py-2 rounded-xl text-center">
+              <div className="text-slate-400 text-[10px]">Kader Terbina</div>
+              <div className="font-bold text-emerald-400 text-base">1,240,500 Siswa/Mhs</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sub-navigation Tabs matching prompt concepts */}
+        <div className="flex items-center space-x-1 border-t border-slate-800 pt-4 mt-5 overflow-x-auto text-xs font-medium text-slate-400">
+          {[
+            { id: "program", label: "Program PKBN", icon: <BookOpen className="w-4 h-4" /> },
+            { id: "sekolah", label: "Data Sekolah/PT", icon: <School className="w-4 h-4" /> },
+            { id: "peserta", label: "Data Peserta", icon: <Users className="w-4 h-4" /> },
+            { id: "instruktur", label: "Instruktur/Narasumber", icon: <Award className="w-4 h-4" /> },
+            { id: "kalender", label: "Kalender Kegiatan", icon: <Calendar className="w-4 h-4" /> },
+            { id: "evaluasi", label: "Evaluasi", icon: <CheckCircle2 className="w-4 h-4" /> },
+            { id: "sertifikat", label: "Generator Sertifikat", icon: <FileCheck2 className="w-4 h-4" /> },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveSubTab(tab.id as any)}
+              className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl transition-all shrink-0 ${
+                activeSubTab === tab.id
+                  ? "bg-blue-600 text-white font-semibold shadow-md shadow-blue-900/30"
+                  : "hover:bg-slate-800 hover:text-slate-200"
+              }`}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab 1: Program PKBN */}
+      {activeSubTab === "program" && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold text-white font-serif">Daftar Program PKBN Lingkup Pendidikan</h3>
+            <button className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1 transition-colors">
+              <Plus className="w-4 h-4" />
+              <span>Tambah Program Baru</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {eduPrograms.map((p) => (
+              <div key={p.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3 hover:border-slate-700 transition-all">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="bg-blue-950 text-blue-300 border border-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+                    {p.subCategory}
+                  </span>
+                  <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                    p.status === 'Berlangsung' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-slate-700 text-slate-300'
+                  }`}>
+                    {p.status}
+                  </span>
+                </div>
+
+                <h4 className="text-sm font-bold text-white leading-snug">{p.title}</h4>
+                <p className="text-xs text-slate-400 line-clamp-2">{p.description}</p>
+
+                <div className="grid grid-cols-2 gap-2 text-xs bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/80">
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">Penyelenggara:</span>
+                    <span className="font-semibold text-slate-200 truncate block">{p.organizer}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">Instruktur:</span>
+                    <span className="font-semibold text-slate-200 truncate block">{p.instructorName}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">Lokasi:</span>
+                    <span className="font-semibold text-slate-200 truncate block">{p.regency}, {p.province}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">Peserta/Target:</span>
+                    <span className="font-bold text-yellow-400">{p.participantCount} / {p.targetCount}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab 2: Data Sekolah & PT */}
+      {activeSubTab === "sekolah" && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h3 className="text-base font-bold text-white font-serif">Data Sekolah & Perguruan Tinggi Terdaftar</h3>
+            <div className="relative w-full sm:w-64">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Cari nama kampus/sekolah..."
+                className="w-full bg-slate-800 text-slate-200 text-xs pl-9 pr-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-800/90 text-slate-400 uppercase font-mono text-[10px]">
+                <tr>
+                  <th className="p-3">Nama Satuan Pendidikan</th>
+                  <th className="p-3">Kategori</th>
+                  <th className="p-3">Provinsi / Wilayah</th>
+                  <th className="p-3">Total Kader Terbina</th>
+                  <th className="p-3">Penanggung Jawab</th>
+                  <th className="p-3 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {eduInstitutions.map((inst) => (
+                  <tr key={inst.id} className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-3 font-semibold text-white">{inst.name}</td>
+                    <td className="p-3">
+                      <span className="bg-blue-950 text-blue-300 border border-blue-800 text-[10px] px-2 py-0.5 rounded font-mono">
+                        {inst.category}
+                      </span>
+                    </td>
+                    <td className="p-3">{inst.regency}, {inst.province}</td>
+                    <td className="p-3 font-bold text-yellow-400">{inst.cadreCount.toLocaleString("id-ID")} Siswa/Mhs</td>
+                    <td className="p-3">{inst.contactPerson} ({inst.phone})</td>
+                    <td className="p-3 text-right">
+                      <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                        {inst.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 3: Instruktur & Narasumber */}
+      {activeSubTab === "instruktur" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {instructors.map((ins) => (
+            <div key={ins.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg flex items-start space-x-4">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-700 to-indigo-800 text-white flex items-center justify-center font-bold text-sm shrink-0 border-2 border-blue-400/40 shadow-md">
+                {ins.name.slice(0, 2)}
+              </div>
+              <div className="space-y-1 flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-white text-sm">{ins.name}</h4>
+                  <div className="flex items-center space-x-1 text-yellow-400 text-xs font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800">
+                    <Star className="w-3 h-3 fill-yellow-400" />
+                    <span>{ins.rating}</span>
+                  </div>
+                </div>
+                <div className="text-xs text-blue-400 font-medium">{ins.agency}</div>
+                <div className="text-xs text-slate-400">Spesialisasi: {ins.specialization}</div>
+                <div className="flex items-center space-x-3 text-[11px] text-slate-500 pt-1 border-t border-slate-800 mt-2">
+                  <span>Tersertifikasi: {ins.certificationYear}</span>
+                  <span>•</span>
+                  <span>Total Sesi: {ins.totalClasses} Sesi</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Tab 4: Certificate Generator */}
+      {activeSubTab === "sertifikat" && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Certificate Config Panel */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+            <h3 className="text-base font-bold text-white font-serif flex items-center space-x-2">
+              <FileCheck2 className="w-5 h-5 text-yellow-400" />
+              <span>Penerbitan Sertifikat PKBN</span>
+            </h3>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-400 mb-1">Nama Penerima / Peserta:</label>
+                <input
+                  type="text"
+                  value={certRecipientInput}
+                  onChange={(e) => setCertRecipientInput(e.target.value)}
+                  className="w-full bg-slate-800 text-slate-100 p-2.5 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-400 mb-1">Program Pembinaan:</label>
+                <select className="w-full bg-slate-800 text-slate-100 p-2.5 rounded-lg border border-slate-700 focus:outline-none">
+                  <option>Diklat Kader Bela Negara Mahasiswa Baru (PKKMB + PKBN 2026)</option>
+                  <option>Kemah Pramuka Saka Wira Kartika SMA/SMK</option>
+                  <option>Sertifikasi Kader Bela Negara Pemuda Nusantara</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 mb-1">Nilai Evaluasi Capaian:</label>
+                <select
+                  value={certGrade}
+                  onChange={(e) => setCertGrade(e.target.value as any)}
+                  className="w-full bg-slate-800 text-slate-100 p-2.5 rounded-lg border border-slate-700 focus:outline-none"
+                >
+                  <option value="Sangat Baik">Sangat Baik (A)</option>
+                  <option value="Baik">Baik (B)</option>
+                  <option value="Cukup">Cukup (C)</option>
+                </select>
+              </div>
+
+              <button
+                onClick={() => {
+                  if (selectedCert) {
+                    setSelectedCert({
+                      ...selectedCert,
+                      recipientName: certRecipientInput,
+                      grade: certGrade,
+                      certificateNo: `0${Math.floor(Math.random() * 900 + 100)}/PKBN-EDU/KEMHAN/VIII/2026`,
+                    });
+                  }
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl shadow-lg transition-colors flex items-center justify-center space-x-2"
+              >
+                <span>Generasi & Perbarui Sertifikat</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Certificate Official Preview (Printable Frame) */}
+          <div className="lg:col-span-2 bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col items-center justify-between min-h-[420px] relative overflow-hidden">
+            {/* Certificate Decorative Border */}
+            <div className="absolute inset-3 border-2 border-amber-600/40 rounded-xl pointer-events-none"></div>
+            <div className="absolute inset-5 border border-dashed border-amber-500/20 rounded-lg pointer-events-none"></div>
+
+            {/* Certificate Content */}
+            <div className="text-center space-y-3 z-10 my-auto">
+              <div className="w-12 h-12 mx-auto rounded-full bg-red-950 border border-red-700/80 flex items-center justify-center shadow-lg">
+                <Award className="w-7 h-7 text-yellow-400" />
+              </div>
+              <div className="text-[10px] font-bold tracking-widest text-amber-400 uppercase font-mono">
+                KEMENTERIAN PERTAHANAN REPUBLIK INDONESIA
+              </div>
+              <h2 className="text-2xl font-black text-white font-serif tracking-tight uppercase">
+                SERTIFIKAT KADER BELA NEGARA
+              </h2>
+              <div className="text-[11px] text-slate-400 font-mono">
+                Nomor: {selectedCert?.certificateNo}
+              </div>
+
+              <p className="text-xs text-slate-300 italic max-w-lg mx-auto pt-2">
+                Diberikan kepada:
+              </p>
+              <h3 className="text-xl font-bold text-yellow-300 font-serif tracking-wide border-b border-amber-500/30 pb-1 max-w-md mx-auto">
+                {selectedCert?.recipientName}
+              </h3>
+
+              <p className="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed pt-2">
+                Atas kelulusan dan partisipasi aktif dalam kegiatan <strong className="text-white">{selectedCert?.programTitle}</strong> dengan predikat kelulusan: <span className="text-emerald-400 font-bold">{selectedCert?.grade}</span>.
+              </p>
+            </div>
+
+            <div className="w-full flex items-center justify-between border-t border-slate-800 pt-4 z-10 text-xs">
+              <div className="text-left text-[11px] text-slate-400">
+                <span>Diterbitkan: {selectedCert?.issueDate}</span>
+                <div className="text-slate-500 text-[10px]">Verifikasi QR Code terintegrasi PKBN-RI</div>
+              </div>
+
+              <button
+                onClick={() => window.print()}
+                className="bg-amber-600 hover:bg-amber-500 text-white font-semibold px-4 py-2 rounded-xl flex items-center space-x-2 shadow-lg transition-all"
+              >
+                <Printer className="w-4 h-4" />
+                <span>Cetak / Download PDF</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

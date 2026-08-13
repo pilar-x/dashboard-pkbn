@@ -1,0 +1,6 @@
+{
+  "name": "Dashboard PKBN",
+  "description": "Dashboard Pemantauan dan Analisis Pembinaan Kesadaran Bela Negara (PKBN) Nasional",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

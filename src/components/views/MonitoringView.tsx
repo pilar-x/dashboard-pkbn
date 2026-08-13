@@ -1,0 +1,190 @@
+import React, { useState } from "react";
+import { ProgramItem, ProvinceData } from "../../types";
+import { IndonesiaMap } from "../IndonesiaMap";
+import { GoogleIndonesiaMap } from "../GoogleIndonesiaMap";
+import { MapDashboardWrapper } from "../MapDashboardWrapper";
+import {
+  Activity,
+  Radio,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  PlayCircle,
+  Filter,
+  RefreshCw,
+} from "lucide-react";
+
+interface MonitoringViewProps {
+  programs: ProgramItem[];
+  provinces: ProvinceData[];
+  selectedProvince: ProvinceData | null;
+  onSelectProvince: (prov: ProvinceData | null) => void;
+}
+
+export const MonitoringView: React.FC<MonitoringViewProps> = ({
+  programs,
+  provinces,
+  selectedProvince,
+  onSelectProvince,
+}) => {
+  const [statusFilter, setStatusFilter] = useState<string>("Semua");
+
+  const liveFeeds = [
+    {
+      time: "19:45:12",
+      event: "Unggah Dokumentasi PKKMB UI (Depok, Jabar)",
+      user: "Operator Kampus UI",
+      type: "update",
+    },
+    {
+      time: "19:30:00",
+      event: "Selesai Evaluasi Sesi 2 Diklat LAN RI (Jakarta)",
+      user: "Instruktur LAN",
+      type: "success",
+    },
+    {
+      time: "18:12:44",
+      event: "Pendaftaran 120 Kader Baru Karang Taruna (Surabaya)",
+      user: "Admin Jatim",
+      type: "info",
+    },
+  ];
+
+  const filteredPrograms = programs.filter(
+    (p) => statusFilter === "Semua" || p.status === statusFilter
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Monitoring Real-Time Banner */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-xl bg-red-950 text-red-500 border border-red-800 flex items-center justify-center shrink-0">
+            <Radio className="w-5 h-5 animate-pulse" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h2 className="text-lg font-bold text-white font-serif">
+                Monitoring Real-Time Pelaksanaan PKBN
+              </h2>
+              <span className="bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase flex items-center space-x-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
+                <span>LIVE FEED</span>
+              </span>
+            </div>
+            <p className="text-xs text-slate-400">
+              Pemantauan status pelaksanaan kegiatan, distribusi peserta, dan indikator kinerja secara langsung.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 text-xs">
+          {["Semua", "Berlangsung", "Rencana", "Selesai"].map((st) => (
+            <button
+              key={st}
+              onClick={() => setStatusFilter(st)}
+              className={`px-3 py-1.5 rounded-lg border font-medium transition-all ${
+                statusFilter === st
+                  ? "bg-red-600 text-white border-red-500 shadow"
+                  : "bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200"
+              }`}
+            >
+              {st}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Map Sebaran */}
+      <MapDashboardWrapper
+        provinces={provinces}
+        selectedProvince={selectedProvince}
+        onSelectProvince={onSelectProvince}
+      />
+
+      {/* Real-time Status Table & Live Feed Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Active Program Status Table */}
+        <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+            <h3 className="text-base font-bold text-white font-serif">
+              Status Pelaksanaan Program ({filteredPrograms.length})
+            </h3>
+            <span className="text-xs text-slate-400">Pembaruan Otomatis</span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-800/90 text-slate-400 uppercase font-mono text-[10px]">
+                <tr>
+                  <th className="p-3">Kode Program</th>
+                  <th className="p-3">Nama Kegiatan</th>
+                  <th className="p-3">Lingkup</th>
+                  <th className="p-3">Provinsi</th>
+                  <th className="p-3">Peserta</th>
+                  <th className="p-3 text-right">Status Execution</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {filteredPrograms.map((p) => (
+                  <tr key={p.id} className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-3 font-mono text-slate-400 text-[11px]">{p.code}</td>
+                    <td className="p-3 font-semibold text-white max-w-xs truncate">{p.title}</td>
+                    <td className="p-3">
+                      <span className="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] px-2 py-0.5 rounded font-mono">
+                        {p.sector}
+                      </span>
+                    </td>
+                    <td className="p-3">{p.province}</td>
+                    <td className="p-3 font-bold text-yellow-400">{p.participantCount} Orang</td>
+                    <td className="p-3 text-right">
+                      <span
+                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full inline-block ${
+                          p.status === "Berlangsung"
+                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                            : p.status === "Rencana"
+                            ? "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+                            : "bg-blue-500/20 text-blue-400 border border-blue-500/40"
+                        }`}
+                      >
+                        {p.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Live Logs / Activity Stream */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+          <div>
+            <div className="flex items-center space-x-2 border-b border-slate-800 pb-2 mb-3">
+              <Activity className="w-4 h-4 text-red-500" />
+              <h3 className="text-base font-bold text-white font-serif">Aktivitas Sistem Terkini</h3>
+            </div>
+
+            <div className="space-y-3">
+              {liveFeeds.map((feed, idx) => (
+                <div key={idx} className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 text-xs space-y-1">
+                  <div className="flex items-center justify-between text-[10px]">
+                    <span className="text-slate-400 font-mono">{feed.time}</span>
+                    <span className="text-red-400 font-semibold">{feed.user}</span>
+                  </div>
+                  <p className="text-slate-200 font-medium leading-snug">{feed.event}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-3 border-t border-slate-800 mt-4 text-center">
+            <span className="text-[11px] text-slate-500 font-mono">
+              Server Time: 2026-08-12 19:59 WIB | Sinkronisasi Aktif
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,181 @@
+import React, { useState } from "react";
+import { Sparkles, X, Send, Bot, User, BookOpen, ShieldCheck, Scale } from "lucide-react";
+
+interface AiAssistantModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface ChatMessage {
+  sender: "user" | "ai";
+  text: string;
+}
+
+export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [inputMessage, setInputMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      sender: "ai",
+      text: "Salam Pancasila! Saya adalah Konsultan Asisten AI Pembinaan Kesadaran Bela Negara (PKBN). Saya dapat membantu Anda dalam memahami UU No. 23/2019, 5 Nilai Dasar Bela Negara, perancangan modul diklat, serta penyusunan strategi pembinaan di sekolah, instansi, atau Ormas.",
+    },
+  ]);
+
+  if (!isOpen) return null;
+
+  const handleSend = async (queryText?: string) => {
+    const textToSend = queryText || inputMessage;
+    if (!textToSend.trim() || loading) return;
+
+    const userMsg: ChatMessage = { sender: "user", text: textToSend };
+    setMessages((prev) => [...prev, userMsg]);
+    setInputMessage("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/gemini/assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: textToSend }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessages((prev) => [
+          ...prev,
+          { sender: "ai", text: data.reply || "Maaf, terjadi masalah koneksi dengan Gemini API." },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "ai",
+            text: "Kunci GEMINI_API_KEY belum dikonfigurasi. Pastikan Kunci API diatur pada panel Secrets.",
+          },
+        ]);
+      }
+    } catch (err: any) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: "ai", text: "Gagal terhubung dengan layanan AI Assistant." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const samplePrompts = [
+    "Jelaskan 5 Nilai Dasar Bela Negara dan aplikasinya untuk Generasi Z.",
+    "Bagaimana garis besar modul Diklat PKBN untuk karyawan BUMN?",
+    "Apa poin-poin utama UU No. 23 Tahun 2019 tentang PSDN?",
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
+        {/* Modal Header */}
+        <div className="bg-slate-800/90 px-5 py-3.5 border-b border-slate-700 flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-amber-600 to-red-600 flex items-center justify-center shadow">
+              <Sparkles className="w-5 h-5 text-yellow-300" />
+            </div>
+            <div>
+              <h3 className="font-bold text-white text-sm font-serif">
+                Konsultan AI Pembinaan Kesadaran Bela Negara
+              </h3>
+              <p className="text-[10px] text-slate-400">Powered by Gemini 3.6 Flash</p>
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Chat History Box */}
+        <div className="flex-1 p-4 overflow-y-auto space-y-4 text-xs">
+          {messages.map((m, idx) => (
+            <div
+              key={idx}
+              className={`flex items-start space-x-2.5 ${
+                m.sender === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {m.sender === "ai" && (
+                <div className="w-7 h-7 rounded-full bg-red-950 text-red-400 border border-red-800 flex items-center justify-center shrink-0">
+                  <Bot className="w-4 h-4" />
+                </div>
+              )}
+
+              <div
+                className={`max-w-[80%] rounded-2xl p-3.5 leading-relaxed ${
+                  m.sender === "user"
+                    ? "bg-red-700 text-white font-medium shadow"
+                    : "bg-slate-800 text-slate-200 border border-slate-700/80 shadow"
+                }`}
+              >
+                {m.text}
+              </div>
+
+              {m.sender === "user" && (
+                <div className="w-7 h-7 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center shrink-0">
+                  <User className="w-4 h-4" />
+                </div>
+              )}
+            </div>
+          ))}
+
+          {loading && (
+            <div className="flex items-center space-x-2 text-slate-400 text-xs italic">
+              <div className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></div>
+              <span>Konsultan AI PKBN sedang berpikir & menganalisis...</span>
+            </div>
+          )}
+        </div>
+
+        {/* Sample Quick Prompts */}
+        <div className="p-3 bg-slate-950/60 border-t border-slate-800 space-y-1">
+          <div className="text-[10px] font-semibold text-slate-400 uppercase">
+            Rekomendasi Pertanyaan Cepat:
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {samplePrompts.map((sp, i) => (
+              <button
+                key={i}
+                onClick={() => handleSend(sp)}
+                className="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors text-left"
+              >
+                {sp}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Input Bar */}
+        <div className="p-3 bg-slate-800/90 border-t border-slate-700 flex items-center space-x-2">
+          <input
+            type="text"
+            placeholder="Tanyakan regulasi, kurikulum, atau analisis PKBN..."
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            className="flex-1 bg-slate-900 text-slate-100 text-xs px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+          />
+          <button
+            onClick={() => handleSend()}
+            disabled={loading}
+            className="bg-red-700 hover:bg-red-600 text-white p-2.5 rounded-xl shadow transition-colors active:scale-95 disabled:opacity-50"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
