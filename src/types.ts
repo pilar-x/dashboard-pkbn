@@ -1,3 +1,13 @@
+export type RoleType = "pusat" | "kodam";
+
+export interface UserSession {
+  role: RoleType;
+  userName: string;
+  kodamId?: string;
+  kodamName?: string;
+  province?: string;
+}
+
 export type ActiveTab =
   | "beranda"
   | "pendidikan"
@@ -6,7 +16,8 @@ export type ActiveTab =
   | "monitoring"
   | "analisis"
   | "pelaporan"
-  | "master";
+  | "master"
+  | "input_kodam";
 
 export type SectorType = "Pendidikan" | "Pekerjaan" | "Masyarakat";
 
@@ -58,6 +69,8 @@ export interface ProgramItem {
   documentationCount: number;
   hasCertificate: boolean;
   description: string;
+  programType?: "Program Rutin" | "Non-Program / Inisiatif";
+  kodamOrigin?: string;
 }
 
 export interface InstitutionItem {

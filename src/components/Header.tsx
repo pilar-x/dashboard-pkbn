@@ -1,19 +1,23 @@
 import React from "react";
+import { UserSession } from "../types";
 import {
   Shield,
   Bell,
   Search,
   Sparkles,
-  UserCheck,
-  ChevronDown,
   Sun,
   Moon,
   Upload,
+  Building2,
+  Globe,
+  RefreshCw,
+  LogOut,
 } from "lucide-react";
 
 interface HeaderProps {
-  activeRole: string;
-  setActiveRole: (role: string) => void;
+  currentSession: UserSession;
+  onOpenLoginModal: () => void;
+  onLogout: () => void;
   onOpenAiAssistant: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -24,8 +28,9 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  activeRole,
-  setActiveRole,
+  currentSession,
+  onOpenLoginModal,
+  onLogout,
   onOpenAiAssistant,
   searchQuery,
   setSearchQuery,
@@ -34,15 +39,6 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenNotifications,
   onOpenUpload,
 }) => {
-  const [roleDropdownOpen, setRoleDropdownOpen] = React.useState(false);
-
-  const roles = [
-    "PABAN IV/PKBN",
-    "PABANDYA",
-    "PABANDA",
-    "BAUR",
-    "ADMIN",
-  ];
 
   return (
     <header className={`${theme === "dark" ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800"} border-b sticky top-0 z-30 shadow-md transition-colors`}>
@@ -139,58 +135,45 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-slate-900"></span>
             </button>
 
-            {/* User Role Switcher */}
-            <div className="relative">
-              <button
-                onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-                className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
-                  theme === "dark"
-                    ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700"
-                    : "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300"
-                }`}
-              >
-                <UserCheck className="w-4 h-4 text-emerald-500" />
-                <span className="hidden lg:inline max-w-[130px] truncate">
-                  {activeRole}
-                </span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-
-              {roleDropdownOpen && (
-                <div className={`absolute right-0 mt-2 w-56 rounded-xl shadow-xl border py-1.5 z-50 text-xs ${
-                  theme === "dark" ? "bg-slate-800 border-slate-700" : "bg-white border-slate-200"
-                }`}>
-                  <div className={`px-3 py-1.5 border-b text-[11px] font-semibold uppercase tracking-wider ${
-                    theme === "dark" ? "border-slate-700 text-slate-400" : "border-slate-200 text-slate-500"
-                  }`}>
-                    Pilih Hak Akses Simulasi
-                  </div>
-                  {roles.map((r) => (
-                    <button
-                      key={r}
-                      onClick={() => {
-                        setActiveRole(r);
-                        setRoleDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 transition-colors flex items-center justify-between ${
-                        theme === "dark"
-                          ? "hover:bg-slate-700/80 text-slate-300"
-                          : "hover:bg-slate-100 text-slate-700"
-                      } ${
-                        activeRole === r
-                          ? theme === "dark" ? "text-red-400 font-semibold bg-slate-700/40" : "text-red-700 font-semibold bg-red-50"
-                          : ""
-                      }`}
-                    >
-                      <span>{r}</span>
-                      {activeRole === r && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                      )}
-                    </button>
-                  ))}
-                </div>
+            {/* User Login Badge & Switch Account Button */}
+            <button
+              onClick={onOpenLoginModal}
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all shadow-sm ${
+                currentSession.role === "kodam"
+                  ? "bg-amber-950/90 border-amber-500 text-amber-300 hover:bg-amber-900"
+                  : "bg-red-950/90 border-red-500 text-red-200 hover:bg-red-900"
+              }`}
+              title="Klik untuk ganti akun login (Pusat / Kodam)"
+            >
+              {currentSession.role === "kodam" ? (
+                <Building2 className="w-4 h-4 text-amber-400 shrink-0" />
+              ) : (
+                <Globe className="w-4 h-4 text-red-400 shrink-0" />
               )}
-            </div>
+
+              <div className="text-left hidden sm:block leading-tight">
+                <div className="font-bold text-[11px] truncate max-w-[140px]">
+                  {currentSession.role === "kodam"
+                    ? currentSession.kodamName || "Operator Kodam"
+                    : "PABAN IV/PKBN (PUSAT)"}
+                </div>
+                <div className="text-[9px] text-slate-300/80 font-mono">
+                  Ganti Akun
+                </div>
+              </div>
+
+              <RefreshCw className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+            </button>
+
+            {/* Exit Dashboard Button */}
+            <button
+              onClick={onLogout}
+              className="flex items-center space-x-1.5 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-2 rounded-xl border border-red-500/40 hover:border-red-500 text-xs font-bold transition-all shadow-sm active:scale-95 group"
+              title="Keluar / Exit Dashboard ke Menu Login"
+            >
+              <LogOut className="w-4 h-4 text-red-400 group-hover:text-white transition-colors" />
+              <span className="hidden md:inline">Exit Dashboard</span>
+            </button>
           </div>
         </div>
       </div>

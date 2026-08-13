@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActiveTab, ProvinceData } from "./types";
+import { ActiveTab, ProvinceData, UserSession, ProgramItem } from "./types";
 import {
   initialNationalKPI,
   provinceList,
@@ -18,33 +18,68 @@ import { MonitoringView } from "./components/views/MonitoringView";
 import { AnalisisView } from "./components/views/AnalisisView";
 import { PelaporanView } from "./components/views/PelaporanView";
 import { DataMasterView } from "./components/views/DataMasterView";
+import { InputKodamView } from "./components/views/InputKodamView";
 import { AiAssistantModal } from "./components/views/AiAssistantModal";
 import { UploadModal } from "./components/modals/UploadModal";
 import { NotificationDrawer } from "./components/modals/NotificationDrawer";
 import { ProvinceDetailModal } from "./components/modals/ProvinceDetailModal";
+import { LoginModal } from "./components/modals/LoginModal";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("beranda");
-  const [activeRole, setActiveRole] = useState<string>("PABAN IV/PKBN");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(null);
   
   // Theme state (dark command center vs light government mode)
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
+  // User session state (default as Pusat, can switch to Kodam)
+  const [userSession, setUserSession] = useState<UserSession>({
+    role: "pusat",
+    userName: "PABAN IV/PKBN STERAD",
+  });
+
   // Modals state
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
   const [provinceModalData, setProvinceModalData] = useState<ProvinceData | null>(null);
 
+  const handleLogin = (session: UserSession) => {
+    setUserSession(session);
+    if (session.role === "kodam") {
+      setActiveTab("input_kodam");
+    } else {
+      setActiveTab("beranda");
+    }
+  };
+
+  const handleLogout = () => {
+    setIsLoginModalOpen(true);
+  };
+
   // State data
-  const [nationalKpi] = useState(initialNationalKPI);
+  const [nationalKpi, setNationalKpi] = useState(initialNationalKPI);
   const [provinces] = useState(provinceList);
-  const [programs] = useState(initialPrograms);
+  const [programs, setPrograms] = useState(initialPrograms);
   const [institutions] = useState(initialInstitutions);
   const [instructors] = useState(initialInstructors);
   const [calendarEvents] = useState(initialCalendarEvents);
+
+  const handleAddProgram = (newProg: ProgramItem) => {
+    setPrograms((prev) => [newProg, ...prev]);
+    // Recalculate KPI
+    setNationalKpi((prev) => ({
+      ...prev,
+      totalProgram: prev.totalProgram + 1,
+      totalPeserta: prev.totalPeserta + newProg.participantCount,
+    }));
+  };
+
+  const handleDeleteProgram = (id: string) => {
+    setPrograms((prev) => prev.filter((p) => p.id !== id));
+  };
 
   // Filtered programs based on search query
   const filteredPrograms = programs.filter(
@@ -67,8 +102,9 @@ export default function App() {
     }`}>
       {/* Top Navigation Bar */}
       <Header
-        activeRole={activeRole}
-        setActiveRole={setActiveRole}
+        currentSession={userSession}
+        onOpenLoginModal={() => setIsLoginModalOpen(true)}
+        onLogout={handleLogout}
         onOpenAiAssistant={() => setIsAiModalOpen(true)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -85,6 +121,7 @@ export default function App() {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           onOpenAiAssistant={() => setIsAiModalOpen(true)}
+          onLogout={handleLogout}
           theme={theme}
         />
 
@@ -135,6 +172,15 @@ export default function App() {
             <PelaporanView kpi={nationalKpi} programs={filteredPrograms} />
           )}
 
+          {activeTab === "input_kodam" && (
+            <InputKodamView
+              programs={programs}
+              onAddProgram={handleAddProgram}
+              onDeleteProgram={handleDeleteProgram}
+              theme={theme}
+            />
+          )}
+
           {activeTab === "master" && (
             <DataMasterView provinces={provinces} institutions={institutions} />
           )}
@@ -167,6 +213,15 @@ export default function App() {
           setProvinceModalData(null);
           setIsUploadModalOpen(true);
         }}
+      />
+
+      {/* Login / Role Switcher Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        currentSession={userSession}
+        onLogin={handleLogin}
+        theme={theme}
       />
     </div>
   );

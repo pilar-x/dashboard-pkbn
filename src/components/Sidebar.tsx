@@ -11,12 +11,16 @@ import {
   Database,
   Sparkles,
   ChevronRight,
+  FileEdit,
+  ShieldAlert,
+  LogOut,
 } from "lucide-react";
 
 interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
   onOpenAiAssistant: () => void;
+  onLogout?: () => void;
   theme?: "dark" | "light";
 }
 
@@ -24,9 +28,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   setActiveTab,
   onOpenAiAssistant,
+  onLogout,
   theme = "dark",
 }) => {
-  const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; desc: string }[] = [
+  const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; desc: string; isHighlight?: boolean }[] = [
     {
       id: "beranda",
       label: "1. Beranda",
@@ -34,44 +39,51 @@ export const Sidebar: React.FC<SidebarProps> = ({
       desc: "Ringkasan Statistik & Peta",
     },
     {
+      id: "input_kodam",
+      label: "2. Input Data Kodam",
+      icon: <FileEdit className="w-5 h-5 text-yellow-400" />,
+      desc: "Portal Entri Program & Non-Program",
+      isHighlight: true,
+    },
+    {
       id: "pendidikan",
-      label: "2. Lingkup Pendidikan",
+      label: "3. Lingkup Pendidikan",
       icon: <GraduationCap className="w-5 h-5" />,
       desc: "Sekolah, PT & Sertifikat",
     },
     {
       id: "pekerjaan",
-      label: "3. Lingkup Pekerjaan",
+      label: "4. Lingkup Pekerjaan",
       icon: <Briefcase className="w-5 h-5" />,
       desc: "Instansi Gov, BUMN & Swasta",
     },
     {
       id: "masyarakat",
-      label: "4. Lingkup Masyarakat",
+      label: "5. Lingkup Masyarakat",
       icon: <Users className="w-5 h-5" />,
       desc: "Ormas, Relawan & Kampung PKBN",
     },
     {
       id: "monitoring",
-      label: "5. Monitoring",
+      label: "6. Monitoring",
       icon: <Activity className="w-5 h-5" />,
       desc: "Real-time Feed & Peta Sebaran",
     },
     {
       id: "analisis",
-      label: "6. Analisis",
+      label: "7. Analisis",
       icon: <BarChart3 className="w-5 h-5" />,
       desc: "Grafik Tren & SWOT AI",
     },
     {
       id: "pelaporan",
-      label: "7. Pelaporan",
+      label: "8. Pelaporan",
       icon: <FileSpreadsheet className="w-5 h-5" />,
       desc: "Laporan & Ekspor Cetak",
     },
     {
       id: "master",
-      label: "8. Data Master",
+      label: "9. Data Master",
       icon: <Database className="w-5 h-5" />,
       desc: "Wilayah, Instansi & User",
     },
@@ -117,8 +129,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   {item.icon}
                 </span>
                 <div className="truncate">
-                  <div className="text-xs font-medium leading-snug truncate">
-                    {item.label}
+                  <div className="text-xs font-medium leading-snug truncate flex items-center space-x-1.5">
+                    <span>{item.label}</span>
+                    {item.isHighlight && (
+                      <span className="bg-yellow-500 text-slate-950 font-mono text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase animate-pulse">
+                        KODAM
+                      </span>
+                    )}
                   </div>
                   <div
                     className={`text-[10px] truncate ${
@@ -163,6 +180,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span>Mulai Konsultasi AI</span>
         </button>
       </div>
+
+      {/* Exit Dashboard Button at bottom */}
+      {onLogout && (
+        <div className="px-3 mt-3">
+          <button
+            onClick={onLogout}
+            className="w-full py-2.5 px-3 rounded-xl border border-red-500/50 bg-red-950/40 hover:bg-red-900/80 text-red-300 hover:text-white text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-sm active:scale-95 group"
+          >
+            <LogOut className="w-4 h-4 text-red-400 group-hover:text-yellow-300 transition-colors" />
+            <span>Keluar / Exit Dashboard</span>
+          </button>
+        </div>
+      )}
     </aside>
   );
 };
