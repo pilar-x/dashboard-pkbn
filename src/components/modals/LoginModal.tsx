@@ -133,12 +133,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   <div className={`font-bold text-xs flex items-center space-x-1 ${
                     selectedRole === "pusat" ? (isDark ? "text-white" : "text-emerald-900") : (isDark ? "text-slate-200" : "text-slate-800")
                   }`}>
-                    <span>PUSAT/STERAD (Spaban IV/PKBN)</span>
+                    <span>PUSAT/STERAD</span>
                   </div>
                   <p className={`text-[11px] mt-0.5 leading-snug ${
                     isDark ? "text-slate-400" : "text-slate-600"
                   }`}>
-                    Akses Komando Nasional SPABAN IV/PKBN (Super Admin)
+                    Akses Spaban IV/PKBN
                   </p>
                 </div>
               </button>

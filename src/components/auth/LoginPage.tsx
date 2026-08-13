@@ -130,10 +130,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       </div>
                       <div>
                         <div className="font-bold text-xs text-white">
-                          PUSAT/STERAD (Spaban IV/PKBN)
+                          PUSAT/STERAD
                         </div>
                         <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                          Komando Nasional SPABAN IV/PKBN (Super Admin)
+                          Spaban IV/PKBN
                         </p>
                       </div>
                     </button>
