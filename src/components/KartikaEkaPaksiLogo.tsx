@@ -5,240 +5,307 @@ interface KartikaEkaPaksiLogoProps {
   style?: React.CSSProperties;
 }
 
+/**
+ * Official Logo Kartika Eka Paksi (TNI AD)
+ * Vector representation matching official emblem specifications:
+ * - Golden 5-pointed faceted star on top
+ * - Upward curving gold eagle wings with distinct feathering
+ * - Eagle head facing left with open beak, red tongue, red eye
+ * - Red & White shield (Perisai Sang Saka)
+ * - Green side scrollwork / flourishes
+ * - White ribbon with "KARTIKA EKA PAKSI" text
+ * - Fan-shaped tail feathers
+ * - Crisp black outlines for maximum clarity on any background
+ */
 export const KartikaEkaPaksiLogo: React.FC<KartikaEkaPaksiLogoProps> = ({
-  className = "w-10 h-10",
+  className = "w-10 h-12",
   style,
 }) => {
   return (
     <svg
-      viewBox="0 0 200 240"
+      viewBox="0 0 500 680"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       style={style}
     >
       <defs>
-        {/* Gold Metallic Gradient */}
-        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFF176" />
-          <stop offset="25%" stopColor="#FBC02D" />
-          <stop offset="50%" stopColor="#F57F17" />
-          <stop offset="75%" stopColor="#FBC02D" />
-          <stop offset="100%" stopColor="#FFF59D" />
-        </linearGradient>
-
-        <linearGradient id="goldDarkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#F57F17" />
-          <stop offset="50%" stopColor="#E65100" />
-          <stop offset="100%" stopColor="#BF360C" />
-        </linearGradient>
-
-        <linearGradient id="goldLightGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#FFF59D" />
-          <stop offset="50%" stopColor="#FEE074" />
-          <stop offset="100%" stopColor="#F57F17" />
-        </linearGradient>
-
-        {/* Green Flourish Gradient */}
-        <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#2E7D32" />
-          <stop offset="50%" stopColor="#1B5E20" />
-          <stop offset="100%" stopColor="#0D3B11" />
-        </linearGradient>
-
-        {/* Shield Red Gradient */}
-        <linearGradient id="redShieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#E53935" />
-          <stop offset="100%" stopColor="#B71C1C" />
-        </linearGradient>
-
-        {/* Shield White Gradient */}
-        <linearGradient id="whiteShieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="100%" stopColor="#E0E0E0" />
-        </linearGradient>
-
-        {/* Drop Shadow for 3D realism */}
-        <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="3" stdDeviation="3" floodColor="#000000" floodOpacity="0.5" />
-        </filter>
+        <style>{`
+          .kep-black-stroke { stroke: #000000; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+          .kep-thin-stroke { stroke: #000000; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+          .kep-gold { fill: #FFCC00; }
+          .kep-gold-light { fill: #FFE680; }
+          .kep-gold-dark { fill: #E6A100; }
+          .kep-red { fill: #D32F2F; }
+          .kep-white { fill: #FFFFFF; }
+          .kep-green { fill: #1B5E20; }
+        `}</style>
       </defs>
 
-      <g filter="url(#logoShadow)">
-        {/* 1. TOP GOLDEN STAR */}
-        <path
-          d="M 100,6 L 104.5,20 L 119,20 L 107.2,28.5 L 111.7,42.5 L 100,34 L 88.3,42.5 L 92.8,28.5 L 81,20 L 95.5,20 Z"
-          fill="url(#goldGradient)"
-          stroke="#9E7D0A"
-          strokeWidth="1"
-        />
-
-        {/* 2. TAIL FEATHERS (FANNING DOWNWARDS) */}
-        <g id="tailFeathers">
-          <path d="M 100,180 L 100,230 L 92,228 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 100,230 L 108,228 Z" fill="url(#goldLightGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 88,227 L 78,222 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 112,227 L 122,222 Z" fill="url(#goldLightGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 76,220 L 66,212 Z" fill="url(#goldDarkGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 124,220 L 134,212 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 64,210 L 55,200 Z" fill="url(#goldDarkGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 100,180 L 136,210 L 145,200 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-        </g>
-
-        {/* 3. GREEN RIBBON FLOURISHES (LEFT & RIGHT) */}
-        <path
-          d="M 50,145 C 25,145 20,185 30,205 C 40,215 50,195 45,175 C 40,160 52,150 55,160 C 58,170 52,190 42,205 C 30,220 18,205 18,185 C 18,150 40,138 52,140 Z"
-          fill="url(#greenGradient)"
-          stroke="#0A2C0D"
-          strokeWidth="1"
-        />
-        <path
-          d="M 150,145 C 175,145 180,185 170,205 C 160,215 150,195 155,175 C 160,160 148,150 145,160 C 142,170 148,190 158,205 C 170,220 182,205 182,185 C 182,150 160,138 148,140 Z"
-          fill="url(#greenGradient)"
-          stroke="#0A2C0D"
-          strokeWidth="1"
-        />
-
-        {/* 4. LEFT WING (OUTER FEATHERS CURVING UPWARDS) */}
-        <g id="leftWing">
-          {/* Main Wing Curve Outline */}
+      <g id="KartikaEkaPaksiLogo">
+        {/* ================= 1. GREEN SIDE FLOURISHES (BEHIND TAIL & WINGS) ================= */}
+        <g id="greenScrollwork">
+          {/* Left Green Scroll */}
           <path
-            d="M 80,110 C 60,80 30,50 18,28 C 12,20 20,12 35,16 C 50,20 70,38 88,68 C 82,50 68,32 55,18 C 50,12 58,8 70,14 C 82,20 92,36 100,55 M 78,110 Z"
-            fill="url(#goldGradient)"
-            stroke="#8D6E03"
-            strokeWidth="0.8"
+            d="M 175,410 C 130,370 70,390 60,450 C 50,510 90,560 120,580 C 140,590 160,570 155,540 C 150,510 120,490 100,470 C 80,450 90,420 125,415 C 150,410 165,430 170,450 Z"
+            className="kep-green kep-black-stroke"
           />
-          {/* Feathers Stack Left */}
-          <path d="M 22,25 C 28,38 42,58 58,78 L 52,82 C 36,60 22,40 18,28 Z" fill="url(#goldLightGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 28,38 C 36,52 50,72 65,92 L 58,96 C 42,74 28,52 22,38 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 36,52 C 45,68 58,88 72,106 L 65,110 C 50,90 36,68 28,52 Z" fill="url(#goldDarkGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 45,68 C 55,85 68,105 80,120 L 72,124 C 60,108 46,86 36,68 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 55,85 C 65,100 75,118 85,132 L 78,135 C 68,120 58,102 48,85 Z" fill="url(#goldDarkGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-        </g>
-
-        {/* 5. RIGHT WING (OUTER FEATHERS CURVING UPWARDS) */}
-        <g id="rightWing">
           <path
-            d="M 120,110 C 140,80 170,50 182,28 C 188,20 180,12 165,16 C 150,20 130,38 112,68 C 118,50 132,32 145,18 C 150,12 142,8 130,14 C 118,20 108,36 100,55 M 122,110 Z"
-            fill="url(#goldGradient)"
-            stroke="#8D6E03"
-            strokeWidth="0.8"
-          />
-          <path d="M 178,25 C 172,38 158,58 142,78 L 148,82 C 164,60 178,40 182,28 Z" fill="url(#goldLightGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 172,38 C 164,52 150,72 135,92 L 142,96 C 158,74 172,52 178,38 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 164,52 C 155,68 142,88 128,106 L 135,110 C 150,90 164,68 172,52 Z" fill="url(#goldDarkGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 155,68 C 145,85 132,105 120,120 L 128,124 C 140,108 154,86 164,68 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-          <path d="M 145,85 C 135,100 125,118 115,132 L 122,135 C 132,120 142,102 152,85 Z" fill="url(#goldDarkGradient)" stroke="#8D6E03" strokeWidth="0.6" />
-        </g>
-
-        {/* 6. EAGLE HEAD & NECK (FACING LEFT) */}
-        <g id="eagleHead">
-          {/* Neck Feathers */}
-          <path
-            d="M 85,62 C 80,50 82,38 92,26 C 96,24 100,28 98,32 C 94,36 94,42 98,48 C 102,54 105,62 108,70 L 85,70 Z"
-            fill="url(#goldGradient)"
-            stroke="#8D6E03"
-            strokeWidth="0.8"
-          />
-          {/* Head Crown */}
-          <path
-            d="M 92,26 C 88,24 82,26 80,30 C 78,32 76,38 80,40 C 82,41 85,38 88,36 C 86,40 84,45 88,48 C 90,50 94,48 93,44 Z"
-            fill="url(#goldLightGradient)"
-            stroke="#8D6E03"
-            strokeWidth="0.6"
-          />
-          {/* Sharp Beak */}
-          <path
-            d="M 82,31 C 76,32 70,36 68,40 C 67,42 70,44 74,43 C 78,42 81,39 83,36 Z"
-            fill="url(#goldGradient)"
-            stroke="#B78103"
-            strokeWidth="1"
-          />
-          {/* Open Mouth / Tongue */}
-          <path d="M 72,41 L 78,44 L 75,45 Z" fill="#D32F2F" />
-          {/* Eye */}
-          <circle cx="85" cy="33" r="3" fill="#FFFFFF" stroke="#8D6E03" strokeWidth="0.5" />
-          <circle cx="85" cy="33" r="1.5" fill="#D32F2F" />
-          <circle cx="84.5" cy="32.5" r="0.5" fill="#000000" />
-        </g>
-
-        {/* 7. EAGLE BODY & CHEST SHIELD */}
-        {/* Eagle Body Base behind Shield */}
-        <path
-          d="M 70,95 C 65,115 65,145 75,170 C 85,185 115,185 125,170 C 135,145 135,115 130,95 Z"
-          fill="url(#goldDarkGradient)"
-          stroke="#8D6E03"
-          strokeWidth="1"
-        />
-
-        {/* SHIELD (RED & WHITE DIAGONAL) */}
-        <g id="chestShield">
-          {/* Shield Black Rim / Border */}
-          <path
-            d="M 70,92 L 130,92 L 130,128 C 130,152 100,165 100,165 C 100,165 70,152 70,128 Z"
-            fill="#1A1A1A"
-            stroke="#FFD54F"
-            strokeWidth="2"
-          />
-          {/* Inner Shield Clip Area */}
-          <path
-            d="M 73,95 L 127,95 L 127,126 C 127,148 100,160 100,160 C 100,160 73,148 73,126 Z"
-            fill="url(#whiteShieldGradient)"
-          />
-          {/* Red Top-Left Diagonal Half */}
-          <path
-            d="M 73,95 L 127,95 L 73,148 Z"
-            fill="url(#redShieldGradient)"
-          />
-          {/* Inner Shield Outline */}
-          <path
-            d="M 73,95 L 127,95 L 127,126 C 127,148 100,160 100,160 C 100,160 73,148 73,126 Z"
+            d="M 85,465 C 75,510 110,545 135,550"
             fill="none"
-            stroke="#262626"
-            strokeWidth="1.5"
+            className="kep-black-stroke"
           />
-        </g>
 
-        {/* 8. EAGLE TALONS GRASPING BANNER */}
-        <g id="talons">
-          {/* Left Claw */}
-          <path d="M 62,172 C 58,175 52,185 58,188 C 62,189 65,182 66,176 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 68,173 C 65,178 62,188 68,190 C 72,191 73,183 72,176 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 74,173 C 72,178 72,188 77,188 C 80,188 79,181 77,175 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-
-          {/* Right Claw */}
-          <path d="M 138,172 C 142,175 148,185 142,188 C 138,189 135,182 134,176 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 132,173 C 135,178 138,188 132,190 C 128,191 127,183 128,176 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-          <path d="M 126,173 C 128,178 128,188 123,188 C 120,188 121,181 123,175 Z" fill="url(#goldGradient)" stroke="#8D6E03" strokeWidth="0.8" />
-        </g>
-
-        {/* 9. WHITE RIBBON BANNER & TEXT "KARTIKA EKA PAKSI" */}
-        <g id="bannerRibbon">
-          {/* Ribbon Shadow Back folds */}
-          <path d="M 38,188 L 48,182 L 48,196 L 38,202 Z" fill="#D5D5D5" stroke="#757575" strokeWidth="0.8" />
-          <path d="M 162,188 L 152,182 L 152,196 L 162,202 Z" fill="#D5D5D5" stroke="#757575" strokeWidth="0.8" />
-
-          {/* Main Curved White Ribbon */}
+          {/* Right Green Scroll */}
           <path
-            d="M 40,185 C 70,192 130,192 160,185 C 165,184 165,198 160,200 C 130,208 70,208 40,200 C 35,198 35,184 40,185 Z"
-            fill="url(#whiteShieldGradient)"
-            stroke="#424242"
-            strokeWidth="1.2"
+            d="M 325,410 C 370,370 430,390 440,450 C 450,510 410,560 380,580 C 360,590 340,570 345,540 C 350,510 380,490 400,470 C 420,450 410,420 375,415 C 350,410 335,430 330,450 Z"
+            className="kep-green kep-black-stroke"
+          />
+          <path
+            d="M 415,465 C 425,510 390,545 365,550"
+            fill="none"
+            className="kep-black-stroke"
+          />
+        </g>
+
+        {/* ================= 2. FAN TAIL FEATHERS (7 FEATHERS) ================= */}
+        <g id="tailFeathers">
+          {/* Central Feather */}
+          <path
+            d="M 230,460 L 220,660 C 220,670 280,670 280,660 L 270,460 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          <path d="M 250,460 L 250,665" fill="none" className="kep-thin-stroke" />
+
+          {/* Inner Left Feather */}
+          <path
+            d="M 225,460 L 175,640 C 170,650 225,665 235,655 L 245,460 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          <path d="M 235,460 L 200,645" fill="none" className="kep-thin-stroke" />
+
+          {/* Inner Right Feather */}
+          <path
+            d="M 275,460 L 325,640 C 330,650 275,665 265,655 L 255,460 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          <path d="M 265,460 L 300,645" fill="none" className="kep-thin-stroke" />
+
+          {/* Middle Left Feather */}
+          <path
+            d="M 220,460 L 135,605 C 130,615 180,635 195,625 L 235,460 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          <path d="M 225,460 L 155,612" fill="none" className="kep-thin-stroke" />
+
+          {/* Middle Right Feather */}
+          <path
+            d="M 280,460 L 365,605 C 370,615 320,635 305,625 L 265,460 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          <path d="M 275,460 L 345,612" fill="none" className="kep-thin-stroke" />
+
+          {/* Outer Left Feather */}
+          <path
+            d="M 215,460 L 105,550 C 100,560 145,585 160,575 L 225,460 Z"
+            className="kep-gold kep-black-stroke"
           />
 
-          {/* Text "KARTIKA EKA PAKSI" */}
+          {/* Outer Right Feather */}
+          <path
+            d="M 285,460 L 395,550 C 400,560 355,585 340,575 L 275,460 Z"
+            className="kep-gold kep-black-stroke"
+          />
+        </g>
+
+        {/* ================= 3. LEFT WING (CURVING HIGH UPWARDS) ================= */}
+        <g id="leftWing">
+          {/* Main Outer Left Wing Shell */}
+          <path
+            d="M 210,320 C 160,260 80,180 40,80 C 35,65 50,45 80,55 C 110,65 150,110 200,200 C 170,140 120,80 90,40 C 85,30 100,15 125,25 C 150,35 190,90 225,170 C 210,120 180,70 150,25 C 145,15 160,5 185,15 C 210,25 240,90 250,140 Z"
+            className="kep-gold kep-black-stroke"
+          />
+
+          {/* Individual Feather Layer Lines (Left) */}
+          <path d="M 50,75 C 80,110 130,180 180,240" fill="none" className="kep-black-stroke" />
+          <path d="M 65,100 C 95,135 140,200 185,255" fill="none" className="kep-black-stroke" />
+          <path d="M 80,125 C 110,160 150,220 190,270" fill="none" className="kep-black-stroke" />
+          <path d="M 95,150 C 125,185 160,240 195,285" fill="none" className="kep-black-stroke" />
+          <path d="M 110,175 C 135,205 170,255 200,300" fill="none" className="kep-black-stroke" />
+          <path d="M 125,200 C 145,225 175,270 205,310" fill="none" className="kep-black-stroke" />
+          <path d="M 140,225 C 160,250 185,285 210,320" fill="none" className="kep-black-stroke" />
+
+          {/* Inner Wing Horizontal Layer Cuts */}
+          <path d="M 155,100 C 180,120 210,150 230,180" fill="none" className="kep-thin-stroke" />
+          <path d="M 140,125 C 165,145 195,175 220,205" fill="none" className="kep-thin-stroke" />
+          <path d="M 125,150 C 150,170 180,200 205,230" fill="none" className="kep-thin-stroke" />
+        </g>
+
+        {/* ================= 4. RIGHT WING (CURVING HIGH UPWARDS) ================= */}
+        <g id="rightWing">
+          {/* Main Outer Right Wing Shell */}
+          <path
+            d="M 290,320 C 340,260 420,180 460,80 C 465,65 450,45 420,55 C 390,65 350,110 300,200 C 330,140 380,80 410,40 C 415,30 400,15 375,25 C 350,35 310,90 275,170 C 290,120 320,70 350,25 C 355,15 340,5 315,15 C 290,25 260,90 250,140 Z"
+            className="kep-gold kep-black-stroke"
+          />
+
+          {/* Individual Feather Layer Lines (Right) */}
+          <path d="M 450,75 C 420,110 370,180 320,240" fill="none" className="kep-black-stroke" />
+          <path d="M 435,100 C 405,135 360,200 315,255" fill="none" className="kep-black-stroke" />
+          <path d="M 420,125 C 390,160 350,220 310,270" fill="none" className="kep-black-stroke" />
+          <path d="M 405,150 C 375,185 340,240 305,285" fill="none" className="kep-black-stroke" />
+          <path d="M 390,175 C 365,205 330,255 300,300" fill="none" className="kep-black-stroke" />
+          <path d="M 375,200 C 355,225 325,270 295,310" fill="none" className="kep-black-stroke" />
+          <path d="M 360,225 C 340,250 315,285 290,320" fill="none" className="kep-black-stroke" />
+
+          {/* Inner Wing Horizontal Layer Cuts */}
+          <path d="M 345,100 C 320,120 290,150 270,180" fill="none" className="kep-thin-stroke" />
+          <path d="M 360,125 C 335,145 305,175 280,205" fill="none" className="kep-thin-stroke" />
+          <path d="M 375,150 C 350,170 320,200 295,230" fill="none" className="kep-thin-stroke" />
+        </g>
+
+        {/* ================= 5. EAGLE HEAD & NECK (FACING LEFT) ================= */}
+        <g id="eagleHead">
+          {/* Neck Feathers Jagged Outline */}
+          <path
+            d="M 215,180 C 200,165 205,145 220,130 C 210,125 210,115 225,105 C 215,100 220,85 235,75 C 240,65 250,60 255,75 C 265,85 270,100 275,120 C 280,140 280,165 275,180 Z"
+            className="kep-gold kep-black-stroke"
+          />
+
+          {/* Jagged Neck Feather Texture Lines */}
+          <path d="M 230,135 L 220,145 L 235,155 L 225,165 L 240,175" fill="none" className="kep-black-stroke" />
+          <path d="M 245,115 L 235,125 L 250,135 L 240,145 L 255,155" fill="none" className="kep-black-stroke" />
+
+          {/* Sharp Open Beak Facing Left */}
+          <path
+            d="M 222,118 C 205,112 190,125 185,135 C 180,140 192,148 202,145 C 212,142 220,132 222,128 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          {/* Open Beak Mouth / Tongue */}
+          <path
+            d="M 190,138 C 196,142 204,143 208,140"
+            fill="none"
+            className="kep-black-stroke"
+          />
+          <path d="M 193,138 C 198,136 202,140 198,142 Z" className="kep-red" />
+
+          {/* Eye */}
+          <circle cx="225" cy="115" r="7" className="kep-white kep-thin-stroke" />
+          <circle cx="224" cy="115" r="4" className="kep-red" />
+          <circle cx="223" cy="114" r="1.5" fill="#000000" />
+        </g>
+
+        {/* ================= 6. EAGLE FEET / LEGS & CLAWS ================= */}
+        <g id="eagleLegs">
+          {/* Left Leg Feathers & Claws */}
+          <path
+            d="M 180,380 C 170,410 160,440 175,465 C 185,470 200,460 195,445 C 190,430 195,400 205,380 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          {/* Claws Left */}
+          <path d="M 165,455 C 155,465 150,480 165,485 C 175,480 170,465 170,455 Z" className="kep-gold kep-black-stroke" />
+          <path d="M 175,458 C 170,470 170,488 182,488 C 188,480 180,465 178,458 Z" className="kep-gold kep-black-stroke" />
+          <path d="M 185,458 C 185,470 190,488 200,485 C 202,475 192,465 188,458 Z" className="kep-gold kep-black-stroke" />
+
+          {/* Right Leg Feathers & Claws */}
+          <path
+            d="M 320,380 C 330,410 340,440 325,465 C 315,470 300,460 305,445 C 310,430 305,400 295,380 Z"
+            className="kep-gold kep-black-stroke"
+          />
+          {/* Claws Right */}
+          <path d="M 335,455 C 345,465 350,480 335,485 C 325,480 330,465 330,455 Z" className="kep-gold kep-black-stroke" />
+          <path d="M 325,458 C 330,470 330,488 318,488 C 312,480 320,465 322,458 Z" className="kep-gold kep-black-stroke" />
+          <path d="M 315,458 C 315,470 310,488 300,485 C 298,475 308,465 312,458 Z" className="kep-gold kep-black-stroke" />
+        </g>
+
+        {/* ================= 7. CHEST SHIELD (PERISAI MERAH PUTIH) ================= */}
+        <g id="chestShield">
+          {/* Shield Outer Outline with Black Border */}
+          <path
+            d="M 175,230 L 325,230 L 325,350 C 325,410 250,445 250,445 C 250,445 175,410 175,350 Z"
+            className="kep-white kep-black-stroke"
+            style={{ strokeWidth: 5 }}
+          />
+          {/* Top-Left Red Diagonal Split */}
+          <path
+            d="M 177,232 L 323,232 L 177,418 Z"
+            className="kep-red"
+          />
+          {/* Inner Diagonal Dividing Line */}
+          <path
+            d="M 323,232 L 177,418"
+            fill="none"
+            className="kep-black-stroke"
+          />
+          {/* Shield Re-stroke for crisp edge */}
+          <path
+            d="M 175,230 L 325,230 L 325,350 C 325,410 250,445 250,445 C 250,445 175,410 175,350 Z"
+            fill="none"
+            className="kep-black-stroke"
+            style={{ strokeWidth: 5 }}
+          />
+        </g>
+
+        {/* ================= 8. WHITE BANNER RIBBON & TEXT ================= */}
+        <g id="bannerRibbon">
+          {/* Folded Ribbon Back Tails */}
+          <path d="M 85,485 L 120,470 L 120,510 L 85,525 Z" className="kep-white kep-black-stroke" />
+          <path d="M 415,485 L 380,470 L 380,510 L 415,525 Z" className="kep-white kep-black-stroke" />
+
+          {/* Main Front Curved Banner */}
+          <path
+            d="M 95,480 C 180,498 320,498 405,480 C 418,477 420,520 405,525 C 320,545 180,545 95,525 C 80,520 82,477 95,480 Z"
+            className="kep-white kep-black-stroke"
+            style={{ strokeWidth: 4 }}
+          />
+
+          {/* Banner Text: KARTIKA EKA PAKSI */}
           <text
-            x="100"
-            y="197"
-            fontFamily="'Cinzel', 'Times New Roman', 'Georgia', serif"
-            fontSize="8.5"
+            x="250"
+            y="511"
+            fontFamily="'Times New Roman', 'Cinzel', 'Georgia', 'serif'"
+            fontSize="25"
             fontWeight="900"
-            fill="#111111"
+            fill="#000000"
             textAnchor="middle"
-            letterSpacing="0.6"
+            letterSpacing="2"
           >
             KARTIKA EKA PAKSI
           </text>
+        </g>
+
+        {/* ================= 9. TOP GOLDEN STAR (BINTANG EMAS SISI LIMA) ================= */}
+        <g id="topStar">
+          {/* Faceted 5-point Star */}
+          {/* Star Outline Base */}
+          <polygon
+            points="250,15 261,48 296,48 268,69 278,102 250,82 222,102 232,69 204,48 239,48"
+            className="kep-gold kep-black-stroke"
+            style={{ strokeWidth: 3.5 }}
+          />
+
+          {/* Faceted Triangular Halves */}
+          <polygon points="250,15 250,82 261,48" className="kep-gold-light" />
+          <polygon points="250,15 250,82 239,48" className="kep-gold-dark" />
+          <polygon points="296,48 250,82 268,69" className="kep-gold-light" />
+          <polygon points="204,48 250,82 232,69" className="kep-gold-dark" />
+          <polygon points="278,102 250,82 250,82" className="kep-gold-light" />
+          <polygon points="222,102 250,82 250,82" className="kep-gold-dark" />
+
+          {/* Facet Lines from Center */}
+          <path d="M 250,15 L 250,82" fill="none" className="kep-thin-stroke" />
+          <path d="M 296,48 L 250,82" fill="none" className="kep-thin-stroke" />
+          <path d="M 278,102 L 250,82" fill="none" className="kep-thin-stroke" />
+          <path d="M 222,102 L 250,82" fill="none" className="kep-thin-stroke" />
+          <path d="M 204,48 L 250,82" fill="none" className="kep-thin-stroke" />
+
+          {/* Star Outer Re-stroke */}
+          <polygon
+            points="250,15 261,48 296,48 268,69 278,102 250,82 222,102 232,69 204,48 239,48"
+            fill="none"
+            className="kep-black-stroke"
+            style={{ strokeWidth: 3.5 }}
+          />
         </g>
       </g>
     </svg>
