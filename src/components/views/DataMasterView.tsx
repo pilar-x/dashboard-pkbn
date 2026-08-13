@@ -120,7 +120,141 @@ export const DataMasterView: React.FC<DataMasterViewProps> = ({
         </div>
       )}
 
-      {/* Content 2: Pengguna */}
+      {/* Content 2: Instansi & BUMN */}
+      {activeMasterTab === "instansi" && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold text-white font-serif">Master Referensi Kementerian, Lembaga & BUMN</h3>
+            <span className="text-xs text-slate-400 font-mono">Total {institutions.filter((i) => i.category === "Instansi Pemerintah" || i.category === "BUMN").length} Unit Terdaftar</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-800/90 text-slate-400 uppercase font-mono text-[10px]">
+                <tr>
+                  <th className="p-3">Kode Instansi</th>
+                  <th className="p-3">Nama Instansi / Badan</th>
+                  <th className="p-3">Kategori</th>
+                  <th className="p-3">Provinsi</th>
+                  <th className="p-3">Penanggung Jawab</th>
+                  <th className="p-3 text-right">Status Aktif</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {institutions
+                  .filter((i) => i.category === "Instansi Pemerintah" || i.category === "BUMN" || i.category === "Swasta")
+                  .map((inst) => (
+                    <tr key={inst.id} className="hover:bg-slate-800/50 transition-colors">
+                      <td className="p-3 font-mono text-slate-400">{inst.id}</td>
+                      <td className="p-3 font-semibold text-white">{inst.name}</td>
+                      <td className="p-3">
+                        <span className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] px-2 py-0.5 rounded font-mono">
+                          {inst.category}
+                        </span>
+                      </td>
+                      <td className="p-3">{inst.province}</td>
+                      <td className="p-3">{inst.contactPerson} ({inst.phone})</td>
+                      <td className="p-3 text-right">
+                        <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          {inst.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Content 3: Satuan Pendidikan */}
+      {activeMasterTab === "pendidikan" && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold text-white font-serif">Master Registrasi Sekolah & Perguruan Tinggi (NPSN/NPT)</h3>
+            <span className="text-xs text-slate-400 font-mono">Total {institutions.filter((i) => i.category === "Sekolah" || i.category === "Perguruan Tinggi").length} Satuan Pendidikan</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-800/90 text-slate-400 uppercase font-mono text-[10px]">
+                <tr>
+                  <th className="p-3">NPSN / ID</th>
+                  <th className="p-3">Nama Kampus / Sekolah</th>
+                  <th className="p-3">Kategori</th>
+                  <th className="p-3">Wilayah</th>
+                  <th className="p-3">Kader Terbina</th>
+                  <th className="p-3 text-right">Status Sertifikasi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {institutions
+                  .filter((i) => i.category === "Sekolah" || i.category === "Perguruan Tinggi")
+                  .map((inst) => (
+                    <tr key={inst.id} className="hover:bg-slate-800/50 transition-colors">
+                      <td className="p-3 font-mono text-slate-400">{inst.id}</td>
+                      <td className="p-3 font-semibold text-white">{inst.name}</td>
+                      <td className="p-3">
+                        <span className="bg-blue-950 text-blue-300 border border-blue-800 text-[10px] px-2 py-0.5 rounded font-mono">
+                          {inst.category}
+                        </span>
+                      </td>
+                      <td className="p-3">{inst.regency}, {inst.province}</td>
+                      <td className="p-3 font-bold text-yellow-400">{inst.cadreCount.toLocaleString("id-ID")} Siswa/Mhs</td>
+                      <td className="p-3 text-right">
+                        <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          {inst.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Content 4: Ormas */}
+      {activeMasterTab === "ormas" && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold text-white font-serif">Master Organisasi Kemasyarakatan, OKP & Komunitas</h3>
+            <span className="text-xs text-slate-400 font-mono">Mitra Terverifikasi Kemhan / Sterad</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-800/90 text-slate-400 uppercase font-mono text-[10px]">
+                <tr>
+                  <th className="p-3">No. Registrasi</th>
+                  <th className="p-3">Nama Ormas / OKP</th>
+                  <th className="p-3">Wilayah</th>
+                  <th className="p-3">Penanggung Jawab</th>
+                  <th className="p-3">Jumlah Kader</th>
+                  <th className="p-3 text-right">Status Kemitraan</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {institutions
+                  .filter((i) => i.category === "Ormas/Komunitas")
+                  .map((inst) => (
+                    <tr key={inst.id} className="hover:bg-slate-800/50 transition-colors">
+                      <td className="p-3 font-mono text-slate-400">{inst.id}</td>
+                      <td className="p-3 font-semibold text-white">{inst.name}</td>
+                      <td className="p-3">{inst.regency}, {inst.province}</td>
+                      <td className="p-3">{inst.contactPerson}</td>
+                      <td className="p-3 font-bold text-amber-400">{inst.cadreCount.toLocaleString("id-ID")} Kader</td>
+                      <td className="p-3 text-right">
+                        <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          {inst.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Content 5: Pengguna */}
       {activeMasterTab === "pengguna" && (
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
           <h3 className="text-base font-bold text-white font-serif">Daftar Pengguna Operator & Administrator</h3>

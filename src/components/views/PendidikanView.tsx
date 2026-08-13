@@ -255,6 +255,169 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
         </div>
       )}
 
+      {/* Tab: Data Peserta / Kader Terbina */}
+      {activeSubTab === "peserta" && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-bold text-white font-serif">Data Peserta & Kader Terbina Lingkup Pendidikan</h3>
+              <p className="text-xs text-slate-400">Daftar mahasiswa dan siswa terdaftar dalam program PKBN Se-Indonesia</p>
+            </div>
+            <div className="relative w-full sm:w-64">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Cari nama peserta / NIM..."
+                className="w-full bg-slate-800 text-slate-200 text-xs pl-9 pr-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-800/90 text-slate-400 uppercase font-mono text-[10px]">
+                <tr>
+                  <th className="p-3">ID Peserta</th>
+                  <th className="p-3">Nama Lengkap</th>
+                  <th className="p-3">Satuan Pendidikan</th>
+                  <th className="p-3">Program Diklat</th>
+                  <th className="p-3">Kehadiran</th>
+                  <th className="p-3">Nilai Evaluasi</th>
+                  <th className="p-3 text-right">Status Sertifikat</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {[
+                  { id: "KDR-2026-001", name: "Andi Pratama, S.T.", inst: "Universitas Indonesia", prog: "PKKMB + PKBN 2026", attend: "100%", grade: "89.5 (Sangat Baik)", cert: "Terbit" },
+                  { id: "KDR-2026-002", name: "Siti Rahmawati", inst: "Institut Teknologi Bandung", prog: "Duta Bela Negara Kampus", attend: "98%", grade: "92.0 (Sangat Baik)", cert: "Terbit" },
+                  { id: "KDR-2026-003", name: "Budi Santoso", inst: "Universitas Gadjah Mada", prog: "PKKMB + PKBN 2026", attend: "95%", grade: "85.0 (Baik)", cert: "Terbit" },
+                  { id: "KDR-2026-004", name: "Dewi Anggraini", inst: "SMKN 1 Surabaya", prog: "Kemah Pramuka Saka Wira Kartika", attend: "100%", grade: "94.5 (Sangat Baik)", cert: "Terbit" },
+                  { id: "KDR-2026-005", name: "Fajri Hidayat", inst: "Universitas Airlangga", prog: "Sertifikasi Kader Pemuda", attend: "92%", grade: "81.0 (Baik)", cert: "Proses Verification" },
+                  { id: "KDR-2026-006", name: "Rina Wijaya", inst: "SMA Negeri 1 Medan", prog: "Kemah Pramuka Saka Wira Kartika", attend: "96%", grade: "88.0 (Sangat Baik)", cert: "Terbit" },
+                ].map((row) => (
+                  <tr key={row.id} className="hover:bg-slate-800/50 transition-colors">
+                    <td className="p-3 font-mono text-slate-400">{row.id}</td>
+                    <td className="p-3 font-semibold text-white">{row.name}</td>
+                    <td className="p-3 text-slate-300">{row.inst}</td>
+                    <td className="p-3 text-blue-400">{row.prog}</td>
+                    <td className="p-3 font-bold text-emerald-400">{row.attend}</td>
+                    <td className="p-3 font-bold text-yellow-400">{row.grade}</td>
+                    <td className="p-3 text-right">
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                        row.cert === "Terbit" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40" : "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+                      }`}>
+                        {row.cert}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Kalender Kegiatan */}
+      {activeSubTab === "kalender" && (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <h3 className="text-base font-bold text-white font-serif">Kalender Agenda Pembinaan Pendidikan 2026</h3>
+              <p className="text-xs text-slate-400">Jadwal pelaksanaan diklat, kemah kebangsaan, dan orientasi kampus</p>
+            </div>
+            <div className="text-xs bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 font-mono">
+              Agustus — September 2026
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { date: "15-18 Agu 2026", title: "Diklat Kader Bela Negara Maba UI", loc: "Balairung UI Depok", target: "8,500 Mahasiswa", status: "Berlangsung", color: "emerald" },
+              { date: "20-22 Agu 2026", title: "Kemah Pramuka Saka Wira Kartika SMA Jabar", loc: "Kiarapayung Sumedang", target: "1,200 Siswa", status: "Akan Datang", color: "blue" },
+              { date: "25-27 Agu 2026", title: "Orientasi Bela Negara ITB & Unpad", loc: "Kampus Jatinangor", target: "6,000 Mahasiswa", status: "Akan Datang", color: "blue" },
+              { date: "01-03 Sep 2026", title: "Pelatihan Instruktur Muda Kampus Se-Jateng", loc: "Kodam IV Semarang", target: "350 Instruktur", status: "Persiapan", color: "amber" },
+            ].map((ev, idx) => (
+              <div key={idx} className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-4 flex items-start space-x-3 hover:border-slate-600 transition-all">
+                <div className="p-2.5 bg-blue-950 text-blue-400 border border-blue-800 rounded-lg text-center font-mono text-xs shrink-0 w-24">
+                  <Calendar className="w-4 h-4 mx-auto mb-1 text-blue-400" />
+                  <span className="font-bold block text-[11px] leading-tight">{ev.date}</span>
+                </div>
+                <div className="space-y-1 flex-1">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-bold text-white text-xs">{ev.title}</h4>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      ev.status === "Berlangsung" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40" : "bg-blue-500/20 text-blue-400 border border-blue-500/40"
+                    }`}>
+                      {ev.status}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">Lokasi: {ev.loc}</div>
+                  <div className="text-[11px] text-yellow-400 font-semibold">Target: {ev.target}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Evaluasi Capaian */}
+      {activeSubTab === "evaluasi" && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center">
+              <div className="text-xs text-slate-400">Rata-rata Nilai Pre-Test</div>
+              <div className="text-2xl font-black text-amber-400 font-mono mt-1">62.4 / 100</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Pemahaman awal kesadaran</div>
+            </div>
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center">
+              <div className="text-xs text-slate-400">Rata-rata Nilai Post-Test</div>
+              <div className="text-2xl font-black text-emerald-400 font-mono mt-1">89.8 / 100</div>
+              <div className="text-[11px] text-emerald-400/80 mt-0.5">+27.4% Peningkatan Signifikan</div>
+            </div>
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center">
+              <div className="text-xs text-slate-400">Tingkat Kelulusan Sertifikasi</div>
+              <div className="text-2xl font-black text-blue-400 font-mono mt-1">96.2%</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Lulus dengan predikat Sangat Baik / Baik</div>
+            </div>
+          </div>
+
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+            <h3 className="text-base font-bold text-white font-serif">Ringkasan Indikator Keberhasilan Pembinaan</h3>
+            <div className="space-y-3 text-xs">
+              <div>
+                <div className="flex justify-between text-slate-300 mb-1">
+                  <span>Pemahaman 5 Nilai Dasar Bela Negara</span>
+                  <span className="font-bold text-emerald-400">92%</span>
+                </div>
+                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div className="bg-emerald-500 h-full w-[92%]"></div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between text-slate-300 mb-1">
+                  <span>Kedisiplinan & Sikap Kebangsaan</span>
+                  <span className="font-bold text-blue-400">88%</span>
+                </div>
+                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div className="bg-blue-500 h-full w-[88%]"></div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between text-slate-300 mb-1">
+                  <span>Kesiapsiagaan Fisik & Mental</span>
+                  <span className="font-bold text-yellow-400">85%</span>
+                </div>
+                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div className="bg-yellow-500 h-full w-[85%]"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab 4: Certificate Generator */}
       {activeSubTab === "sertifikat" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
