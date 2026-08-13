@@ -51,9 +51,11 @@ import {
 
 interface LeafletOperationalMapProps {
   provinces?: ProvinceData[];
+  programs?: ProgramItem[];
   selectedProvince?: ProvinceData | null;
   onSelectProvince?: (prov: ProvinceData | null) => void;
   theme?: "dark" | "light";
+  externalSearchQuery?: string;
 }
 
 // Tile Layer Configuration
@@ -172,11 +174,67 @@ function MapFlyController({ center, zoom }: { center: [number, number]; zoom: nu
 }
 
 export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
+  programs,
   selectedProvince: parentSelectedProvince,
   onSelectProvince,
   theme = "dark",
+  externalSearchQuery = "",
 }) => {
   const isDark = theme === "dark";
+
+  // Combine static mock operational events with live programs added dynamically by Kodam/Pusat
+  const allOperationalEvents = React.useMemo(() => {
+    if (!programs || programs.length === 0) return mockOperationalEvents;
+
+    const dynamicEvents: OperationalPKBNEvent[] = programs.map((p, idx) => {
+      const matchedProv = mockExecutiveProvinces.find(
+        (ep) =>
+          ep.name.toLowerCase().includes(p.province.toLowerCase()) ||
+          p.province.toLowerCase().includes(ep.name.toLowerCase())
+      );
+      const baseLatLng = matchedProv
+        ? matchedProv.latLng
+        : { lat: -6.9175, lng: 107.6191 };
+
+      const latJitter = ((idx % 7) - 3) * 0.12;
+      const lngJitter = (((idx * 5) % 7) - 3) * 0.15;
+
+      const dateObj = new Date(p.startDate || "2026-08-15");
+      const monthNum = isNaN(dateObj.getMonth()) ? 8 : dateObj.getMonth() + 1;
+
+      return {
+        id: p.id,
+        code: p.code,
+        name: p.title,
+        sector: p.sector,
+        subCategory: (p.subCategory as TargetSubCategory) || "Organisasi",
+        organizer: p.organizer,
+        province: p.province,
+        regency: p.regency,
+        latLng: {
+          lat: baseLatLng.lat + latJitter,
+          lng: baseLatLng.lng + lngJitter,
+        },
+        date: p.startDate,
+        month: monthNum,
+        participantCount: p.participantCount,
+        targetCount: p.targetCount,
+        instructor: p.instructorName,
+        status:
+          p.status === "Berlangsung"
+            ? "Berlangsung"
+            : p.status === "Selesai"
+            ? "Selesai"
+            : "Akan datang",
+        documentationText: p.description,
+        kodam: p.kodamOrigin || "Kodam",
+      };
+    });
+
+    const existingIds = new Set(mockOperationalEvents.map((e) => e.id));
+    const newItems = dynamicEvents.filter((e) => !existingIds.has(e.id));
+    return [...newItems, ...mockOperationalEvents];
+  }, [programs]);
 
   // Map View Mode: 'titik' | 'heatmap' | 'coverage' | 'bubble'
   const [mapMode, setMapMode] = useState<"titik" | "heatmap" | "coverage" | "bubble">("titik");
@@ -188,8 +246,24 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
 
   // Selected Province Detail for Right Panel
   const [selectedExecutiveProvince, setSelectedExecutiveProvince] = useState<ExecutiveProvinceDetail | null>(
-    mockExecutiveProvinces[0] // Default Sumatera Barat
+    mockExecutiveProvinces[0] // Default #1 Ranked Region (DKI Jakarta)
   );
+
+  // Sync parentSelectedProvince if passed from outside
+  useEffect(() => {
+    if (parentSelectedProvince) {
+      const matched = mockExecutiveProvinces.find(
+        (ep) =>
+          ep.id === parentSelectedProvince.id ||
+          ep.name.toLowerCase() === parentSelectedProvince.name.toLowerCase()
+      );
+      if (matched) {
+        setSelectedExecutiveProvince(matched);
+        setMapCenter([matched.latLng.lat, matched.latLng.lng]);
+        setMapZoom(7);
+      }
+    }
+  }, [parentSelectedProvince]);
 
   // Selected Event Marker
   const [selectedEvent, setSelectedEvent] = useState<OperationalPKBNEvent | null>(
@@ -257,7 +331,7 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
   };
 
   // Filtered Events based on Timeline + Search + Layers
-  const filteredEvents = mockOperationalEvents.filter((ev) => {
+  const filteredEvents = allOperationalEvents.filter((ev) => {
     // 1. Month timeline filter
     if (ev.month > timelineMonth) return false;
 
@@ -278,14 +352,16 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
     if (ev.status === "Berlangsung" && !layerFilters.kegiatanBerjalan) return false;
     if (ev.status === "Selesai" && !layerFilters.kegiatanSelesai) return false;
 
-    // 5. Search query
-    if (searchQuery.trim() !== "") {
-      const q = searchQuery.toLowerCase();
+    // 5. Search query (combines header search and map local search)
+    const activeQuery = (externalSearchQuery || searchQuery).trim();
+    if (activeQuery !== "") {
+      const q = activeQuery.toLowerCase();
       const matchName = ev.name.toLowerCase().includes(q);
       const matchProv = ev.province.toLowerCase().includes(q);
       const matchReg = ev.regency.toLowerCase().includes(q);
       const matchOrg = ev.organizer.toLowerCase().includes(q);
-      if (!matchName && !matchProv && !matchReg && !matchOrg) return false;
+      const matchSector = ev.sector?.toLowerCase().includes(q);
+      if (!matchName && !matchProv && !matchReg && !matchOrg && !matchSector) return false;
     }
 
     return true;

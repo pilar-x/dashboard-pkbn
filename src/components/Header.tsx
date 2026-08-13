@@ -12,6 +12,7 @@ import {
   Globe,
   RefreshCw,
   LogOut,
+  X,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -25,6 +26,7 @@ interface HeaderProps {
   setTheme: (theme: "dark" | "light") => void;
   onOpenNotifications: () => void;
   onOpenUpload: () => void;
+  unreadNotifCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -38,6 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
   setTheme,
   onOpenNotifications,
   onOpenUpload,
+  unreadNotifCount = 2,
 }) => {
 
   return (
@@ -65,20 +68,29 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Quick Search */}
-          <div className="flex-1 max-w-md mx-4 hidden md:block">
-            <div className="relative">
+          <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md mx-1 sm:mx-4">
+            <div className="relative flex items-center">
               <Search className={`w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 ${theme === "dark" ? "text-slate-400" : "text-slate-500"}`} />
               <input
                 type="text"
                 placeholder="Cari program, sekolah, instansi, ormas, atau wilayah..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full text-xs pl-9 pr-4 py-2 rounded-xl border focus:outline-none focus:border-emerald-500 transition-all ${
+                className={`w-full text-xs pl-9 pr-8 py-2 rounded-xl border focus:outline-none focus:border-emerald-500 transition-all ${
                   theme === "dark"
                     ? "bg-slate-800/90 text-slate-200 border-slate-700/80 placeholder-slate-500"
                     : "bg-slate-100 text-slate-800 border-slate-300 placeholder-slate-400"
                 }`}
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-slate-700/50 text-slate-400 hover:text-white transition-colors"
+                  title="Hapus Pencarian"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -132,7 +144,11 @@ export const Header: React.FC<HeaderProps> = ({
               title="Notifikasi System Realtime"
             >
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-slate-900"></span>
+              {unreadNotifCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-emerald-500 text-slate-950 font-bold font-mono text-[10px] w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-slate-900 animate-pulse">
+                  {unreadNotifCount}
+                </span>
+              )}
             </button>
 
             {/* User Login Badge & Switch Account Button */}

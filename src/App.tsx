@@ -21,7 +21,7 @@ import { DataMasterView } from "./components/views/DataMasterView";
 import { InputKodamView } from "./components/views/InputKodamView";
 import { AiAssistantModal } from "./components/views/AiAssistantModal";
 import { UploadModal } from "./components/modals/UploadModal";
-import { NotificationDrawer } from "./components/modals/NotificationDrawer";
+import { NotificationDrawer, NotificationItem } from "./components/modals/NotificationDrawer";
 import { ProvinceDetailModal } from "./components/modals/ProvinceDetailModal";
 import { LoginModal } from "./components/modals/LoginModal";
 import { LoginPage } from "./components/auth/LoginPage";
@@ -65,15 +65,95 @@ export default function App() {
 
   // State data
   const [nationalKpi, setNationalKpi] = useState(initialNationalKPI);
-  const [provinces] = useState(provinceList);
+  const [provinces, setProvinces] = useState(provinceList);
   const [programs, setPrograms] = useState(initialPrograms);
   const [institutions] = useState(initialInstitutions);
   const [instructors] = useState(initialInstructors);
-  const [calendarEvents] = useState(initialCalendarEvents);
+  const [calendarEvents, setCalendarEvents] = useState(initialCalendarEvents);
+
+  // Realtime system notifications
+  const [notifications, setNotifications] = useState<NotificationItem[]>([
+    {
+      id: "N1",
+      title: "Verifikasi Laporan Bulanan Jabar",
+      desc: "Laporan PKBN Kodam III/Siliwangi telah disetujui oleh PABAN IV/PKBN.",
+      time: "10 menit lalu",
+      type: "success",
+      unread: true,
+    },
+    {
+      id: "N2",
+      title: "Peringatan Batas Target Kampung PKBN",
+      desc: "Wilayah Papua Keerom membutuhkan pengiriman instruktur tambahan.",
+      time: "1 jam lalu",
+      type: "warning",
+      unread: true,
+    },
+    {
+      id: "N3",
+      title: "Pendaftaran Kampus UI & ITB",
+      desc: "1.200 Mahasiswa Baru resmi terdaftar di Sistem Sertifikasi PKBN 2026.",
+      time: "3 jam lalu",
+      type: "info",
+      unread: false,
+    },
+  ]);
 
   const handleAddProgram = (newProg: ProgramItem) => {
+    // 1. Add to programs list
     setPrograms((prev) => [newProg, ...prev]);
-    // Recalculate KPI
+
+    // 2. Update matching province KPI
+    setProvinces((prev) =>
+      prev.map((prov) => {
+        if (
+          prov.name.toLowerCase().includes(newProg.province.toLowerCase()) ||
+          newProg.province.toLowerCase().includes(prov.name.toLowerCase())
+        ) {
+          return {
+            ...prov,
+            totalEvents: prov.totalEvents + 1,
+            totalParticipants: prov.totalParticipants + newProg.participantCount,
+            status: "Sangat Tinggi" as const,
+          };
+        }
+        return prov;
+      })
+    );
+
+    // 3. Add to Calendar Agenda Events
+    const newCalEvent = {
+      id: `CAL-${newProg.id}`,
+      title: newProg.title,
+      sector: newProg.sector,
+      date: newProg.startDate || "2026-08-15",
+      time: "08:00 - 16:00 WIB",
+      location: `${newProg.regency}, ${newProg.province}`,
+      province: newProg.province,
+      status: (newProg.status === "Berlangsung"
+        ? "Berlangsung"
+        : newProg.status === "Selesai"
+        ? "Selesai"
+        : "Rencana") as any,
+      capacity: newProg.targetCount || 300,
+      registered: newProg.participantCount || 250,
+    };
+    setCalendarEvents((prev) => [newCalEvent, ...prev]);
+
+    // 4. Send Realtime Notification to STERAD Pusat
+    const newNotif: NotificationItem = {
+      id: `NOTIF-${Date.now()}`,
+      title: `Laporan Baru ${newProg.kodamOrigin || "Kodam"}`,
+      desc: `Laporan '${newProg.title}' (${newProg.sector} - ${newProg.participantCount.toLocaleString(
+        "id-ID"
+      )} orang) di ${newProg.province} tersinkron otomatis ke Pusat STERAD.`,
+      time: "Baru saja",
+      type: "success",
+      unread: true,
+    };
+    setNotifications((prev) => [newNotif, ...prev]);
+
+    // 5. Recalculate National KPI
     setNationalKpi((prev) => ({
       ...prev,
       totalProgram: prev.totalProgram + 1,
@@ -86,12 +166,21 @@ export default function App() {
   };
 
   // Filtered programs based on search query
-  const filteredPrograms = programs.filter(
-    (p) =>
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.province.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.organizer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPrograms = programs.filter((p) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      p.title.toLowerCase().includes(q) ||
+      p.province.toLowerCase().includes(q) ||
+      p.regency.toLowerCase().includes(q) ||
+      p.organizer.toLowerCase().includes(q) ||
+      p.sector.toLowerCase().includes(q) ||
+      p.code.toLowerCase().includes(q) ||
+      (p.subCategory && p.subCategory.toLowerCase().includes(q)) ||
+      (p.instructorName && p.instructorName.toLowerCase().includes(q)) ||
+      (p.kodamOrigin && p.kodamOrigin.toLowerCase().includes(q))
+    );
+  });
 
   const handleSelectProvince = (prov: ProvinceData | null) => {
     setSelectedProvince(prov);
@@ -120,6 +209,7 @@ export default function App() {
         setTheme={setTheme}
         onOpenNotifications={() => setIsNotificationOpen(true)}
         onOpenUpload={() => setIsUploadModalOpen(true)}
+        unreadNotifCount={notifications.filter((n) => n.unread).length}
       />
 
       {/* Main Body Layout */}
@@ -135,6 +225,29 @@ export default function App() {
 
         {/* View Content Area */}
         <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
+          {searchQuery && (
+            <div className={`mb-4 p-3 rounded-xl border flex items-center justify-between text-xs animate-fadeIn ${
+              theme === "dark"
+                ? "bg-amber-950/40 border-amber-800/80 text-amber-200"
+                : "bg-amber-50 border-amber-300 text-amber-900 shadow-sm font-semibold"
+            }`}>
+              <div className="flex items-center space-x-2">
+                <span className="font-bold font-mono uppercase bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40">
+                  FILTER PENCARIAN AKTIF
+                </span>
+                <span>
+                  Menampilkan hasil untuk: <strong>"{searchQuery}"</strong> ({filteredPrograms.length} kegiatan cocok)
+                </span>
+              </div>
+              <button
+                onClick={() => setSearchQuery("")}
+                className="underline font-bold text-amber-400 hover:text-amber-300 ml-4 shrink-0"
+              >
+                Hapus Filter
+              </button>
+            </div>
+          )}
+
           {activeTab === "beranda" && (
             <BerandaView
               kpi={nationalKpi}
@@ -146,6 +259,7 @@ export default function App() {
               onNavigate={setActiveTab}
               onOpenAiAssistant={() => setIsAiModalOpen(true)}
               theme={theme}
+              searchQuery={searchQuery}
             />
           )}
 
@@ -156,15 +270,26 @@ export default function App() {
               instructors={instructors}
               events={calendarEvents}
               theme={theme}
+              searchQuery={searchQuery}
             />
           )}
 
           {activeTab === "pekerjaan" && (
-            <PekerjaanView programs={filteredPrograms} institutions={institutions} theme={theme} />
+            <PekerjaanView
+              programs={filteredPrograms}
+              institutions={institutions}
+              theme={theme}
+              searchQuery={searchQuery}
+            />
           )}
 
           {activeTab === "masyarakat" && (
-            <MasyarakatView programs={filteredPrograms} institutions={institutions} theme={theme} />
+            <MasyarakatView
+              programs={filteredPrograms}
+              institutions={institutions}
+              theme={theme}
+              searchQuery={searchQuery}
+            />
           )}
 
           {activeTab === "monitoring" && (
@@ -174,6 +299,7 @@ export default function App() {
               selectedProvince={selectedProvince}
               onSelectProvince={handleSelectProvince}
               theme={theme}
+              searchQuery={searchQuery}
             />
           )}
 
@@ -189,6 +315,7 @@ export default function App() {
               onAddProgram={handleAddProgram}
               onDeleteProgram={handleDeleteProgram}
               theme={theme}
+              searchQuery={searchQuery}
             />
           )}
 
@@ -215,6 +342,9 @@ export default function App() {
       <NotificationDrawer
         isOpen={isNotificationOpen}
         onClose={() => setIsNotificationOpen(false)}
+        notifications={notifications}
+        onMarkAllRead={() => setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })))}
+        onClearAll={() => setNotifications([])}
       />
 
       {/* Province Map Click Detail Modal */}

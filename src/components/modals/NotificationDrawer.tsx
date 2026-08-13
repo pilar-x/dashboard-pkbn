@@ -1,7 +1,7 @@
 import React from "react";
 import { X, Bell, CheckCircle2, ShieldAlert, FileText, UserCheck, Trash2 } from "lucide-react";
 
-interface NotificationItem {
+export interface NotificationItem {
   id: string;
   title: string;
   desc: string;
@@ -13,10 +13,19 @@ interface NotificationItem {
 interface NotificationDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  notifications?: NotificationItem[];
+  onMarkAllRead?: () => void;
+  onClearAll?: () => void;
 }
 
-export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, onClose }) => {
-  const [notifications, setNotifications] = React.useState<NotificationItem[]>([
+export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
+  isOpen,
+  onClose,
+  notifications: propsNotifications,
+  onMarkAllRead,
+  onClearAll,
+}) => {
+  const [internalNotifications, setInternalNotifications] = React.useState<NotificationItem[]>([
     {
       id: "N1",
       title: "Verifikasi Laporan Bulanan Jabar",
@@ -51,14 +60,24 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ isOpen, 
     },
   ]);
 
+  const notifications = propsNotifications || internalNotifications;
+
   if (!isOpen) return null;
 
   const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+    if (onMarkAllRead) {
+      onMarkAllRead();
+    } else {
+      setInternalNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+    }
   };
 
   const clearAll = () => {
-    setNotifications([]);
+    if (onClearAll) {
+      onClearAll();
+    } else {
+      setInternalNotifications([]);
+    }
   };
 
   return (

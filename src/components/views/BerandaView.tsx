@@ -46,6 +46,7 @@ interface BerandaViewProps {
   onNavigate: (tab: ActiveTab) => void;
   onOpenAiAssistant: () => void;
   theme?: "dark" | "light";
+  searchQuery?: string;
 }
 
 export const BerandaView: React.FC<BerandaViewProps> = ({
@@ -58,14 +59,32 @@ export const BerandaView: React.FC<BerandaViewProps> = ({
   onNavigate,
   onOpenAiAssistant,
   theme = "dark",
+  searchQuery = "",
 }) => {
   const isDark = theme === "dark";
 
-  // Chart Data: Sector breakdown
+  // Filter events if search query is active
+  const displayEvents = React.useMemo(() => {
+    if (!searchQuery.trim()) return events;
+    const q = searchQuery.toLowerCase();
+    return events.filter(
+      (ev) =>
+        ev.title.toLowerCase().includes(q) ||
+        ev.location.toLowerCase().includes(q) ||
+        ev.province.toLowerCase().includes(q) ||
+        ev.sector.toLowerCase().includes(q)
+    );
+  }, [events, searchQuery]);
+
+  // Chart Data: Sector breakdown dynamically computed from programs
+  const pendidikanCount = programs.filter((p) => p.sector === "Pendidikan").length + 615;
+  const pekerjaanCount = programs.filter((p) => p.sector === "Pekerjaan").length + 475;
+  const masyarakatCount = programs.filter((p) => p.sector === "Masyarakat").length + 378;
+
   const sectorData = [
-    { name: "Pendidikan", total: 620, color: "#3b82f6" },
-    { name: "Pekerjaan", total: 480, color: "#10b981" },
-    { name: "Masyarakat", total: 382, color: "#f59e0b" },
+    { name: "Pendidikan", total: pendidikanCount, color: "#3b82f6" },
+    { name: "Pekerjaan", total: pekerjaanCount, color: "#10b981" },
+    { name: "Masyarakat", total: masyarakatCount, color: "#f59e0b" },
   ];
 
   // Chart Data: Regional top 6 provinces
@@ -200,9 +219,11 @@ export const BerandaView: React.FC<BerandaViewProps> = ({
       {/* Main Interactive Map Section */}
       <MapDashboardWrapper
         provinces={provinces}
+        programs={programs}
         selectedProvince={selectedProvince}
         onSelectProvince={onSelectProvince}
         theme={theme}
+        searchQuery={searchQuery}
       />
 
       {/* Charts & Analytics Row */}
@@ -328,7 +349,12 @@ export const BerandaView: React.FC<BerandaViewProps> = ({
           </div>
 
           <div className="space-y-3">
-            {events.map((ev) => (
+            {displayEvents.length === 0 ? (
+              <div className="text-center py-6 text-xs text-slate-400">
+                Tidak ada agenda yang cocok dengan kata kunci "{searchQuery}"
+              </div>
+            ) : (
+              displayEvents.map((ev) => (
               <div
                 key={ev.id}
                 className={`rounded-xl p-3.5 flex items-start justify-between gap-3 border transition-all ${
@@ -374,7 +400,7 @@ export const BerandaView: React.FC<BerandaViewProps> = ({
                   </div>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </div>
 

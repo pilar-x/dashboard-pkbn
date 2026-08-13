@@ -28,6 +28,7 @@ interface InputKodamViewProps {
   onAddProgram: (newProg: ProgramItem) => void;
   onDeleteProgram?: (id: string) => void;
   theme?: "dark" | "light";
+  searchQuery?: string;
 }
 
 export const listKodam = [
@@ -35,6 +36,7 @@ export const listKodam = [
   { id: "kodam-5", name: "Kodam V/Brawijaya", province: "Jawa Timur", capital: "Surabaya" },
   { id: "kodam-jaya", name: "Kodam Jaya / Jayakarta", province: "DKI Jakarta", capital: "Jakarta" },
   { id: "kodam-4", name: "Kodam IV/Diponegoro", province: "Jawa Tengah", capital: "Semarang" },
+  { id: "kodam-20", name: "Kodam XX/TIB", province: "Sumatera Barat", capital: "Padang" },
   { id: "kodam-1", name: "Kodam I/Bukit Barisan", province: "Sumatera Utara", capital: "Medan" },
   { id: "kodam-2", name: "Kodam II/Sriwijaya", province: "Sumatera Selatan", capital: "Palembang" },
   { id: "kodam-6", name: "Kodam VI/Mulawarman", province: "Kalimantan Timur", capital: "Balikpapan" },
@@ -53,6 +55,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
   onAddProgram,
   onDeleteProgram,
   theme = "dark",
+  searchQuery: externalSearchQuery = "",
 }) => {
   const isDark = theme === "dark";
 
@@ -85,6 +88,8 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
   const [listFilterType, setListFilterType] = useState<"semua" | "Program Rutin" | "Non-Program / Inisiatif">("semua");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const activeQuery = (externalSearchQuery || searchQuery).trim().toLowerCase();
+
   // Get programs for currently selected Kodam
   const kodamPrograms = programs.filter(
     (p) =>
@@ -97,9 +102,10 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
     const matchesType =
       listFilterType === "semua" || (p.programType || "Program Rutin") === listFilterType;
     const matchesSearch =
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.regency.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.organizer.toLowerCase().includes(searchQuery.toLowerCase());
+      !activeQuery ||
+      p.title.toLowerCase().includes(activeQuery) ||
+      p.regency.toLowerCase().includes(activeQuery) ||
+      p.organizer.toLowerCase().includes(activeQuery);
     return matchesType && matchesSearch;
   });
 

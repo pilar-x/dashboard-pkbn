@@ -20,6 +20,7 @@ interface MonitoringViewProps {
   selectedProvince: ProvinceData | null;
   onSelectProvince: (prov: ProvinceData | null) => void;
   theme?: "dark" | "light";
+  searchQuery?: string;
 }
 
 export const MonitoringView: React.FC<MonitoringViewProps> = ({
@@ -28,6 +29,7 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
   selectedProvince,
   onSelectProvince,
   theme = "dark",
+  searchQuery = "",
 }) => {
   const isDark = theme === "dark";
   const [statusFilter, setStatusFilter] = useState<string>("Semua");
@@ -53,8 +55,16 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
     },
   ];
 
+  const q = searchQuery.trim().toLowerCase();
+
   const filteredPrograms = programs.filter(
-    (p) => statusFilter === "Semua" || p.status === statusFilter
+    (p) =>
+      (statusFilter === "Semua" || p.status === statusFilter) &&
+      (!q ||
+        p.title.toLowerCase().includes(q) ||
+        p.province.toLowerCase().includes(q) ||
+        p.organizer.toLowerCase().includes(q) ||
+        p.code.toLowerCase().includes(q))
   );
 
   return (
@@ -105,8 +115,10 @@ export const MonitoringView: React.FC<MonitoringViewProps> = ({
       {/* Map Sebaran */}
       <MapDashboardWrapper
         provinces={provinces}
+        programs={programs}
         selectedProvince={selectedProvince}
         onSelectProvince={onSelectProvince}
+        searchQuery={searchQuery}
       />
 
       {/* Real-time Status Table & Live Feed Panel */}

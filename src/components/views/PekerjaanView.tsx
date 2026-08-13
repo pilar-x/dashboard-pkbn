@@ -17,22 +17,38 @@ interface PekerjaanViewProps {
   programs: ProgramItem[];
   institutions: InstitutionItem[];
   theme?: "dark" | "light";
+  searchQuery?: string;
 }
 
 export const PekerjaanView: React.FC<PekerjaanViewProps> = ({
   programs,
   institutions,
   theme = "dark",
+  searchQuery = "",
 }) => {
   const isDark = theme === "dark";
   const [activeSubTab, setActiveSubTab] = useState<"instansi" | "program" | "sertifikasi">("instansi");
   const [filterType, setFilterType] = useState<string>("Semua");
 
+  const q = searchQuery.trim().toLowerCase();
+
   const jobInstitutions = institutions.filter(
-    (i) => i.category === "Instansi Pemerintah" || i.category === "BUMN" || i.category === "Swasta"
+    (i) =>
+      (i.category === "Instansi Pemerintah" || i.category === "BUMN" || i.category === "Swasta") &&
+      (!q ||
+        i.name.toLowerCase().includes(q) ||
+        i.province.toLowerCase().includes(q) ||
+        i.contactPerson.toLowerCase().includes(q))
   );
 
-  const jobPrograms = programs.filter((p) => p.sector === "Pekerjaan");
+  const jobPrograms = programs.filter(
+    (p) =>
+      p.sector === "Pekerjaan" &&
+      (!q ||
+        p.title.toLowerCase().includes(q) ||
+        p.organizer.toLowerCase().includes(q) ||
+        p.province.toLowerCase().includes(q))
+  );
 
   return (
     <div className="space-y-6">

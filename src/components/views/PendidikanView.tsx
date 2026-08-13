@@ -28,6 +28,7 @@ interface PendidikanViewProps {
   instructors: InstructorItem[];
   events: CalendarEvent[];
   theme?: "dark" | "light";
+  searchQuery?: string;
 }
 
 export const PendidikanView: React.FC<PendidikanViewProps> = ({
@@ -36,8 +37,12 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
   instructors,
   events,
   theme = "dark",
+  searchQuery = "",
 }) => {
   const isDark = theme === "dark";
+  const [localSearch, setLocalSearch] = useState("");
+
+  const activeQuery = (searchQuery || localSearch).trim().toLowerCase();
 
   const [activeSubTab, setActiveSubTab] = useState<
     "sekolah" | "program" | "peserta" | "instruktur" | "kalender" | "dokumentasi" | "evaluasi" | "sertifikat"
@@ -59,11 +64,24 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
 
   // Filter education institutions
   const eduInstitutions = institutions.filter(
-    (i) => i.category === "Sekolah" || i.category === "Perguruan Tinggi"
+    (i) => (i.category === "Sekolah" || i.category === "Perguruan Tinggi") &&
+      (!activeQuery ||
+        i.name.toLowerCase().includes(activeQuery) ||
+        i.province.toLowerCase().includes(activeQuery) ||
+        i.regency.toLowerCase().includes(activeQuery) ||
+        i.contactPerson.toLowerCase().includes(activeQuery))
   );
 
   // Filter education programs
-  const eduPrograms = programs.filter((p) => p.sector === "Pendidikan");
+  const eduPrograms = programs.filter(
+    (p) => p.sector === "Pendidikan" &&
+      (!activeQuery ||
+        p.title.toLowerCase().includes(activeQuery) ||
+        p.organizer.toLowerCase().includes(activeQuery) ||
+        p.province.toLowerCase().includes(activeQuery) ||
+        p.regency.toLowerCase().includes(activeQuery) ||
+        p.instructorName?.toLowerCase().includes(activeQuery))
+  );
 
   return (
     <div className="space-y-6">
@@ -215,6 +233,8 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
               <input
                 type="text"
                 placeholder="Cari nama kampus/sekolah..."
+                value={localSearch || searchQuery}
+                onChange={(e) => setLocalSearch(e.target.value)}
                 className={`w-full text-xs pl-9 pr-3 py-1.5 rounded-lg border focus:outline-none ${
                   isDark ? "bg-slate-800 text-slate-200 border-slate-700" : "bg-slate-100 text-slate-800 border-slate-300 font-medium"
                 }`}
@@ -313,6 +333,8 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
               <input
                 type="text"
                 placeholder="Cari nama peserta / NIM..."
+                value={localSearch || searchQuery}
+                onChange={(e) => setLocalSearch(e.target.value)}
                 className={`w-full text-xs pl-9 pr-3 py-1.5 rounded-lg border focus:outline-none ${
                   isDark ? "bg-slate-800 text-slate-200 border-slate-700" : "bg-slate-100 text-slate-800 border-slate-300 font-medium"
                 }`}
@@ -343,7 +365,9 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
                   { id: "KDR-2026-004", name: "Dewi Anggraini", inst: "SMKN 1 Surabaya", prog: "Kemah Pramuka Saka Wira Kartika", attend: "100%", grade: "94.5 (Sangat Baik)", cert: "Terbit" },
                   { id: "KDR-2026-005", name: "Fajri Hidayat", inst: "Universitas Airlangga", prog: "Sertifikasi Kader Pemuda", attend: "92%", grade: "81.0 (Baik)", cert: "Proses Verification" },
                   { id: "KDR-2026-006", name: "Rina Wijaya", inst: "SMA Negeri 1 Medan", prog: "Kemah Pramuka Saka Wira Kartika", attend: "96%", grade: "88.0 (Sangat Baik)", cert: "Terbit" },
-                ].map((row) => (
+                ]
+                .filter((r) => !activeQuery || r.name.toLowerCase().includes(activeQuery) || r.inst.toLowerCase().includes(activeQuery) || r.prog.toLowerCase().includes(activeQuery) || r.id.toLowerCase().includes(activeQuery))
+                .map((row) => (
                   <tr key={row.id} className={`transition-colors ${isDark ? "hover:bg-slate-800/50" : "hover:bg-slate-50"}`}>
                     <td className={`p-3 font-mono ${isDark ? "text-slate-400" : "text-slate-500 font-medium"}`}>{row.id}</td>
                     <td className={`p-3 font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>{row.name}</td>

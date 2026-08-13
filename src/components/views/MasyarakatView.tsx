@@ -15,18 +15,38 @@ interface MasyarakatViewProps {
   programs: ProgramItem[];
   institutions: InstitutionItem[];
   theme?: "dark" | "light";
+  searchQuery?: string;
 }
 
 export const MasyarakatView: React.FC<MasyarakatViewProps> = ({
   programs,
   institutions,
   theme = "dark",
+  searchQuery = "",
 }) => {
   const isDark = theme === "dark";
   const [activeTab, setActiveTab] = useState<"ormas" | "kampung" | "relawan">("kampung");
 
-  const communityPrograms = programs.filter((p) => p.sector === "Masyarakat");
-  const ormasList = institutions.filter((i) => i.category === "Ormas/Komunitas");
+  const q = searchQuery.trim().toLowerCase();
+
+  const communityPrograms = programs.filter(
+    (p) =>
+      p.sector === "Masyarakat" &&
+      (!q ||
+        p.title.toLowerCase().includes(q) ||
+        p.organizer.toLowerCase().includes(q) ||
+        p.province.toLowerCase().includes(q))
+  );
+
+  const ormasList = institutions.filter(
+    (i) =>
+      i.category === "Ormas/Komunitas" &&
+      (!q ||
+        i.name.toLowerCase().includes(q) ||
+        i.province.toLowerCase().includes(q) ||
+        i.regency.toLowerCase().includes(q) ||
+        i.contactPerson.toLowerCase().includes(q))
+  );
 
   const kampungList = [
     {
@@ -56,7 +76,14 @@ export const MasyarakatView: React.FC<MasyarakatViewProps> = ({
       volunteers: 510,
       focus: "Pembinaan Pemuda, Olahraga Tradisional, & Mitigasi Kebakaran",
     },
-  ];
+  ].filter(
+    (k) =>
+      !q ||
+      k.name.toLowerCase().includes(q) ||
+      k.province.toLowerCase().includes(q) ||
+      k.regency.toLowerCase().includes(q) ||
+      k.focus.toLowerCase().includes(q)
+  );
 
   return (
     <div className="space-y-6">
