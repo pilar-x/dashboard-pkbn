@@ -56,7 +56,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       <header className="relative z-10 border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-md px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3.5">
-            <KartikaEkaPaksiLogo className="w-10 h-12 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+            <KartikaEkaPaksiLogo className="h-12 w-auto shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
             <div>
               <h1 className="text-base sm:text-lg font-extrabold font-serif tracking-wider text-white flex items-center space-x-2">
                 <span>PORTAL RESMI PKBN</span>
@@ -93,7 +93,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               {/* Form Header Banner */}
               <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 p-6 border-b border-slate-800">
                 <div className="flex items-center space-x-4">
-                  <KartikaEkaPaksiLogo className="w-12 h-14 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+                  <KartikaEkaPaksiLogo className="h-14 w-auto shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
                   <div>
                     <h3 className="text-lg font-bold font-serif text-white tracking-wide">
                       Autentikasi Akses Sistem

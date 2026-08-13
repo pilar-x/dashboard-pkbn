@@ -82,7 +82,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
           )}
 
           <div className="flex items-center space-x-3 sm:space-x-4">
-            <KartikaEkaPaksiLogo className="w-11 h-12 sm:w-14 sm:h-16 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+            <KartikaEkaPaksiLogo className="h-12 w-auto sm:h-16 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
             <div className="pr-6">
               <div className="inline-flex items-center space-x-1.5 bg-emerald-900/80 border border-emerald-600 text-yellow-300 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase tracking-widest mb-1">
                 <Radio className="w-3 h-3 animate-pulse text-emerald-400" />

@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            <KartikaEkaPaksiLogo className="w-8 h-9 sm:w-10 sm:h-11 shrink-0 filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]" />
+            <KartikaEkaPaksiLogo className="h-9 w-auto sm:h-11 shrink-0 filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]" />
             <div className="truncate max-w-[100px] xs:max-w-[140px] sm:max-w-none">
               <div className="flex items-center space-x-1 sm:space-x-2">
                 <span className={`font-bold text-xs sm:text-base lg:text-lg tracking-tight font-serif truncate ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
