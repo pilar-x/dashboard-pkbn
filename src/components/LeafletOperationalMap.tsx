@@ -72,29 +72,17 @@ const TILE_LAYERS = {
 // Custom Military Tactical L.divIcon Creator
 function createMilitaryDivIcon(category: OperationalCategory, isSelected: boolean) {
   let colorClass = "bg-emerald-500 border-emerald-300 text-emerald-950 pulse-dot-green";
-  let badgeColor = "bg-emerald-900/90 text-emerald-200 border-emerald-700";
   let iconSymbol = "🛡️";
 
   if (category === "TNI") {
     colorClass = "bg-emerald-500 border-emerald-300 text-emerald-950 pulse-dot-green";
-    badgeColor = "bg-emerald-950/90 text-emerald-300 border-emerald-700";
     iconSymbol = "🎖️";
   } else if (category === "Polri") {
     colorClass = "bg-blue-500 border-blue-300 text-blue-950 pulse-dot-blue";
-    badgeColor = "bg-blue-950/90 text-blue-300 border-blue-700";
     iconSymbol = "👮";
   } else if (category === "Instansi Pemerintah") {
     colorClass = "bg-cyan-500 border-cyan-300 text-cyan-950 pulse-dot-blue";
-    badgeColor = "bg-cyan-950/90 text-cyan-300 border-cyan-700";
     iconSymbol = "🏛️";
-  } else if (category === "Faskes") {
-    colorClass = "bg-amber-500 border-amber-300 text-amber-950 pulse-dot-amber";
-    badgeColor = "bg-amber-950/90 text-amber-300 border-amber-700";
-    iconSymbol = "🏥";
-  } else if (category === "Objek Vital") {
-    colorClass = "bg-red-500 border-red-300 text-red-950 pulse-dot-red";
-    badgeColor = "bg-red-950/90 text-red-300 border-red-700";
-    iconSymbol = "⚡";
   }
 
   const selectedRing = isSelected ? "ring-4 ring-yellow-400 scale-125" : "";
@@ -128,7 +116,6 @@ function MapFlyController({ center, zoom }: { center: [number, number]; zoom: nu
 }
 
 export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () => {
-  const [tileMode, setTileMode] = useState<TileLayerMode>("dark");
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
   const [selectedLocation, setSelectedLocation] = useState<OperationalLocation | null>(
     mockOperationalLocations[0]
@@ -166,35 +153,14 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-2xl space-y-4 relative overflow-hidden">
       {/* Header & Title */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-        <div>
-          <div className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-xl bg-red-950 text-red-400 border border-red-800 flex items-center justify-center shrink-0">
-              <Crosshair className="w-5 h-5 animate-spin" style={{ animationDuration: "12s" }} />
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white font-serif tracking-wide flex items-center space-x-2">
-                <span>Peta Interaktif Operasional Real-Time (Leaflet.js)</span>
-                <span className="bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded text-[10px] font-mono uppercase">
-                  Taktis Militer
-                </span>
-              </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Sistem Peta Geografis Dislokasi Pasukan, Objek Vital Nasional, Faskes Rujukan, dan Checkpoint Operasional.
-              </p>
-            </div>
+      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center space-x-2.5">
+          <div className="w-8 h-8 rounded-xl bg-red-950 text-red-400 border border-red-800 flex items-center justify-center shrink-0">
+            <Radio className="w-4 h-4 animate-pulse text-red-500" />
           </div>
-        </div>
-
-        {/* Tile Layer Indicator */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-slate-400 font-semibold mr-1 hidden sm:inline">
-            Tile Layer:
-          </span>
-          <div className="px-3 py-1.5 rounded-xl text-xs font-medium border bg-slate-800 text-white border-red-500/80 shadow-md shadow-slate-950 flex items-center space-x-1.5">
-            <Globe className="w-3.5 h-3.5 text-red-400" />
-            <span>Mode Gelap (CartoDB Dark Matter)</span>
-          </div>
+          <h3 className="text-base font-bold text-white font-serif tracking-wide">
+            Peta Interaktif Monitoring Real-Time
+          </h3>
         </div>
       </div>
 
@@ -202,7 +168,7 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 text-xs">
         {/* Category Pills */}
         <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-          {["Semua", "TNI", "Polri", "Instansi Pemerintah", "Faskes", "Objek Vital"].map((cat) => (
+          {["Semua", "TNI", "Polri", "Instansi Pemerintah"].map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
@@ -253,9 +219,9 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
 
           {/* Active Tile Layer */}
           <TileLayer
-            url={TILE_LAYERS[tileMode].url}
-            attribution={TILE_LAYERS[tileMode].attribution}
-            maxZoom={TILE_LAYERS[tileMode].maxZoom}
+            url={TILE_LAYERS.dark.url}
+            attribution={TILE_LAYERS.dark.attribution}
+            maxZoom={TILE_LAYERS.dark.maxZoom}
           />
 
           {/* Location Markers */}
@@ -284,9 +250,7 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
                             ? "bg-emerald-950 text-emerald-300 border border-emerald-700"
                             : loc.category === "Polri"
                             ? "bg-blue-950 text-blue-300 border border-blue-700"
-                            : loc.category === "Faskes"
-                            ? "bg-amber-950 text-amber-300 border border-amber-700"
-                            : "bg-red-950 text-red-300 border border-red-700"
+                            : "bg-cyan-950 text-cyan-300 border border-cyan-700"
                         }`}
                       >
                         {loc.category}

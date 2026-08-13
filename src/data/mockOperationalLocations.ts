@@ -1,16 +1,14 @@
 export type OperationalCategory =
   | "TNI"
   | "Polri"
-  | "Instansi Pemerintah"
-  | "Faskes"
-  | "Objek Vital";
+  | "Instansi Pemerintah";
 
 export interface OperationalLocation {
   id: string;
   code: string;
   name: string;
   category: OperationalCategory;
-  typeDetail: string; // e.g. "Makodam III/Siliwangi", "RS Kartika Husada", "Kilang Pertamina"
+  typeDetail: string; // e.g. "Makodam III/Siliwangi"
   province: string;
   city: string;
   latLng: { lat: number; lng: number };
@@ -291,169 +289,6 @@ export const mockOperationalLocations: OperationalLocation[] = [
     vitalSecurityLevel: "Tinggi (A2)",
     description: "Pusat koordinasi pembinaan wawasan kebangsaan pemerintah provinsi Jawa Barat.",
     lastUpdated: "2026-08-12 09:00 WIB"
-  },
-
-  // FASKES
-  {
-    id: "med-01",
-    code: "MED-RST-01",
-    name: "RSPAD Gatot Soebroto Jakarta",
-    category: "Faskes",
-    typeDetail: "Rumah Sakit Pusat Angkatan Darat",
-    province: "DKI Jakarta",
-    city: "Jakarta Pusat",
-    latLng: { lat: -6.1772, lng: 106.8372 },
-    elevationMeters: 10,
-    status: "Siap Operasional",
-    personnelCount: 1200,
-    capacityCadres: 800,
-    picName: "Mayjen TNI Dr. dr. Purwanto, Sp.B",
-    picPhone: "+62 811-3311-224",
-    facilities: ["Unit Gawat Darurat Bencana", "Trauma Center 24/7", "Helipad Evakuasi Medis", "Bank Darah"],
-    vitalSecurityLevel: "Sangat Tinggi (A1)",
-    description: "Rumah sakit rujukan tertinggi pertahanan negara dan evakuasi darurat nasional.",
-    lastUpdated: "2026-08-12 14:00 WIB"
-  },
-  {
-    id: "med-02",
-    code: "MED-RST-02",
-    name: "RS Bhayangkara H.S. Samsoeri Mertojoso",
-    category: "Faskes",
-    typeDetail: "Rumah Sakit Polri Polda Jatim",
-    province: "Jawa Timur",
-    city: "Surabaya",
-    latLng: { lat: -7.3188, lng: 112.7312 },
-    elevationMeters: 8,
-    status: "Siap Operasional",
-    personnelCount: 650,
-    capacityCadres: 400,
-    picName: "Kombes Pol. dr. Martinus",
-    picPhone: "+62 812-8811-332",
-    facilities: ["Dekontaminasi Kimia/Biologi", "Ambulans VVIP Taktis", "Laboratorium DVI"],
-    vitalSecurityLevel: "Tinggi (A2)",
-    description: "Fasilitas kesehatan rujukan operasi kedaruratan dan penanggulangan bencana.",
-    lastUpdated: "2026-08-12 12:10 WIB"
-  },
-  {
-    id: "med-03",
-    code: "MED-RST-03",
-    name: "RS Dr. Ramelan Surabaya (RSTAL)",
-    category: "Faskes",
-    typeDetail: "Rumah Sakit Angkatan Laut",
-    province: "Jawa Timur",
-    city: "Surabaya",
-    latLng: { lat: -7.3092, lng: 112.7352 },
-    elevationMeters: 10,
-    status: "Siap Operasional",
-    personnelCount: 800,
-    capacityCadres: 500,
-    picName: "Laksma TNI dr. Sujatmiko",
-    picPhone: "+62 811-4455-221",
-    facilities: ["Chamber Hiperbarik Oksigen", "ICU Taktis Bencana", "Helipad"],
-    vitalSecurityLevel: "Tinggi (A2)",
-    description: "Pusat kesehatan kelautan & penyelamatan medis darurat ALKI.",
-    lastUpdated: "2026-08-12 10:45 WIB"
-  },
-
-  // OBJEK VITAL
-  {
-    id: "vit-01",
-    code: "VIT-ENG-01",
-    name: "Kilang Pertamina RU VI Balongan",
-    category: "Objek Vital",
-    typeDetail: "Kilang Minyak & Olahan Energi Nasional",
-    province: "Jawa Barat",
-    city: "Indramayu",
-    latLng: { lat: -6.3682, lng: 108.3882 },
-    elevationMeters: 5,
-    status: "Siap Operasional",
-    personnelCount: 1400,
-    capacityCadres: 600,
-    picName: "Ir. Hendri Satria",
-    picPhone: "+62 811-9900-112",
-    facilities: ["Sistem Pemadam Otomatis High-Power", "Pusat Radar Kebocoran", "Posko TNI/Polri Obvitnas"],
-    vitalSecurityLevel: "Sangat Tinggi (A1)",
-    description: "Infrastruktur vital energi pemasok kebutuhan BBM BBM Jabodetabek & Jawa Barat.",
-    lastUpdated: "2026-08-12 15:30 WIB"
-  },
-  {
-    id: "vit-02",
-    code: "VIT-IND-02",
-    name: "PT Pindad (Persero) Bandung",
-    category: "Objek Vital",
-    typeDetail: "Industri Pertahanan Nasional",
-    province: "Jawa Barat",
-    city: "Bandung",
-    latLng: { lat: -6.9422, lng: 107.6522 },
-    elevationMeters: 680,
-    status: "Siap Operasional",
-    personnelCount: 2200,
-    capacityCadres: 1000,
-    picName: "Dr. Abraham Mose",
-    picPhone: "+62 812-1100-998",
-    facilities: ["Pusat R&D Munisi & Ranpur", "Lapangan Tembak Uji Coba", "Zona Pengamanan Khusus"],
-    vitalSecurityLevel: "Sangat Tinggi (A1)",
-    description: "Produsen alutsista darat & kendaraan tempur pertahanan negara Indonesia.",
-    lastUpdated: "2026-08-12 13:20 WIB"
-  },
-  {
-    id: "vit-03",
-    code: "VIT-AIR-03",
-    name: "Bandara Internasional Soekarno-Hatta",
-    category: "Objek Vital",
-    typeDetail: "Gerbang Udara Utama Indonesia",
-    province: "Banten",
-    city: "Tangerang",
-    latLng: { lat: -6.1256, lng: 106.6558 },
-    elevationMeters: 10,
-    status: "Siap Operasional",
-    personnelCount: 3800,
-    capacityCadres: 2000,
-    picName: "Kombes Pol. Yudi Cahyono",
-    picPhone: "+62 811-2009-331",
-    facilities: ["Terminal Cargo Taktis", "Landasan Pacu 3 Runways", "Command Center Avsec"],
-    vitalSecurityLevel: "Sangat Tinggi (A1)",
-    description: "Infrastruktur perhubungan udara penerbangan nasional & internasional utama.",
-    lastUpdated: "2026-08-12 14:50 WIB"
-  },
-  {
-    id: "vit-04",
-    code: "VIT-POR-04",
-    name: "Pelabuhan Tanjung Priok",
-    category: "Objek Vital",
-    typeDetail: "Pelabuhan Laut Utama Logistik",
-    province: "DKI Jakarta",
-    city: "Jakarta Utara",
-    latLng: { lat: -6.1022, lng: 106.8822 },
-    elevationMeters: 2,
-    status: "Siap Operasional",
-    personnelCount: 2900,
-    capacityCadres: 1200,
-    picName: "Laksma TNI Agus Mulyadi",
-    picPhone: "+62 813-2211-009",
-    facilities: ["Terminal Petikemas Internasional", "Posko Keamanan Maritim", "Dermaga Khusus Militer"],
-    vitalSecurityLevel: "Sangat Tinggi (A1)",
-    description: "Urat nadi logistik kelautan ekspor-impor dan pasokan nasional.",
-    lastUpdated: "2026-08-12 11:30 WIB"
-  },
-  {
-    id: "vit-05",
-    code: "VIT-DAM-05",
-    name: "Waduk & PLTA Jatiluhur (Ir. H. Djuanda)",
-    category: "Objek Vital",
-    typeDetail: "Pembangkit Listrik & Ketahanan Air",
-    province: "Jawa Barat",
-    city: "Purwakarta",
-    latLng: { lat: -6.5222, lng: 107.3822 },
-    elevationMeters: 110,
-    status: "Siap Operasional",
-    personnelCount: 600,
-    capacityCadres: 500,
-    picName: "Ir. Ahmad Sanusi",
-    picPhone: "+62 812-7788-334",
-    facilities: ["Bendungan Utama 100m", "Pusat Kontrol Turbin PLTA", "Pos Pengamanan Obvitnas"],
-    vitalSecurityLevel: "Sangat Tinggi (A1)",
-    description: "Sumber pasokan air minum & energi listrik utama DKI Jakarta dan Jawa Barat.",
-    lastUpdated: "2026-08-12 10:15 WIB"
   }
 ];
+
