@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { UserSession } from "../../types";
 import { listKodam } from "../views/InputKodamView";
+import { KartikaEkaPaksiLogo } from "../KartikaEkaPaksiLogo";
 import {
   Shield,
   Lock,
@@ -81,9 +82,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
           )}
 
           <div className="flex items-center space-x-3 sm:space-x-4">
-            <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-900 border-2 border-yellow-400 flex items-center justify-center text-white shadow-xl shadow-emerald-950 shrink-0">
-              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-300" />
-            </div>
+            <KartikaEkaPaksiLogo className="w-11 h-12 sm:w-14 sm:h-16 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
             <div className="pr-6">
               <div className="inline-flex items-center space-x-1.5 bg-emerald-900/80 border border-emerald-600 text-yellow-300 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase tracking-widest mb-1">
                 <Radio className="w-3 h-3 animate-pulse text-emerald-400" />

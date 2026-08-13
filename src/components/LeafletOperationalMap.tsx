@@ -126,29 +126,29 @@ function createEventStatusDivIcon(
   });
 }
 
-// Custom Marker Creator for Coverage Map (Tingkat Cakupan Wilayah)
+// Custom Marker Creator for Coverage Map (Tingkat Capaian PKBN Per Kodam)
 function createCoverageDivIcon(province: ExecutiveProvinceDetail, isSelected: boolean) {
   let colorBg = "bg-emerald-600 border-emerald-300 text-white";
   let labelText = `${province.targetPercent}%`;
 
   if (province.coverageCategory === "Sangat Tinggi") {
-    colorBg = "bg-emerald-600 border-emerald-300 text-white pulse-dot-green";
+    colorBg = "bg-emerald-600 border-emerald-300 text-white font-bold pulse-dot-green";
   } else if (province.coverageCategory === "Tinggi") {
-    colorBg = "bg-lime-500 border-lime-200 text-slate-900";
+    colorBg = "bg-lime-500 border-lime-200 text-slate-950 font-bold";
   } else if (province.coverageCategory === "Sedang") {
-    colorBg = "bg-yellow-500 border-yellow-200 text-slate-900 pulse-dot-amber";
+    colorBg = "bg-yellow-400 border-yellow-200 text-slate-950 font-bold pulse-dot-amber";
   } else if (province.coverageCategory === "Rendah") {
-    colorBg = "bg-red-500 border-red-200 text-white pulse-dot-red";
+    colorBg = "bg-red-600 border-red-300 text-white font-bold pulse-dot-red";
   } else if (province.coverageCategory === "Belum Terjangkau") {
     colorBg = "bg-slate-600 border-slate-400 text-slate-200 opacity-80";
   }
 
-  const selectedRing = isSelected ? "ring-4 ring-amber-400 scale-125" : "";
+  const selectedRing = isSelected ? "ring-4 ring-amber-400 scale-125 z-50" : "";
 
   const html = `
     <div class="relative group flex flex-col items-center justify-center cursor-pointer">
-      <div class="px-2 py-1 rounded-lg ${colorBg} ${selectedRing} border shadow-lg text-[10px] font-mono font-bold whitespace-nowrap transition-transform transform group-hover:scale-110">
-        ${province.name.split(" ")[0]} ${labelText}
+      <div class="px-2.5 py-1 rounded-lg ${colorBg} ${selectedRing} border shadow-xl text-[10px] font-mono font-bold whitespace-nowrap transition-transform transform group-hover:scale-110">
+        ${province.name} ${labelText}
       </div>
     </div>
   `;
@@ -156,9 +156,9 @@ function createCoverageDivIcon(province: ExecutiveProvinceDetail, isSelected: bo
   return L.divIcon({
     html,
     className: "custom-coverage-marker",
-    iconSize: [60, 24],
-    iconAnchor: [30, 12],
-    popupAnchor: [0, -12],
+    iconSize: [110, 26],
+    iconAnchor: [55, 13],
+    popupAnchor: [0, -13],
   });
 }
 
@@ -863,31 +863,54 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
 
 
         {/* Floating Legend Overlay (Bottom Left) */}
-        <div className="absolute bottom-16 left-3 z-[400] bg-slate-950/90 backdrop-blur-md border border-slate-800 rounded-xl p-3 text-[11px] text-slate-200 shadow-2xl max-w-xs space-y-2 pointer-events-auto hidden sm:block">
+        <div className="absolute bottom-16 left-3 z-[400] bg-slate-950/95 backdrop-blur-md border border-slate-800 rounded-xl p-3 text-[11px] text-slate-200 shadow-2xl max-w-xs space-y-2 pointer-events-auto hidden sm:block">
           <div className="font-bold text-white flex items-center justify-between border-b border-slate-800 pb-1 font-serif">
-            <span>Legenda Status Operational Map</span>
+            <span>
+              {mapMode === "titik" ? "Legenda Status Kegiatan" : "Legenda Capaian PKBN Kodam"}
+            </span>
           </div>
-          <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px]">
-            <div className="flex items-center space-x-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-dot-green"></span>
-              <span>🟢 Selesai</span>
+          {mapMode === "titik" ? (
+            <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px]">
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-dot-green"></span>
+                <span>🟢 Selesai</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-dot-amber"></span>
+                <span>🟡 Berlangsung</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500 pulse-dot-blue"></span>
+                <span>🔵 Akan Datang</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 pulse-dot-red"></span>
+                <span>🔴 Ditunda</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-dot-amber"></span>
-              <span>🟡 Berlangsung</span>
+          ) : (
+            <div className="grid grid-cols-2 gap-x-2.5 gap-y-1.5 text-[10px]">
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 pulse-dot-green"></span>
+                <span>🟢 &gt;85% (Sangat Tinggi)</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-lime-500"></span>
+                <span>🟢 70-85% (Tinggi)</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 pulse-dot-amber"></span>
+                <span>🟡 50-69% (Sedang)</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-600 pulse-dot-red"></span>
+                <span>🔴 &lt;50% (Rendah)</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-500 pulse-dot-blue"></span>
-              <span>🔵 Akan Datang</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 pulse-dot-red"></span>
-              <span>🔴 Ditunda</span>
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* 5. Right Side Panel: PANEL INFORMASI WILAYAH (Klik Provinsi) */}
+        {/* 5. Right Side Panel: PANEL INFORMASI KODAM (Klik Marker Kodam) */}
         {selectedExecutiveProvince && (
           <div className="absolute top-3 right-3 bottom-16 w-80 sm:w-96 z-[400] bg-slate-950/95 backdrop-blur-md border border-slate-800 rounded-2xl p-4 text-xs text-slate-200 shadow-2xl overflow-y-auto pointer-events-auto animate-fadeIn space-y-3.5">
             {/* Header Panel */}
@@ -898,10 +921,10 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
                 </div>
                 <div>
                   <span className="text-[10px] text-amber-400 font-mono block">
-                    PANEL INFORMASI WILAYAH
+                    PANEL INFORMASI KODAM
                   </span>
                   <h4 className="text-base font-bold text-white font-serif tracking-wide uppercase">
-                    {selectedExecutiveProvince.name}
+                    {selectedExecutiveProvince.name} ({selectedExecutiveProvince.kodam})
                   </h4>
                 </div>
               </div>
@@ -1057,9 +1080,9 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
             <div className="flex items-center justify-between border-b pb-2 mb-3 border-slate-200 dark:border-slate-800">
               <div className="flex items-center space-x-2">
                 <Award className="w-4 h-4 text-amber-500" />
-                <h4 className="font-bold font-serif text-sm">Top 10 Ranking Wilayah Teraktif</h4>
+                <h4 className="font-bold font-serif text-sm">Top 10 Ranking Kodam Teraktif</h4>
               </div>
-              <span className="text-[10px] text-slate-500">Klik provinsi untuk sorotan</span>
+              <span className="text-[10px] text-slate-500">Klik Kodam untuk sorotan</span>
             </div>
 
             <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">

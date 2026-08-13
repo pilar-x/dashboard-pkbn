@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ProgramItem, SectorType, ProgramStatus } from "../../types";
+import { KartikaEkaPaksiLogo } from "../KartikaEkaPaksiLogo";
 import {
   Shield,
   FileEdit,
@@ -172,9 +173,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
       }`}>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-start space-x-3.5">
-            <div className="p-3 bg-red-950 border border-red-700/80 rounded-xl text-red-400 shrink-0 shadow-inner">
-              <Shield className="w-7 h-7 text-yellow-400" />
-            </div>
+            <KartikaEkaPaksiLogo className="w-10 h-12 shrink-0 filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]" />
             <div>
               <div className="flex items-center space-x-2">
                 <span className="bg-red-800 text-yellow-300 text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase tracking-wider">

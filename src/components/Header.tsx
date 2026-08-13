@@ -1,5 +1,6 @@
 import React from "react";
 import { UserSession } from "../types";
+import { KartikaEkaPaksiLogo } from "./KartikaEkaPaksiLogo";
 import {
   Shield,
   Bell,
@@ -72,9 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-emerald-600 via-emerald-700 to-green-900 flex items-center justify-center shadow-lg shadow-emerald-950/40 border border-emerald-500/30 shrink-0">
-              <Shield className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400" />
-            </div>
+            <KartikaEkaPaksiLogo className="w-8 h-9 sm:w-10 sm:h-11 shrink-0 filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]" />
             <div className="truncate max-w-[100px] xs:max-w-[140px] sm:max-w-none">
               <div className="flex items-center space-x-1 sm:space-x-2">
                 <span className={`font-bold text-xs sm:text-base lg:text-lg tracking-tight font-serif truncate ${theme === "dark" ? "text-white" : "text-slate-900"}`}>

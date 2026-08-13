@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { UserSession } from "../../types";
 import { listKodam } from "../views/InputKodamView";
+import { KartikaEkaPaksiLogo } from "../KartikaEkaPaksiLogo";
 import {
   Shield,
   User,
@@ -55,9 +56,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       <header className="relative z-10 border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-md px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 via-emerald-800 to-green-950 border-2 border-yellow-500/80 flex items-center justify-center text-yellow-300 shadow-lg shadow-emerald-950/80">
-              <Shield className="w-6 h-6" />
-            </div>
+            <KartikaEkaPaksiLogo className="w-10 h-12 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
             <div>
               <h1 className="text-base sm:text-lg font-extrabold font-serif tracking-wider text-white flex items-center space-x-2">
                 <span>PORTAL RESMI PKBN</span>
@@ -94,9 +93,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               {/* Form Header Banner */}
               <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 p-6 border-b border-slate-800">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-900 border border-yellow-500/80 flex items-center justify-center text-yellow-300 shadow-md shrink-0">
-                    <Shield className="w-7 h-7" />
-                  </div>
+                  <KartikaEkaPaksiLogo className="w-12 h-14 shrink-0 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
                   <div>
                     <h3 className="text-lg font-bold font-serif text-white tracking-wide">
                       Autentikasi Akses Sistem
