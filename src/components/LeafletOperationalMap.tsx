@@ -311,8 +311,8 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
           </div>
           <div>
-            <span className="font-mono font-bold text-red-400 block text-[11px]">
-              LIVE MONITORING TAKTIS LEAFLET
+            <span className="font-mono font-bold text-red-400 block text-[11px] tracking-wider">
+              LIVE MONITORING
             </span>
             <span className="text-[10px] text-slate-400">
               {filteredLocations.length} Titik Lokasi Terdeteksi
@@ -326,7 +326,7 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
             <span>Legenda Objek Taktis</span>
             <span className="text-[10px] text-red-400 font-mono">MILITARY</span>
           </div>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px]">
+          <div className="grid grid-cols-3 gap-x-3 gap-y-1 text-[10px]">
             <div className="flex items-center space-x-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-dot-green"></span>
               <span>🎖️ TNI</span>
@@ -338,14 +338,6 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = () =>
             <div className="flex items-center space-x-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 pulse-dot-blue"></span>
               <span>🏛️ Instansi</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 pulse-dot-amber"></span>
-              <span>🏥 Faskes</span>
-            </div>
-            <div className="flex items-center space-x-1.5 col-span-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 pulse-dot-red"></span>
-              <span>⚡ Objek Vital Nasional</span>
             </div>
           </div>
         </div>
