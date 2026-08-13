@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo & Brand Title */}
           <div className="flex items-center space-x-3 shrink-0">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-red-600 via-red-700 to-red-900 flex items-center justify-center shadow-lg shadow-red-900/30 border border-red-500/30">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-600 via-emerald-700 to-green-900 flex items-center justify-center shadow-lg shadow-emerald-950/40 border border-emerald-500/30">
               <Shield className="w-6 h-6 text-yellow-400" />
             </div>
             <div>
@@ -54,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className={`font-bold text-lg tracking-tight font-serif ${theme === "dark" ? "text-white" : "text-slate-900"}`}>
                   DASHBOARD PKBN
                 </span>
-                <span className="bg-red-950/80 text-red-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-red-800/60 uppercase tracking-wider">
+                <span className="bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-emerald-800/60 uppercase tracking-wider">
                   SPABAN IV/PKBN STERAD
                 </span>
               </div>
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
                 placeholder="Cari program, sekolah, instansi, ormas, atau wilayah..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full text-xs pl-9 pr-4 py-2 rounded-xl border focus:outline-none focus:border-red-500 transition-all ${
+                className={`w-full text-xs pl-9 pr-4 py-2 rounded-xl border focus:outline-none focus:border-emerald-500 transition-all ${
                   theme === "dark"
                     ? "bg-slate-800/90 text-slate-200 border-slate-700/80 placeholder-slate-500"
                     : "bg-slate-100 text-slate-800 border-slate-300 placeholder-slate-400"
@@ -94,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
               title="Unggah Foto atau Dokumen PKBN"
             >
-              <Upload className="w-4 h-4 text-red-500" />
+              <Upload className="w-4 h-4 text-emerald-500" />
               <span className="hidden md:inline">Unggah</span>
             </button>
 
@@ -114,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* AI Assistant Button */}
             <button
               onClick={onOpenAiAssistant}
-              className="flex items-center space-x-1.5 bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-md hover:shadow-red-900/40 transition-all active:scale-95"
+              className="flex items-center space-x-1.5 bg-gradient-to-r from-emerald-700 to-green-900 hover:from-emerald-600 hover:to-green-800 text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-md hover:shadow-emerald-950/40 transition-all active:scale-95"
               title="Tanya Asisten AI PKBN / Kurikulum / SWOT"
             >
               <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
@@ -132,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Notifikasi System Realtime"
             >
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-slate-900"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-slate-900"></span>
             </button>
 
             {/* User Login Badge & Switch Account Button */}
@@ -144,15 +144,15 @@ export const Header: React.FC<HeaderProps> = ({
                     ? "bg-amber-950/90 border-amber-500 text-amber-300 hover:bg-amber-900"
                     : "bg-amber-50 border-amber-400 text-amber-900 hover:bg-amber-100 font-bold"
                   : theme === "dark"
-                  ? "bg-red-950/90 border-red-500 text-red-200 hover:bg-red-900"
-                  : "bg-red-50 border-red-300 text-red-900 hover:bg-red-100 font-bold"
+                  ? "bg-emerald-950/90 border-emerald-500 text-emerald-200 hover:bg-emerald-900"
+                  : "bg-emerald-50 border-emerald-300 text-emerald-900 hover:bg-emerald-100 font-bold"
               }`}
               title="Klik untuk ganti akun login (Pusat / Kodam)"
             >
               {currentSession.role === "kodam" ? (
                 <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
               ) : (
-                <Globe className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
+                <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               )}
 
               <div className="text-left hidden sm:block leading-tight">
@@ -174,12 +174,12 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onLogout}
               className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all shadow-sm active:scale-95 group ${
                 theme === "dark"
-                  ? "bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border-red-500/40 hover:border-red-500"
-                  : "bg-red-50 hover:bg-red-600 text-red-800 hover:text-white border-red-300 hover:border-red-600 font-bold"
+                  ? "bg-emerald-950/50 hover:bg-emerald-800 text-emerald-300 hover:text-white border-emerald-700/60 hover:border-emerald-500"
+                  : "bg-emerald-50 hover:bg-emerald-700 text-emerald-800 hover:text-white border-emerald-300 hover:border-emerald-700 font-bold"
               }`}
               title="Keluar / Exit Dashboard ke Menu Login"
             >
-              <LogOut className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:text-white transition-colors" />
+              <LogOut className="w-4 h-4 text-emerald-500 dark:text-emerald-400 group-hover:text-white transition-colors" />
               <span className="hidden md:inline">Exit Dashboard</span>
             </button>
           </div>

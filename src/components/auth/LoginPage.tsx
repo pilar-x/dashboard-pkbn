@@ -11,12 +11,6 @@ import {
   Globe,
   Radio,
   Lock,
-  Sparkles,
-  Award,
-  ChevronRight,
-  Server,
-  Activity,
-  MapPin,
 } from "lucide-react";
 
 interface LoginPageProps {
@@ -51,23 +45,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col justify-between relative overflow-hidden font-sans selection:bg-red-500 selection:text-white">
+    <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col justify-between relative overflow-hidden font-sans selection:bg-emerald-600 selection:text-white">
       {/* Background Military Grid Decor */}
       <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-red-900/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-950/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-amber-900/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Navbar Header */}
       <header className="relative z-10 border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-md px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 via-red-800 to-red-950 border-2 border-yellow-500/80 flex items-center justify-center text-yellow-300 shadow-lg shadow-red-950/80">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 via-emerald-800 to-green-950 border-2 border-yellow-500/80 flex items-center justify-center text-yellow-300 shadow-lg shadow-emerald-950/80">
               <Shield className="w-6 h-6" />
             </div>
             <div>
               <h1 className="text-base sm:text-lg font-extrabold font-serif tracking-wider text-white flex items-center space-x-2">
                 <span>PORTAL RESMI PKBN</span>
-                <span className="text-[10px] font-mono bg-red-950 border border-red-700 text-yellow-400 px-2 py-0.5 rounded uppercase">
+                <span className="text-[10px] font-mono bg-emerald-950 border border-emerald-700 text-yellow-400 px-2 py-0.5 rounded uppercase">
                   v2.6
                 </span>
               </h1>
@@ -92,56 +86,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
       {/* Main Content Body */}
       <main className="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-6 md:p-10">
-        <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          {/* Left Hero / Information Side */}
-          <div className="lg:col-span-5 space-y-6 text-left">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-950 to-slate-900 border border-red-700/80 text-yellow-300 text-xs font-mono font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
-              <Award className="w-4 h-4 text-amber-400" />
-              <span>DASHBOARD MONITORING NASIONAL</span>
-            </div>
-
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug font-serif">
-                Sistem Pembinaan Ketahanan Bela Negara
-              </h2>
-              <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-                Platform terintegrasi pengawasan, rekapitulasi, dan pelaporan program PKBN di seluruh 38 Provinsi & 15 Kodam Se-Indonesia.
-              </p>
-            </div>
-
-            {/* Quick Stat Highlights */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="p-3.5 bg-slate-900/90 border border-slate-800 rounded-2xl">
-                <div className="text-2xl font-black text-amber-400 font-mono">15 KODAM</div>
-                <div className="text-[11px] text-slate-400 font-medium mt-0.5">Wilayah Komando Akses Input</div>
-              </div>
-              <div className="p-3.5 bg-slate-900/90 border border-slate-800 rounded-2xl">
-                <div className="text-2xl font-black text-emerald-400 font-mono">38 PROVINSI</div>
-                <div className="text-[11px] text-slate-400 font-medium mt-0.5">Cakupan Rekapitulasi Nasional</div>
-              </div>
-            </div>
-
-            <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-2xl space-y-2 text-xs text-slate-400">
-              <div className="flex items-center space-x-2 text-slate-200 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Otorisasi Berjenjang (Pusat & Kodam)</span>
-              </div>
-              <div className="flex items-center space-x-2 text-slate-200 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Pelaporan Real-time Program Rutin / Non-Program</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Card Login Form */}
-          <div className="lg:col-span-7">
+        <div className="w-full max-w-xl mx-auto">
+          {/* Card Login Form */}
+          <div>
             <div className="bg-slate-900/95 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
               
               {/* Form Header Banner */}
-              <div className="bg-gradient-to-r from-red-950 via-slate-900 to-red-950 p-6 border-b border-slate-800">
+              <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 p-6 border-b border-slate-800">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-red-900 border border-yellow-500/80 flex items-center justify-center text-yellow-300 shadow-md shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-900 border border-yellow-500/80 flex items-center justify-center text-yellow-300 shadow-md shrink-0">
                     <Shield className="w-7 h-7" />
                   </div>
                   <div>
@@ -169,12 +122,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       onClick={() => setSelectedRole("pusat")}
                       className={`p-3.5 rounded-2xl border text-left flex items-start space-x-3 transition-all ${
                         selectedRole === "pusat"
-                          ? "bg-red-950/90 border-red-500 ring-2 ring-red-500/50 text-white shadow-lg shadow-red-950/50"
+                          ? "bg-emerald-950/90 border-emerald-500 ring-2 ring-emerald-500/50 text-white shadow-lg shadow-emerald-950/50"
                           : "bg-slate-800/40 border-slate-700/80 text-slate-400 hover:bg-slate-800/80"
                       }`}
                     >
                       <div className={`p-2 rounded-xl shrink-0 ${
-                        selectedRole === "pusat" ? "bg-red-800 text-yellow-300" : "bg-slate-700 text-slate-400"
+                        selectedRole === "pusat" ? "bg-emerald-800 text-yellow-300" : "bg-slate-700 text-slate-400"
                       }`}>
                         <Globe className="w-5 h-5" />
                       </div>
@@ -258,7 +211,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         placeholder="Nama/Pangkat Operator"
-                        className="w-full bg-slate-800/90 text-white text-xs pl-9 pr-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500 font-mono"
+                        className="w-full bg-slate-800/90 text-white text-xs pl-9 pr-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-emerald-500 font-mono"
                         required
                       />
                     </div>
@@ -274,7 +227,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-slate-800/90 text-white text-xs pl-9 pr-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500 font-mono"
+                        className="w-full bg-slate-800/90 text-white text-xs pl-9 pr-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-emerald-500 font-mono"
                       />
                     </div>
                   </div>
@@ -284,7 +237,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-red-700 via-red-800 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold text-xs tracking-wider uppercase shadow-xl shadow-red-950/80 border border-red-500/80 flex items-center justify-center space-x-2.5 transition-all active:scale-[0.98] group cursor-pointer"
+                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-700 via-emerald-800 to-green-900 hover:from-emerald-600 hover:to-green-800 text-white font-bold text-xs tracking-wider uppercase shadow-xl shadow-emerald-950/80 border border-emerald-500/80 flex items-center justify-center space-x-2.5 transition-all active:scale-[0.98] group cursor-pointer"
                   >
                     <CheckCircle2 className="w-5 h-5 text-yellow-300" />
                     <span>MASUK KE DASHBOARD {selectedRole === "pusat" ? "PUSAT" : selectedKodam.name.toUpperCase()}</span>

@@ -784,21 +784,7 @@ export const LeafletOperationalMap: React.FC<LeafletOperationalMapProps> = ({
             })}
         </MapContainer>
 
-        {/* Floating Top Left Badge: Active Status Counter */}
-        <div className="absolute top-3 left-3 z-[400] bg-slate-950/90 border border-slate-800 rounded-xl p-2.5 shadow-2xl backdrop-blur-md text-xs text-slate-200 flex items-center space-x-3 pointer-events-auto">
-          <div className="relative flex items-center justify-center">
-            <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </div>
-          <div>
-            <span className="font-mono font-bold text-emerald-400 block text-[11px] tracking-wider">
-              {filteredEvents.length} Titik Kegiatan Terpantau
-            </span>
-            <span className="text-[10px] text-slate-400">
-              Periode sampai: {monthNames[timelineMonth - 1]} 2026
-            </span>
-          </div>
-        </div>
+
 
         {/* Floating Legend Overlay (Bottom Left) */}
         <div className="absolute bottom-16 left-3 z-[400] bg-slate-950/90 backdrop-blur-md border border-slate-800 rounded-xl p-3 text-[11px] text-slate-200 shadow-2xl max-w-xs space-y-2 pointer-events-auto hidden sm:block">

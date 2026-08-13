@@ -111,8 +111,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all group ${
                 isActive
                   ? isDark
-                    ? "bg-red-900/60 text-white font-semibold border border-red-700/60 shadow-lg shadow-red-950/40"
-                    : "bg-red-700 text-white font-bold border border-red-800 shadow-md"
+                    ? "bg-emerald-900/60 text-white font-semibold border border-emerald-700/60 shadow-lg shadow-emerald-950/40"
+                    : "bg-emerald-700 text-white font-bold border border-emerald-800 shadow-md"
                   : isDark
                   ? "hover:bg-slate-800/80 hover:text-slate-100 text-slate-400"
                   : "hover:bg-slate-200/80 hover:text-slate-900 text-slate-700 font-semibold"
@@ -140,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <div
                     className={`text-[10px] truncate ${
                       isActive
-                        ? isDark ? "text-red-200" : "text-red-100 font-medium"
+                        ? isDark ? "text-emerald-200" : "text-emerald-100 font-medium"
                         : isDark ? "text-slate-500" : "text-slate-600 font-medium"
                     }`}
                   >
@@ -175,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </p>
         <button
           onClick={onOpenAiAssistant}
-          className="w-full bg-gradient-to-r from-red-700 to-red-800 hover:from-red-600 hover:to-red-700 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center space-x-1.5 transition-all shadow-md active:scale-95"
+          className="w-full bg-gradient-to-r from-emerald-700 to-green-800 hover:from-emerald-600 hover:to-green-700 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center space-x-1.5 transition-all shadow-md active:scale-95"
         >
           <span>Mulai Konsultasi AI</span>
         </button>
@@ -188,11 +188,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={onLogout}
             className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-sm active:scale-95 group ${
               isDark
-                ? "border-red-500/50 bg-red-950/40 hover:bg-red-900/80 text-red-300 hover:text-white"
-                : "border-red-300 bg-red-50 hover:bg-red-100 text-red-800 hover:text-red-900 shadow-sm"
+                ? "border-emerald-600/50 bg-emerald-950/40 hover:bg-emerald-900/80 text-emerald-300 hover:text-white"
+                : "border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 hover:text-emerald-900 shadow-sm"
             }`}
           >
-            <LogOut className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-yellow-300 transition-colors" />
+            <LogOut className="w-4 h-4 text-emerald-500 dark:text-emerald-400 group-hover:text-yellow-300 transition-colors" />
             <span>Keluar / Exit Dashboard</span>
           </button>
         </div>
