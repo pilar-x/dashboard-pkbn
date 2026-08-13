@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ProgramItem, SectorType, ProgramStatus } from "../../types";
+import React, { useState, useEffect } from "react";
+import { ProgramItem, SectorType, ProgramStatus, UserSession } from "../../types";
 import { KartikaEkaPaksiLogo } from "../KartikaEkaPaksiLogo";
 import {
   Shield,
@@ -22,6 +22,7 @@ import {
   Trash2,
   RefreshCw,
   Award,
+  Lock,
 } from "lucide-react";
 
 interface InputKodamViewProps {
@@ -30,6 +31,7 @@ interface InputKodamViewProps {
   onDeleteProgram?: (id: string) => void;
   theme?: "dark" | "light";
   searchQuery?: string;
+  userSession?: UserSession;
 }
 
 export const listKodam = [
@@ -57,11 +59,29 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
   onDeleteProgram,
   theme = "dark",
   searchQuery: externalSearchQuery = "",
+  userSession,
 }) => {
   const isDark = theme === "dark";
 
+  // Check if current logged-in user is an Operator Kodam
+  const isOperatorKodam = userSession?.role === "kodam";
+  const userKodamId = isOperatorKodam
+    ? userSession?.kodamId || listKodam.find((k) => k.name === userSession?.kodamName)?.id || "kodam-3"
+    : null;
+
   // Selected Kodam state
-  const [selectedKodamId, setSelectedKodamId] = useState<string>("kodam-3");
+  const [selectedKodamId, setSelectedKodamId] = useState<string>(() => {
+    if (isOperatorKodam && userKodamId) return userKodamId;
+    return "kodam-3";
+  });
+
+  // Keep selectedKodamId locked to user's logged-in Kodam if logged in as Operator Kodam
+  useEffect(() => {
+    if (isOperatorKodam && userKodamId) {
+      setSelectedKodamId(userKodamId);
+    }
+  }, [isOperatorKodam, userKodamId]);
+
   const selectedKodam = listKodam.find((k) => k.id === selectedKodamId) || listKodam[0];
 
   // Active sub tab (Form Input vs List Laporan)
@@ -193,7 +213,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
             </div>
           </div>
 
-          {/* Kodam Switcher Select */}
+          {/* Kodam Switcher Select or Lock Badge */}
           <div className={`flex items-center space-x-2 p-2 rounded-xl border ${
             isDark ? "bg-slate-800/80 border-slate-700/80" : "bg-slate-100 border-slate-300 shadow-sm"
           }`}>
@@ -201,23 +221,39 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
             <span className={`text-xs font-semibold whitespace-nowrap hidden sm:inline ${
               isDark ? "text-slate-300" : "text-slate-700 font-bold"
             }`}>
-              Login Sebagai:
+              {isOperatorKodam ? "Akun Wilayah Kodam:" : "Login Sebagai:"}
             </span>
-            <select
-              value={selectedKodamId}
-              onChange={(e) => setSelectedKodamId(e.target.value)}
-              className={`text-xs font-bold font-mono px-3 py-1.5 rounded-lg border focus:outline-none focus:border-red-500 cursor-pointer ${
-                isDark
-                  ? "bg-slate-900 text-yellow-400 border-slate-700"
-                  : "bg-white text-slate-900 border-slate-300 shadow-sm"
-              }`}
-            >
-              {listKodam.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.name} ({k.province})
-                </option>
-              ))}
-            </select>
+
+            {isOperatorKodam ? (
+              <div
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg font-mono font-bold text-xs border ${
+                  isDark
+                    ? "bg-amber-950/70 text-amber-300 border-amber-600/60"
+                    : "bg-amber-100 text-amber-900 border-amber-300"
+                }`}
+                title="Terkunci sesuai akun Operator Kodam yang aktif. Gunakan 'Ganti Akun' di menu atas jika ingin berpindah."
+              >
+                <Lock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span>{selectedKodam.name}</span>
+                <span className="text-[10px] opacity-75 font-normal ml-1">({selectedKodam.province})</span>
+              </div>
+            ) : (
+              <select
+                value={selectedKodamId}
+                onChange={(e) => setSelectedKodamId(e.target.value)}
+                className={`text-xs font-bold font-mono px-3 py-1.5 rounded-lg border focus:outline-none focus:border-red-500 cursor-pointer ${
+                  isDark
+                    ? "bg-slate-900 text-yellow-400 border-slate-700"
+                    : "bg-white text-slate-900 border-slate-300 shadow-sm"
+                }`}
+              >
+                {listKodam.map((k) => (
+                  <option key={k.id} value={k.id}>
+                    {k.name} ({k.province})
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
         </div>
 

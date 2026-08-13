@@ -321,6 +321,7 @@ export default function App() {
               onDeleteProgram={handleDeleteProgram}
               theme={theme}
               searchQuery={searchQuery}
+              userSession={userSession}
             />
           )}
 
