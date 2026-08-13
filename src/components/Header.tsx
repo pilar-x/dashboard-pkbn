@@ -140,15 +140,19 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onOpenLoginModal}
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all shadow-sm ${
                 currentSession.role === "kodam"
-                  ? "bg-amber-950/90 border-amber-500 text-amber-300 hover:bg-amber-900"
-                  : "bg-red-950/90 border-red-500 text-red-200 hover:bg-red-900"
+                  ? theme === "dark"
+                    ? "bg-amber-950/90 border-amber-500 text-amber-300 hover:bg-amber-900"
+                    : "bg-amber-50 border-amber-400 text-amber-900 hover:bg-amber-100 font-bold"
+                  : theme === "dark"
+                  ? "bg-red-950/90 border-red-500 text-red-200 hover:bg-red-900"
+                  : "bg-red-50 border-red-300 text-red-900 hover:bg-red-100 font-bold"
               }`}
               title="Klik untuk ganti akun login (Pusat / Kodam)"
             >
               {currentSession.role === "kodam" ? (
-                <Building2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <Building2 className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
               ) : (
-                <Globe className="w-4 h-4 text-red-400 shrink-0" />
+                <Globe className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
               )}
 
               <div className="text-left hidden sm:block leading-tight">
@@ -157,21 +161,25 @@ export const Header: React.FC<HeaderProps> = ({
                     ? currentSession.kodamName || "Operator Kodam"
                     : "PABAN IV/PKBN (PUSAT)"}
                 </div>
-                <div className="text-[9px] text-slate-300/80 font-mono">
+                <div className={`text-[9px] font-mono ${theme === "dark" ? "text-slate-300/80" : "text-slate-600"}`}>
                   Ganti Akun
                 </div>
               </div>
 
-              <RefreshCw className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <RefreshCw className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" />
             </button>
 
             {/* Exit Dashboard Button */}
             <button
               onClick={onLogout}
-              className="flex items-center space-x-1.5 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-2 rounded-xl border border-red-500/40 hover:border-red-500 text-xs font-bold transition-all shadow-sm active:scale-95 group"
+              className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all shadow-sm active:scale-95 group ${
+                theme === "dark"
+                  ? "bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border-red-500/40 hover:border-red-500"
+                  : "bg-red-50 hover:bg-red-600 text-red-800 hover:text-white border-red-300 hover:border-red-600 font-bold"
+              }`}
               title="Keluar / Exit Dashboard ke Menu Login"
             >
-              <LogOut className="w-4 h-4 text-red-400 group-hover:text-white transition-colors" />
+              <LogOut className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:text-white transition-colors" />
               <span className="hidden md:inline">Exit Dashboard</span>
             </button>
           </div>

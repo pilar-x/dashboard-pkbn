@@ -189,15 +189,23 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
           </div>
 
           {/* Kodam Switcher Select */}
-          <div className="flex items-center space-x-2 bg-slate-800/80 p-2 rounded-xl border border-slate-700/80">
-            <Building2 className="w-4 h-4 text-amber-400 shrink-0 ml-1" />
-            <span className="text-xs font-semibold text-slate-300 whitespace-nowrap hidden sm:inline">
+          <div className={`flex items-center space-x-2 p-2 rounded-xl border ${
+            isDark ? "bg-slate-800/80 border-slate-700/80" : "bg-slate-100 border-slate-300 shadow-sm"
+          }`}>
+            <Building2 className="w-4 h-4 text-amber-500 shrink-0 ml-1" />
+            <span className={`text-xs font-semibold whitespace-nowrap hidden sm:inline ${
+              isDark ? "text-slate-300" : "text-slate-700 font-bold"
+            }`}>
               Login Sebagai:
             </span>
             <select
               value={selectedKodamId}
               onChange={(e) => setSelectedKodamId(e.target.value)}
-              className="bg-slate-900 text-yellow-400 text-xs font-bold font-mono px-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-red-500 cursor-pointer"
+              className={`text-xs font-bold font-mono px-3 py-1.5 rounded-lg border focus:outline-none focus:border-red-500 cursor-pointer ${
+                isDark
+                  ? "bg-slate-900 text-yellow-400 border-slate-700"
+                  : "bg-white text-slate-900 border-slate-300 shadow-sm"
+              }`}
             >
               {listKodam.map((k) => (
                 <option key={k.id} value={k.id}>
@@ -209,22 +217,32 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
         </div>
 
         {/* Kodam Quick Stats Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-800/80 text-xs">
-          <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-            <span className="text-slate-400 text-[11px] block">Kodam Terpilih</span>
-            <span className="font-bold text-slate-100 font-serif text-sm">{selectedKodam.name}</span>
+        <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 mt-5 pt-4 border-t text-xs ${
+          isDark ? "border-slate-800/80" : "border-slate-200"
+        }`}>
+          <div className={`p-3 rounded-xl border ${
+            isDark ? "bg-slate-950/60 border-slate-800" : "bg-slate-50 border-slate-200 shadow-sm"
+          }`}>
+            <span className={`text-[11px] block ${isDark ? "text-slate-400" : "text-slate-600 font-semibold"}`}>Kodam Terpilih</span>
+            <span className={`font-bold font-serif text-sm ${isDark ? "text-slate-100" : "text-slate-900"}`}>{selectedKodam.name}</span>
           </div>
-          <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-            <span className="text-slate-400 text-[11px] block">Wilayah / Ibu Kota</span>
-            <span className="font-bold text-amber-400 font-mono text-xs">{selectedKodam.province} ({selectedKodam.capital})</span>
+          <div className={`p-3 rounded-xl border ${
+            isDark ? "bg-slate-950/60 border-slate-800" : "bg-slate-50 border-slate-200 shadow-sm"
+          }`}>
+            <span className={`text-[11px] block ${isDark ? "text-slate-400" : "text-slate-600 font-semibold"}`}>Wilayah / Ibu Kota</span>
+            <span className="font-bold text-amber-600 dark:text-amber-400 font-mono text-xs">{selectedKodam.province} ({selectedKodam.capital})</span>
           </div>
-          <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-            <span className="text-slate-400 text-[11px] block">Total Terinput</span>
-            <span className="font-bold text-emerald-400 font-mono text-sm">{kodamPrograms.length} Kegiatan</span>
+          <div className={`p-3 rounded-xl border ${
+            isDark ? "bg-slate-950/60 border-slate-800" : "bg-slate-50 border-slate-200 shadow-sm"
+          }`}>
+            <span className={`text-[11px] block ${isDark ? "text-slate-400" : "text-slate-600 font-semibold"}`}>Total Terinput</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">{kodamPrograms.length} Kegiatan</span>
           </div>
-          <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-            <span className="text-slate-400 text-[11px] block">Total Peserta Terdata</span>
-            <span className="font-bold text-cyan-400 font-mono text-sm">
+          <div className={`p-3 rounded-xl border ${
+            isDark ? "bg-slate-950/60 border-slate-800" : "bg-slate-50 border-slate-200 shadow-sm"
+          }`}>
+            <span className={`text-[11px] block ${isDark ? "text-slate-400" : "text-slate-600 font-semibold"}`}>Total Peserta Terdata</span>
+            <span className="font-bold text-cyan-600 dark:text-cyan-400 font-mono text-sm">
               {kodamPrograms.reduce((acc, curr) => acc + curr.participantCount, 0).toLocaleString("id-ID")} Orang
             </span>
           </div>
@@ -232,13 +250,15 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center space-x-2 border-b border-slate-800 pb-2">
+      <div className={`flex items-center space-x-2 border-b pb-2 ${isDark ? "border-slate-800" : "border-slate-200"}`}>
         <button
           onClick={() => setActiveSubTab("form")}
           className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeSubTab === "form"
-              ? "bg-red-800 text-white shadow-lg shadow-red-950/50 border border-red-600"
-              : "bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-700/50"
+              ? "bg-red-700 text-white shadow-lg border border-red-600"
+              : isDark
+              ? "bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-700/50"
+              : "bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-300 font-semibold"
           }`}
         >
           <PlusCircle className="w-4 h-4 text-yellow-400" />
@@ -248,8 +268,10 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
           onClick={() => setActiveSubTab("list")}
           className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeSubTab === "list"
-              ? "bg-red-800 text-white shadow-lg shadow-red-950/50 border border-red-600"
-              : "bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-700/50"
+              ? "bg-red-700 text-white shadow-lg border border-red-600"
+              : isDark
+              ? "bg-slate-800/60 text-slate-400 hover:text-slate-200 border border-slate-700/50"
+              : "bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-300 font-semibold"
           }`}
         >
           <FileText className="w-4 h-4 text-emerald-400" />
@@ -260,11 +282,13 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
       {/* TAB 1: FORM INPUT KEGIATAN KODAM */}
       {activeSubTab === "form" && (
         <form onSubmit={handleSubmit} className={`p-6 rounded-2xl border space-y-6 ${
-          isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800"
+          isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
         }`}>
           {/* Section 1: Type Selection */}
           <div className="space-y-3">
-            <label className="text-xs font-bold uppercase tracking-wider text-amber-400 block font-mono">
+            <label className={`text-xs font-bold uppercase tracking-wider block font-mono ${
+              isDark ? "text-amber-400" : "text-amber-800 font-extrabold"
+            }`}>
               1. Kategori Kegiatan PKBN
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -273,16 +297,20 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 onClick={() => setProgramType("Program Rutin")}
                 className={`p-4 rounded-xl border text-left flex items-start space-x-3 transition-all ${
                   programType === "Program Rutin"
-                    ? "bg-red-950/80 border-red-600 text-white ring-2 ring-red-500/50"
-                    : "bg-slate-800/40 border-slate-700 text-slate-400 hover:bg-slate-800"
+                    ? isDark
+                      ? "bg-red-950/80 border-red-600 text-white ring-2 ring-red-500/50"
+                      : "bg-red-50 border-red-600 text-red-950 ring-2 ring-red-500/50 font-bold"
+                    : isDark
+                    ? "bg-slate-800/40 border-slate-700 text-slate-400 hover:bg-slate-800"
+                    : "bg-slate-50 border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold"
                 }`}
               >
-                <div className={`p-2 rounded-lg ${programType === "Program Rutin" ? "bg-red-800 text-yellow-300" : "bg-slate-700 text-slate-400"}`}>
+                <div className={`p-2 rounded-lg ${programType === "Program Rutin" ? "bg-red-800 text-yellow-300" : isDark ? "bg-slate-700 text-slate-400" : "bg-slate-200 text-slate-600"}`}>
                   <Award className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-bold text-xs text-slate-100">Program Rutin Command/Pusat</div>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
+                  <div className={`font-bold text-xs ${isDark ? "text-slate-100" : "text-slate-900"}`}>Program Rutin Command/Pusat</div>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                     Kegiatan berskala nasional / komando yang sesuai Kalender Kerja SPABAN IV/PKBN STERAD.
                   </p>
                 </div>
@@ -293,16 +321,20 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 onClick={() => setProgramType("Non-Program / Inisiatif")}
                 className={`p-4 rounded-xl border text-left flex items-start space-x-3 transition-all ${
                   programType === "Non-Program / Inisiatif"
-                    ? "bg-indigo-950/80 border-indigo-500 text-white ring-2 ring-indigo-500/50"
-                    : "bg-slate-800/40 border-slate-700 text-slate-400 hover:bg-slate-800"
+                    ? isDark
+                      ? "bg-indigo-950/80 border-indigo-500 text-white ring-2 ring-indigo-500/50"
+                      : "bg-indigo-50 border-indigo-500 text-indigo-950 ring-2 ring-indigo-500/50 font-bold"
+                    : isDark
+                    ? "bg-slate-800/40 border-slate-700 text-slate-400 hover:bg-slate-800"
+                    : "bg-slate-50 border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold"
                 }`}
               >
-                <div className={`p-2 rounded-lg ${programType === "Non-Program / Inisiatif" ? "bg-indigo-800 text-cyan-300" : "bg-slate-700 text-slate-400"}`}>
+                <div className={`p-2 rounded-lg ${programType === "Non-Program / Inisiatif" ? "bg-indigo-800 text-cyan-300" : isDark ? "bg-slate-700 text-slate-400" : "bg-slate-200 text-slate-600"}`}>
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-bold text-xs text-slate-100">Data Non-Program / Inisiatif Kewilayahan</div>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
+                  <div className={`font-bold text-xs ${isDark ? "text-slate-100" : "text-slate-900"}`}>Data Non-Program / Inisiatif Kewilayahan</div>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                     Kegiatan mandiri, kemitraan lokal, dan inisiatif khusus {selectedKodam.name}.
                   </p>
                 </div>
@@ -311,20 +343,26 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
           </div>
 
           {/* Section 2: Core Details */}
-          <div className="space-y-4 pt-4 border-t border-slate-800">
-            <label className="text-xs font-bold uppercase tracking-wider text-amber-400 block font-mono">
+          <div className={`space-y-4 pt-4 border-t ${isDark ? "border-slate-800" : "border-slate-200"}`}>
+            <label className={`text-xs font-bold uppercase tracking-wider block font-mono ${
+              isDark ? "text-amber-400" : "text-amber-800 font-extrabold"
+            }`}>
               2. Informasi & Detail Kegiatan
             </label>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Sektor Pembinaan *
                 </label>
                 <select
                   value={sector}
                   onChange={(e) => setSector(e.target.value as SectorType)}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                 >
                   <option value="Pendidikan">Lingkup Pendidikan</option>
                   <option value="Pekerjaan">Lingkup Pekerjaan</option>
@@ -333,7 +371,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Sub-Kategori / Sasaran *
                 </label>
                 <input
@@ -341,13 +379,17 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                   value={subCategory}
                   onChange={(e) => setSubCategory(e.target.value)}
                   placeholder="Misal: Perguruan Tinggi, BUMN, Karang Taruna"
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Unit Penyelenggara *
                 </label>
                 <input
@@ -355,14 +397,18 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                   value={organizerUnit}
                   onChange={(e) => setOrganizerUnit(e.target.value)}
                   placeholder="Misal: Sterdam / Korem 061 / Kodim 0618"
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1 block">
+              <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                 Nama Topik / Nama Kegiatan PKBN *
               </label>
               <input
@@ -370,14 +416,18 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Misal: Pembekalan Kesadaran Bela Negara bagi Mahasiswa Baru Universitas Terbuka"
-                className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                  isDark
+                    ? "bg-slate-800 text-white border-slate-700"
+                    : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                }`}
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Kabupaten / Kota *
                 </label>
                 <input
@@ -385,65 +435,85 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                   value={regency}
                   onChange={(e) => setRegency(e.target.value)}
                   placeholder={`Lokasi di ${selectedKodam.province}`}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Tanggal Mulai
                 </label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Tanggal Selesai
                 </label>
                 <input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Jumlah Peserta (Realisasi) *
                 </label>
                 <input
                   type="number"
                   value={participantCount}
                   onChange={(e) => setParticipantCount(Number(e.target.value))}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Target Peserta (Rencana) *
                 </label>
                 <input
                   type="number"
                   value={targetCount}
                   onChange={(e) => setTargetCount(Number(e.target.value))}
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 mb-1 block">
+                <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                   Instruktur / Perwira Pembina *
                 </label>
                 <input
@@ -451,14 +521,18 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                   value={instructorName}
                   onChange={(e) => setInstructorName(e.target.value)}
                   placeholder="Misal: Mayor Inf Heru P."
-                  className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                  className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                    isDark
+                      ? "bg-slate-800 text-white border-slate-700"
+                      : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                  }`}
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-300 mb-1 block">
+              <label className={`text-xs font-bold mb-1 block ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                 Ringkasan Output & Catatan Evaluasi
               </label>
               <textarea
@@ -466,22 +540,32 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
                 placeholder="Tuliskan catatan pelaksanaan, materi utama yang disampaikan, serta respon peserta..."
-                className="w-full bg-slate-800 text-white text-xs px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+                className={`w-full text-xs px-3 py-2.5 rounded-xl border focus:outline-none focus:border-red-500 ${
+                  isDark
+                    ? "bg-slate-800 text-white border-slate-700"
+                    : "bg-slate-50 text-slate-900 border-slate-300 font-semibold focus:bg-white"
+                }`}
               />
             </div>
           </div>
 
           {/* Section 3: Upload Evidence */}
-          <div className="space-y-3 pt-4 border-t border-slate-800">
-            <label className="text-xs font-bold uppercase tracking-wider text-amber-400 block font-mono">
+          <div className={`space-y-3 pt-4 border-t ${isDark ? "border-slate-800" : "border-slate-200"}`}>
+            <label className={`text-xs font-bold uppercase tracking-wider block font-mono ${
+              isDark ? "text-amber-400" : "text-amber-800 font-extrabold"
+            }`}>
               3. Upload Laporan & Dokumen Bukti
             </label>
-            <div className="border-2 border-dashed border-slate-700 hover:border-red-500/60 rounded-xl p-6 text-center bg-slate-950/40 transition-colors">
+            <div className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
+              isDark
+                ? "border-slate-700 hover:border-red-500/60 bg-slate-950/40"
+                : "border-slate-300 hover:border-red-500 bg-slate-50 shadow-inner"
+            }`}>
               <UploadCloud className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <div className="text-xs font-semibold text-slate-200">
+              <div className={`text-xs font-bold ${isDark ? "text-slate-200" : "text-slate-800"}`}>
                 Drag & Drop Berkas Laporan Kodam atau Foto Dokumentasi
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">
+              <p className={`text-[11px] mt-1 ${isDark ? "text-slate-500" : "text-slate-600"}`}>
                 Format yang didukung: PDF, DOCX, JPG, PNG (Maksimal 25MB)
               </p>
               <input
@@ -496,7 +580,11 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
               />
               <label
                 htmlFor="kodam-file-upload"
-                className="inline-block mt-3 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 px-4 py-2 rounded-lg border border-slate-700 cursor-pointer"
+                className={`inline-block mt-3 text-xs font-bold px-4 py-2 rounded-lg border cursor-pointer ${
+                  isDark
+                    ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700"
+                    : "bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-sm"
+                }`}
               >
                 Pilih Berkas Dari Komputer
               </label>
@@ -510,7 +598,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
           </div>
 
           {/* Submit Button */}
-          <div className="pt-4 border-t border-slate-800 flex items-center justify-end space-x-3">
+          <div className={`pt-4 border-t flex items-center justify-end space-x-3 ${isDark ? "border-slate-800" : "border-slate-200"}`}>
             <button
               type="submit"
               className="bg-gradient-to-r from-red-700 via-red-800 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-lg shadow-red-950/50 border border-red-600/80 flex items-center space-x-2 active:scale-95 transition-all"
@@ -525,15 +613,17 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
       {/* TAB 2: DAFTAR LAPORAN TERINPUT KODAM */}
       {activeSubTab === "list" && (
         <div className={`p-5 rounded-2xl border space-y-4 ${
-          isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800"
+          isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
         }`}>
           {/* List Header & Filters */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
+            isDark ? "border-slate-800" : "border-slate-200"
+          }`}>
             <div>
               <h3 className="text-base font-bold font-serif">
                 Daftar Kegiatan Terinput {selectedKodam.name}
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>
                 Terhubung otomatis dengan Dashboard Nasional SPABAN IV/PKBN STERAD.
               </p>
             </div>
@@ -544,8 +634,8 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 onClick={() => setListFilterType("semua")}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   listFilterType === "semua"
-                    ? "bg-slate-700 text-white font-mono"
-                    : "bg-slate-800/60 text-slate-400 hover:text-slate-200"
+                    ? isDark ? "bg-slate-700 text-white font-mono" : "bg-slate-800 text-white font-mono"
+                    : isDark ? "bg-slate-800/60 text-slate-400 hover:text-slate-200" : "bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200"
                 }`}
               >
                 Semua ({kodamPrograms.length})
@@ -555,7 +645,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   listFilterType === "Program Rutin"
                     ? "bg-red-900 text-yellow-300 font-mono border border-red-700"
-                    : "bg-slate-800/60 text-slate-400 hover:text-slate-200"
+                    : isDark ? "bg-slate-800/60 text-slate-400 hover:text-slate-200" : "bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200"
                 }`}
               >
                 Program Rutin
@@ -565,7 +655,7 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   listFilterType === "Non-Program / Inisiatif"
                     ? "bg-indigo-900 text-cyan-300 font-mono border border-indigo-700"
-                    : "bg-slate-800/60 text-slate-400 hover:text-slate-200"
+                    : isDark ? "bg-slate-800/60 text-slate-400 hover:text-slate-200" : "bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200"
                 }`}
               >
                 Non-Program
@@ -581,20 +671,26 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
               placeholder="Cari berdasarkan judul kegiatan, kabupaten, atau penyelenggara..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-800/80 text-xs pl-9 pr-4 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500"
+              className={`w-full text-xs pl-9 pr-4 py-2 rounded-xl border focus:outline-none focus:border-red-500 ${
+                isDark
+                  ? "bg-slate-800/80 border-slate-700 text-white"
+                  : "bg-slate-50 border-slate-300 text-slate-900 font-semibold focus:bg-white"
+              }`}
             />
           </div>
 
           {/* Programs Table */}
           {filteredList.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-slate-800 rounded-xl">
-              <FileText className="w-10 h-10 text-slate-600 mx-auto mb-2" />
-              <p className="text-xs font-semibold text-slate-400">
+            <div className={`text-center py-12 border border-dashed rounded-xl ${
+              isDark ? "border-slate-800" : "border-slate-300 bg-slate-50"
+            }`}>
+              <FileText className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+              <p className={`text-xs font-semibold ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                 Belum ada data kegiatan terinput untuk {selectedKodam.name} dengan filter ini.
               </p>
               <button
                 onClick={() => setActiveSubTab("form")}
-                className="mt-3 inline-flex items-center space-x-1.5 text-xs font-bold text-red-400 hover:text-red-300"
+                className="mt-3 inline-flex items-center space-x-1.5 text-xs font-bold text-red-600 hover:text-red-700 dark:text-red-400"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Input Kegiatan Baru Sekarang</span>
@@ -604,7 +700,9 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-mono uppercase text-[10px]">
+                  <tr className={`border-b font-mono uppercase text-[10px] ${
+                    isDark ? "bg-slate-950/80 border-slate-800 text-slate-400" : "bg-slate-100 border-slate-200 text-slate-700 font-bold"
+                  }`}>
                     <th className="p-3">Kode & Judul Kegiatan</th>
                     <th className="p-3">Kategori</th>
                     <th className="p-3">Sektor</th>
@@ -614,13 +712,15 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                     <th className="p-3 text-right">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className={`divide-y ${isDark ? "divide-slate-800/60" : "divide-slate-200"}`}>
                   {filteredList.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
+                    <tr key={item.id} className={`transition-colors ${
+                      isDark ? "hover:bg-slate-800/40" : "hover:bg-slate-50"
+                    }`}>
                       <td className="p-3">
-                        <div className="font-mono text-[10px] text-amber-400 font-bold">{item.code}</div>
-                        <div className="font-semibold text-slate-100 text-xs">{item.title}</div>
-                        <div className="text-[11px] text-slate-400">{item.organizer}</div>
+                        <div className="font-mono text-[10px] text-amber-600 dark:text-amber-400 font-bold">{item.code}</div>
+                        <div className={`font-bold text-xs ${isDark ? "text-slate-100" : "text-slate-900"}`}>{item.title}</div>
+                        <div className={`text-[11px] ${isDark ? "text-slate-400" : "text-slate-600"}`}>{item.organizer}</div>
                       </td>
                       <td className="p-3">
                         {item.programType === "Non-Program / Inisiatif" ? (
@@ -633,14 +733,14 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                           </span>
                         )}
                       </td>
-                      <td className="p-3 font-semibold text-slate-300">
+                      <td className={`p-3 font-semibold ${isDark ? "text-slate-300" : "text-slate-800"}`}>
                         {item.sector}
                       </td>
                       <td className="p-3">
-                        <div className="text-slate-200">{item.regency}</div>
-                        <div className="text-[10px] text-slate-500">{item.province}</div>
+                        <div className={`font-medium ${isDark ? "text-slate-200" : "text-slate-900"}`}>{item.regency}</div>
+                        <div className={`text-[10px] ${isDark ? "text-slate-500" : "text-slate-500"}`}>{item.province}</div>
                       </td>
-                      <td className="p-3 font-mono font-bold text-emerald-400">
+                      <td className="p-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">
                         {item.participantCount.toLocaleString("id-ID")} orang
                       </td>
                       <td className="p-3">
@@ -653,7 +753,11 @@ export const InputKodamView: React.FC<InputKodamViewProps> = ({
                         {onDeleteProgram && (
                           <button
                             onClick={() => onDeleteProgram(item.id)}
-                            className="p-1.5 rounded bg-slate-800 hover:bg-red-950 hover:text-red-400 text-slate-400 transition-colors"
+                            className={`p-1.5 rounded transition-colors ${
+                              isDark
+                                ? "bg-slate-800 hover:bg-red-950 hover:text-red-400 text-slate-400"
+                                : "bg-slate-100 hover:bg-red-100 hover:text-red-600 text-slate-600"
+                            }`}
                             title="Hapus Laporan Ini"
                           >
                             <Trash2 className="w-4 h-4" />

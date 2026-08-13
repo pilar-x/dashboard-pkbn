@@ -145,6 +145,7 @@ export default function App() {
               onSelectProvince={handleSelectProvince}
               onNavigate={setActiveTab}
               onOpenAiAssistant={() => setIsAiModalOpen(true)}
+              theme={theme}
             />
           )}
 
@@ -154,15 +155,16 @@ export default function App() {
               institutions={institutions}
               instructors={instructors}
               events={calendarEvents}
+              theme={theme}
             />
           )}
 
           {activeTab === "pekerjaan" && (
-            <PekerjaanView programs={filteredPrograms} institutions={institutions} />
+            <PekerjaanView programs={filteredPrograms} institutions={institutions} theme={theme} />
           )}
 
           {activeTab === "masyarakat" && (
-            <MasyarakatView programs={filteredPrograms} institutions={institutions} />
+            <MasyarakatView programs={filteredPrograms} institutions={institutions} theme={theme} />
           )}
 
           {activeTab === "monitoring" && (
@@ -171,13 +173,14 @@ export default function App() {
               provinces={provinces}
               selectedProvince={selectedProvince}
               onSelectProvince={handleSelectProvince}
+              theme={theme}
             />
           )}
 
-          {activeTab === "analisis" && <AnalisisView provinces={provinces} />}
+          {activeTab === "analisis" && <AnalisisView provinces={provinces} theme={theme} />}
 
           {activeTab === "pelaporan" && (
-            <PelaporanView kpi={nationalKpi} programs={filteredPrograms} />
+            <PelaporanView kpi={nationalKpi} programs={filteredPrograms} theme={theme} />
           )}
 
           {activeTab === "input_kodam" && (
@@ -190,7 +193,7 @@ export default function App() {
           )}
 
           {activeTab === "master" && (
-            <DataMasterView provinces={provinces} institutions={institutions} />
+            <DataMasterView provinces={provinces} institutions={institutions} theme={theme} />
           )}
         </main>
       </div>
@@ -199,6 +202,7 @@ export default function App() {
       <AiAssistantModal
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
+        theme={theme}
       />
 
       {/* Upload Modal */}

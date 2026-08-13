@@ -15,12 +15,15 @@ import {
 interface PelaporanViewProps {
   kpi: NationalKPI;
   programs: ProgramItem[];
+  theme?: "dark" | "light";
 }
 
 export const PelaporanView: React.FC<PelaporanViewProps> = ({
   kpi,
   programs,
+  theme = "dark",
 }) => {
+  const isDark = theme === "dark";
   const [period, setPeriod] = useState<"Harian" | "Mingguan" | "Bulanan" | "Tahunan">("Bulanan");
   const [selectedSector, setSelectedSector] = useState<string>("Semua Lingkup");
   const [reportSummary, setReportSummary] = useState<string>(
@@ -60,19 +63,25 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Pelaporan Header */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className={`rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
+        isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
+      }`}>
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 rounded-xl bg-red-950/80 text-red-400 border border-red-700/60 flex items-center justify-center shrink-0 shadow-lg">
+          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-lg border ${
+            isDark ? "bg-red-950/80 text-red-400 border-red-700/60" : "bg-red-50 text-red-600 border-red-200"
+          }`}>
             <FileSpreadsheet className="w-7 h-7" />
           </div>
           <div>
-            <span className="text-[10px] font-bold tracking-wider text-red-400 uppercase bg-red-950/60 px-2.5 py-0.5 rounded border border-red-800/60">
+            <span className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded border ${
+              isDark ? "text-red-400 bg-red-950/60 border-red-800/60" : "text-red-700 bg-red-50 border-red-200"
+            }`}>
               Modul Pelaporan Resmi
             </span>
-            <h2 className="text-xl font-bold text-white font-serif tracking-tight mt-1">
+            <h2 className={`text-xl font-bold font-serif tracking-tight mt-1 ${isDark ? "text-white" : "text-slate-900"}`}>
               Pelaporan Harian, Mingguan, Bulanan & Tahunan
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className={`text-xs mt-0.5 ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>
               Generasi dokumen laporan resmi terstruktur dengan dukungan Format PDF & Excel.
             </p>
           </div>
@@ -82,7 +91,9 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={() => window.print()}
-            className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3.5 py-2 rounded-xl border border-slate-700 flex items-center space-x-1.5 transition-colors"
+            className={`text-xs font-semibold px-3.5 py-2 rounded-xl border flex items-center space-x-1.5 transition-colors ${
+              isDark ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700" : "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300 font-medium"
+            }`}
           >
             <Printer className="w-4 h-4" />
             <span>Cetak PDF</span>
@@ -98,9 +109,11 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
       </div>
 
       {/* Report Filter Bar */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div className={`rounded-2xl p-4 shadow-lg flex flex-wrap items-center justify-between gap-4 text-xs border ${
+        isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
+      }`}>
         <div className="flex items-center space-x-2">
-          <span className="text-slate-400 font-semibold">Periode Laporan:</span>
+          <span className={isDark ? "text-slate-400 font-semibold" : "text-slate-600 font-bold"}>Periode Laporan:</span>
           {(["Harian", "Mingguan", "Bulanan", "Tahunan"] as const).map((p) => (
             <button
               key={p}
@@ -108,7 +121,9 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
               className={`px-3 py-1.5 rounded-lg border font-semibold transition-all ${
                 period === p
                   ? "bg-red-700 text-white border-red-600"
-                  : "bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200"
+                  : isDark
+                    ? "bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200"
+                    : "bg-slate-100 text-slate-600 border-slate-300 hover:text-slate-900"
               }`}
             >
               {p}
@@ -120,7 +135,9 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
           <select
             value={selectedSector}
             onChange={(e) => setSelectedSector(e.target.value)}
-            className="bg-slate-800 text-slate-200 p-2 rounded-lg border border-slate-700 focus:outline-none"
+            className={`p-2 rounded-lg border focus:outline-none ${
+              isDark ? "bg-slate-800 text-slate-200 border-slate-700" : "bg-slate-100 text-slate-800 border-slate-300 font-medium"
+            }`}
           >
             <option value="Semua Lingkup">Semua Lingkup (Nasional)</option>
             <option value="Pendidikan">Lingkup Pendidikan</option>
@@ -140,64 +157,78 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
       </div>
 
       {/* Official Formal Document Preview */}
-      <div className="bg-slate-950 border border-slate-800 rounded-2xl p-8 shadow-2xl space-y-6 max-w-4xl mx-auto text-slate-200">
+      <div className={`rounded-2xl p-8 shadow-2xl space-y-6 max-w-4xl mx-auto border ${
+        isDark ? "bg-slate-950 border-slate-800 text-slate-200" : "bg-white border-slate-300 text-slate-800 shadow-xl"
+      }`}>
         {/* Official Ministry Letterhead */}
-        <div className="text-center border-b-2 border-slate-700 pb-4 space-y-1">
-          <div className="text-xs font-bold font-serif tracking-widest text-amber-400 uppercase">
+        <div className={`text-center border-b-2 pb-4 space-y-1 ${isDark ? "border-slate-700" : "border-slate-300"}`}>
+          <div className={`text-xs font-bold font-serif tracking-widest uppercase ${isDark ? "text-amber-400" : "text-amber-700"}`}>
             KEMENTERIAN PERTAHANAN REPUBLIK INDONESIA
           </div>
-          <div className="text-xs font-serif text-slate-300 uppercase">
+          <div className={`text-xs font-serif uppercase ${isDark ? "text-slate-300" : "text-slate-700 font-bold"}`}>
             DIREKTORAT JENDERAL POTENSI PERTAHANAN
           </div>
-          <div className="text-[10px] text-slate-500">
+          <div className={`text-[10px] ${isDark ? "text-slate-500" : "text-slate-500"}`}>
             Jl. Medan Merdeka Barat No. 13-14, Jakarta Pusat 10110
           </div>
-          <h3 className="text-lg font-bold text-white font-serif uppercase tracking-tight pt-2">
+          <h3 className={`text-lg font-bold font-serif uppercase tracking-tight pt-2 ${isDark ? "text-white" : "text-slate-900"}`}>
             LAPORAN RESMI PELAKSANAAN PEMBINAAN KESADARAN BELA NEGARA ({period.toUpperCase()})
           </h3>
         </div>
 
         {/* AI Executive Summary Box */}
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-2">
-          <div className="flex items-center space-x-2 text-yellow-400 text-xs font-bold uppercase tracking-wider">
+        <div className={`p-4 rounded-xl space-y-2 border ${
+          isDark ? "bg-slate-900 border-slate-800" : "bg-amber-50/80 border-amber-200"
+        }`}>
+          <div className={`flex items-center space-x-2 text-xs font-bold uppercase tracking-wider ${
+            isDark ? "text-yellow-400" : "text-amber-800"
+          }`}>
             <Sparkles className="w-4 h-4" />
             <span>Ringkasan Eksekutif (Executive Summary):</span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-sans italic">{reportSummary}</p>
+          <p className={`text-xs leading-relaxed font-sans italic ${
+            isDark ? "text-slate-300" : "text-slate-800 font-medium"
+          }`}>{reportSummary}</p>
         </div>
 
         {/* Consolidated KPI Table */}
         <div className="space-y-2">
-          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">
+          <div className={`text-xs font-bold uppercase tracking-wider font-mono ${
+            isDark ? "text-slate-400" : "text-slate-600"
+          }`}>
             I. REKAPITULASI CAPAIAN INDIKATOR UTAMA
           </div>
-          <table className="w-full text-left text-xs text-slate-300 border border-slate-800">
-            <thead className="bg-slate-900 text-slate-400 uppercase font-mono text-[10px]">
+          <table className={`w-full text-left text-xs border ${
+            isDark ? "text-slate-300 border-slate-800" : "text-slate-800 border-slate-300"
+          }`}>
+            <thead className={`uppercase font-mono text-[10px] ${
+              isDark ? "bg-slate-900 text-slate-400" : "bg-slate-100 text-slate-700 font-bold"
+            }`}>
               <tr>
-                <th className="p-2.5 border border-slate-800">Indikator Kinerja</th>
-                <th className="p-2.5 border border-slate-800">Target Nasional</th>
-                <th className="p-2.5 border border-slate-800">Realisasi Capaian</th>
-                <th className="p-2.5 border border-slate-800 text-right">Persentase</th>
+                <th className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>Indikator Kinerja</th>
+                <th className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>Target Nasional</th>
+                <th className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>Realisasi Capaian</th>
+                <th className={`p-2.5 border text-right ${isDark ? "border-slate-800" : "border-slate-300"}`}>Persentase</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800">
+            <tbody className={`divide-y ${isDark ? "divide-slate-800" : "divide-slate-300"}`}>
               <tr>
-                <td className="p-2.5 border border-slate-800 font-semibold text-white">Total Program PKBN</td>
-                <td className="p-2.5 border border-slate-800">1.500 Program</td>
-                <td className="p-2.5 border border-slate-800 text-yellow-400 font-bold">{kpi.totalProgram} Program</td>
-                <td className="p-2.5 border border-slate-800 text-right font-bold text-emerald-400">98.8%</td>
+                <td className={`p-2.5 border font-semibold ${isDark ? "border-slate-800 text-white" : "border-slate-300 text-slate-900"}`}>Total Program PKBN</td>
+                <td className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>1.500 Program</td>
+                <td className={`p-2.5 border font-bold ${isDark ? "border-slate-800 text-yellow-400" : "border-slate-300 text-amber-700"}`}>{kpi.totalProgram} Program</td>
+                <td className={`p-2.5 border text-right font-bold ${isDark ? "border-slate-800 text-emerald-400" : "border-slate-300 text-emerald-700"}`}>98.8%</td>
               </tr>
               <tr>
-                <td className="p-2.5 border border-slate-800 font-semibold text-white">Total Peserta / Kader</td>
-                <td className="p-2.5 border border-slate-800">3.000.000 Orang</td>
-                <td className="p-2.5 border border-slate-800 text-yellow-400 font-bold">{kpi.totalPeserta.toLocaleString("id-ID")} Orang</td>
-                <td className="p-2.5 border border-slate-800 text-right font-bold text-emerald-400">{kpi.persentaseCapaian}%</td>
+                <td className={`p-2.5 border font-semibold ${isDark ? "border-slate-800 text-white" : "border-slate-300 text-slate-900"}`}>Total Peserta / Kader</td>
+                <td className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>3.000.000 Orang</td>
+                <td className={`p-2.5 border font-bold ${isDark ? "border-slate-800 text-yellow-400" : "border-slate-300 text-amber-700"}`}>{kpi.totalPeserta.toLocaleString("id-ID")} Orang</td>
+                <td className={`p-2.5 border text-right font-bold ${isDark ? "border-slate-800 text-emerald-400" : "border-slate-300 text-emerald-700"}`}>{kpi.persentaseCapaian}%</td>
               </tr>
               <tr>
-                <td className="p-2.5 border border-slate-800 font-semibold text-white">Satuan Pendidikan & Instansi</td>
-                <td className="p-2.5 border border-slate-800">6.000 Unit</td>
-                <td className="p-2.5 border border-slate-800 text-yellow-400 font-bold">{(kpi.totalSekolahPT + kpi.totalInstansi + kpi.totalOrmas).toLocaleString("id-ID")} Unit</td>
-                <td className="p-2.5 border border-slate-800 text-right font-bold text-emerald-400">92.4%</td>
+                <td className={`p-2.5 border font-semibold ${isDark ? "border-slate-800 text-white" : "border-slate-300 text-slate-900"}`}>Satuan Pendidikan & Instansi</td>
+                <td className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>6.000 Unit</td>
+                <td className={`p-2.5 border font-bold ${isDark ? "border-slate-800 text-yellow-400" : "border-slate-300 text-amber-700"}`}>{(kpi.totalSekolahPT + kpi.totalInstansi + kpi.totalOrmas).toLocaleString("id-ID")} Unit</td>
+                <td className={`p-2.5 border text-right font-bold ${isDark ? "border-slate-800 text-emerald-400" : "border-slate-300 text-emerald-700"}`}>92.4%</td>
               </tr>
             </tbody>
           </table>
@@ -205,25 +236,31 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
 
         {/* Detailed Program List Table */}
         <div className="space-y-2">
-          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">
+          <div className={`text-xs font-bold uppercase tracking-wider font-mono ${
+            isDark ? "text-slate-400" : "text-slate-600"
+          }`}>
             II. RINCIAN SAMPLE PROGRAM UNGGULAN
           </div>
-          <table className="w-full text-left text-xs text-slate-300 border border-slate-800">
-            <thead className="bg-slate-900 text-slate-400 uppercase font-mono text-[10px]">
+          <table className={`w-full text-left text-xs border ${
+            isDark ? "text-slate-300 border-slate-800" : "text-slate-800 border-slate-300"
+          }`}>
+            <thead className={`uppercase font-mono text-[10px] ${
+              isDark ? "bg-slate-900 text-slate-400" : "bg-slate-100 text-slate-700 font-bold"
+            }`}>
               <tr>
-                <th className="p-2.5 border border-slate-800">Nama Kegiatan</th>
-                <th className="p-2.5 border border-slate-800">Lingkup</th>
-                <th className="p-2.5 border border-slate-800">Penyelenggara</th>
-                <th className="p-2.5 border border-slate-800 text-right">Capaian Peserta</th>
+                <th className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>Nama Kegiatan</th>
+                <th className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>Lingkup</th>
+                <th className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>Penyelenggara</th>
+                <th className={`p-2.5 border text-right ${isDark ? "border-slate-800" : "border-slate-300"}`}>Capaian Peserta</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800">
+            <tbody className={`divide-y ${isDark ? "divide-slate-800" : "divide-slate-300"}`}>
               {programs.slice(0, 5).map((p) => (
                 <tr key={p.id}>
-                  <td className="p-2.5 border border-slate-800 font-semibold text-white">{p.title}</td>
-                  <td className="p-2.5 border border-slate-800">{p.sector}</td>
-                  <td className="p-2.5 border border-slate-800">{p.organizer}</td>
-                  <td className="p-2.5 border border-slate-800 text-right font-bold text-yellow-400">{p.participantCount} Orang</td>
+                  <td className={`p-2.5 border font-semibold ${isDark ? "border-slate-800 text-white" : "border-slate-300 text-slate-900"}`}>{p.title}</td>
+                  <td className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>{p.sector}</td>
+                  <td className={`p-2.5 border ${isDark ? "border-slate-800" : "border-slate-300"}`}>{p.organizer}</td>
+                  <td className={`p-2.5 border text-right font-bold ${isDark ? "border-slate-800 text-yellow-400" : "border-slate-300 text-amber-700"}`}>{p.participantCount} Orang</td>
                 </tr>
               ))}
             </tbody>
@@ -231,16 +268,16 @@ export const PelaporanView: React.FC<PelaporanViewProps> = ({
         </div>
 
         {/* Official Signatures Footer */}
-        <div className="flex justify-between items-end pt-8 text-xs text-slate-400">
+        <div className={`flex justify-between items-end pt-8 text-xs ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>
           <div className="text-center">
             <div>Mengetahui,</div>
-            <div className="font-bold text-white pt-12">Direktur Bela Negara</div>
-            <div className="text-[10px] text-slate-500">NIP. 197405122000031002</div>
+            <div className={`font-bold pt-12 ${isDark ? "text-white" : "text-slate-900"}`}>Direktur Bela Negara</div>
+            <div className={`text-[10px] ${isDark ? "text-slate-500" : "text-slate-500 font-normal"}`}>NIP. 197405122000031002</div>
           </div>
           <div className="text-center">
             <div>Jakarta, 12 Agustus 2026</div>
-            <div className="font-bold text-white pt-12">Tim Penyusun Laporan PKBN</div>
-            <div className="text-[10px] text-slate-500">Sekretariat Ditjen Pothan</div>
+            <div className={`font-bold pt-12 ${isDark ? "text-white" : "text-slate-900"}`}>Tim Penyusun Laporan PKBN</div>
+            <div className={`text-[10px] ${isDark ? "text-slate-500" : "text-slate-500 font-normal"}`}>Sekretariat Ditjen Pothan</div>
           </div>
         </div>
       </div>

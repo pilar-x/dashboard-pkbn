@@ -27,6 +27,7 @@ interface PendidikanViewProps {
   institutions: InstitutionItem[];
   instructors: InstructorItem[];
   events: CalendarEvent[];
+  theme?: "dark" | "light";
 }
 
 export const PendidikanView: React.FC<PendidikanViewProps> = ({
@@ -34,7 +35,10 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
   institutions,
   instructors,
   events,
+  theme = "dark",
 }) => {
+  const isDark = theme === "dark";
+
   const [activeSubTab, setActiveSubTab] = useState<
     "sekolah" | "program" | "peserta" | "instruktur" | "kalender" | "dokumentasi" | "evaluasi" | "sertifikat"
   >("program");
@@ -64,7 +68,9 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Sector Header Banner */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+      <div className={`rounded-2xl p-6 shadow-xl relative overflow-hidden border ${
+        isDark ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-800 shadow-md"
+      }`}>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 rounded-xl bg-blue-950/80 border border-blue-700/60 text-blue-400 flex items-center justify-center shrink-0 shadow-lg">
@@ -74,29 +80,35 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
               <span className="text-[10px] font-bold tracking-wider text-blue-400 uppercase bg-blue-950/60 px-2.5 py-0.5 rounded border border-blue-800/60">
                 Bidang Lingkup 1
               </span>
-              <h2 className="text-xl font-bold text-white font-serif tracking-tight mt-1">
+              <h2 className={`text-xl font-bold font-serif tracking-tight mt-1 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Pembinaan Kesadaran Bela Negara di Lingkungan Pendidikan
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className={`text-xs mt-0.5 ${isDark ? "text-slate-400" : "text-slate-600 font-medium"}`}>
                 Mengelola pembinaan di Sekolah Dasar, Menengah, Kejuruan, serta Perguruan Tinggi Negeri & Swasta.
               </p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3 text-xs">
-            <div className="bg-slate-800/90 border border-slate-700/80 px-3 py-2 rounded-xl text-center">
-              <div className="text-slate-400 text-[10px]">Total Satuan Pendidikan</div>
-              <div className="font-bold text-blue-400 text-base">4,120 Kampus/Sekolah</div>
+            <div className={`px-3 py-2 rounded-xl text-center border ${
+              isDark ? "bg-slate-800/90 border-slate-700/80" : "bg-slate-100 border-slate-200 shadow-sm"
+            }`}>
+              <div className={`text-[10px] ${isDark ? "text-slate-400" : "text-slate-600 font-semibold"}`}>Total Satuan Pendidikan</div>
+              <div className="font-bold text-blue-600 dark:text-blue-400 text-base">4,120 Kampus/Sekolah</div>
             </div>
-            <div className="bg-slate-800/90 border border-slate-700/80 px-3 py-2 rounded-xl text-center">
-              <div className="text-slate-400 text-[10px]">Kader Terbina</div>
-              <div className="font-bold text-emerald-400 text-base">1,240,500 Siswa/Mhs</div>
+            <div className={`px-3 py-2 rounded-xl text-center border ${
+              isDark ? "bg-slate-800/90 border-slate-700/80" : "bg-slate-100 border-slate-200 shadow-sm"
+            }`}>
+              <div className={`text-[10px] ${isDark ? "text-slate-400" : "text-slate-600 font-semibold"}`}>Kader Terbina</div>
+              <div className="font-bold text-emerald-600 dark:text-emerald-400 text-base">1,240,500 Siswa/Mhs</div>
             </div>
           </div>
         </div>
 
         {/* Sub-navigation Tabs matching prompt concepts */}
-        <div className="flex items-center space-x-1 border-t border-slate-800 pt-4 mt-5 overflow-x-auto text-xs font-medium text-slate-400">
+        <div className={`flex items-center space-x-1 border-t pt-4 mt-5 overflow-x-auto text-xs font-medium ${
+          isDark ? "border-slate-800 text-slate-400" : "border-slate-200 text-slate-600"
+        }`}>
           {[
             { id: "program", label: "Program PKBN", icon: <BookOpen className="w-4 h-4" /> },
             { id: "sekolah", label: "Data Sekolah/PT", icon: <School className="w-4 h-4" /> },
@@ -111,8 +123,10 @@ export const PendidikanView: React.FC<PendidikanViewProps> = ({
               onClick={() => setActiveSubTab(tab.id as any)}
               className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl transition-all shrink-0 ${
                 activeSubTab === tab.id
-                  ? "bg-blue-600 text-white font-semibold shadow-md shadow-blue-900/30"
-                  : "hover:bg-slate-800 hover:text-slate-200"
+                  ? "bg-blue-600 text-white font-bold shadow-md shadow-blue-900/30"
+                  : isDark
+                  ? "hover:bg-slate-800 hover:text-slate-200"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold border border-slate-200"
               }`}
             >
               {tab.icon}

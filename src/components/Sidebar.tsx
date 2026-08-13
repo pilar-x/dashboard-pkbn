@@ -97,7 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }`}>
       <div className="px-3 space-y-1">
         <div className={`px-3 py-2 text-[11px] font-bold tracking-wider uppercase font-mono ${
-          isDark ? "text-slate-400" : "text-slate-500"
+          isDark ? "text-slate-400" : "text-slate-600 font-extrabold"
         }`}>
           MODUL DASHBOARD PKBN
         </div>
@@ -112,10 +112,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 isActive
                   ? isDark
                     ? "bg-red-900/60 text-white font-semibold border border-red-700/60 shadow-lg shadow-red-950/40"
-                    : "bg-red-700 text-white font-semibold border border-red-800 shadow-md"
+                    : "bg-red-700 text-white font-bold border border-red-800 shadow-md"
                   : isDark
                   ? "hover:bg-slate-800/80 hover:text-slate-100 text-slate-400"
-                  : "hover:bg-slate-200/70 hover:text-slate-900 text-slate-600"
+                  : "hover:bg-slate-200/80 hover:text-slate-900 text-slate-700 font-semibold"
               }`}
             >
               <div className="flex items-center space-x-3 truncate">
@@ -123,13 +123,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className={`${
                     isActive
                       ? isDark ? "text-yellow-400" : "text-yellow-300"
-                      : isDark ? "text-slate-400 group-hover:text-slate-200" : "text-slate-500 group-hover:text-slate-800"
+                      : isDark ? "text-slate-400 group-hover:text-slate-200" : "text-slate-600 group-hover:text-slate-900"
                   } transition-colors`}
                 >
                   {item.icon}
                 </span>
                 <div className="truncate">
-                  <div className="text-xs font-medium leading-snug truncate flex items-center space-x-1.5">
+                  <div className="text-xs font-semibold leading-snug truncate flex items-center space-x-1.5">
                     <span>{item.label}</span>
                     {item.isHighlight && (
                       <span className="bg-yellow-500 text-slate-950 font-mono text-[9px] font-extrabold px-1.5 py-0.2 rounded uppercase animate-pulse">
@@ -140,8 +140,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <div
                     className={`text-[10px] truncate ${
                       isActive
-                        ? isDark ? "text-red-200" : "text-red-100"
-                        : isDark ? "text-slate-500" : "text-slate-400"
+                        ? isDark ? "text-red-200" : "text-red-100 font-medium"
+                        : isDark ? "text-slate-500" : "text-slate-600 font-medium"
                     }`}
                   >
                     {item.desc}
@@ -152,7 +152,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 className={`w-4 h-4 shrink-0 transition-transform ${
                   isActive
                     ? "text-yellow-400 translate-x-0.5"
-                    : isDark ? "text-slate-600 opacity-0 group-hover:opacity-100" : "text-slate-400 opacity-0 group-hover:opacity-100"
+                    : isDark ? "text-slate-600 opacity-0 group-hover:opacity-100" : "text-slate-500 opacity-0 group-hover:opacity-100"
                 }`}
               />
             </button>
@@ -164,18 +164,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className={`p-3 mx-3 mt-4 rounded-xl border shadow-md ${
         isDark
           ? "bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700/80"
-          : "bg-gradient-to-br from-white to-slate-100 border-slate-200"
+          : "bg-slate-100 border-slate-300 text-slate-800"
       }`}>
         <div className="flex items-center space-x-2 text-yellow-500 mb-1.5">
-          <Sparkles className="w-4 h-4 animate-spin-slow text-amber-500" />
-          <span className="text-xs font-bold tracking-wide text-amber-600 dark:text-yellow-400">Konsultan AI PKBN</span>
+          <Sparkles className="w-4 h-4 animate-spin-slow text-amber-600 dark:text-amber-500" />
+          <span className="text-xs font-bold tracking-wide text-amber-800 dark:text-yellow-400">Konsultan AI PKBN</span>
         </div>
-        <p className={`text-[11px] leading-relaxed mb-3 ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+        <p className={`text-[11px] leading-relaxed mb-3 ${isDark ? "text-slate-400" : "text-slate-700 font-medium"}`}>
           Tanyakan regulasi UU No. 23/2019, penyusunan modul, atau analisis SWOT instansi Anda.
         </p>
         <button
           onClick={onOpenAiAssistant}
-          className="w-full bg-gradient-to-r from-red-700 to-red-800 hover:from-red-600 hover:to-red-700 text-white text-xs font-semibold py-2 px-3 rounded-lg flex items-center justify-center space-x-1.5 transition-all shadow-md active:scale-95"
+          className="w-full bg-gradient-to-r from-red-700 to-red-800 hover:from-red-600 hover:to-red-700 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center space-x-1.5 transition-all shadow-md active:scale-95"
         >
           <span>Mulai Konsultasi AI</span>
         </button>
@@ -186,9 +186,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="px-3 mt-3">
           <button
             onClick={onLogout}
-            className="w-full py-2.5 px-3 rounded-xl border border-red-500/50 bg-red-950/40 hover:bg-red-900/80 text-red-300 hover:text-white text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-sm active:scale-95 group"
+            className={`w-full py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center space-x-2 transition-all shadow-sm active:scale-95 group ${
+              isDark
+                ? "border-red-500/50 bg-red-950/40 hover:bg-red-900/80 text-red-300 hover:text-white"
+                : "border-red-300 bg-red-50 hover:bg-red-100 text-red-800 hover:text-red-900 shadow-sm"
+            }`}
           >
-            <LogOut className="w-4 h-4 text-red-400 group-hover:text-yellow-300 transition-colors" />
+            <LogOut className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-yellow-300 transition-colors" />
             <span>Keluar / Exit Dashboard</span>
           </button>
         </div>
